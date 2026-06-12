@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Skills 安裝與管理 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="OpenCLI 完整指南第 13 章：Skills 安裝與管理。學習如何撰寫、安裝、管理 Claude Code Skills，將 opencli 指令封裝為可重複執行的自動化工作流程。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 13 章 · Part 4：AI 整合</span> <h1>Skills 安裝與管理</h1> <p class="cdesc">
+Skills 是 Claude Code 的超能力核心——一個 Skill 就是一份描述工作流程的 Markdown 檔案，
+    讓 Claude 知道在特定情境下該執行哪些步驟、呼叫哪些工具。
+    結合 OpenCLI，Skills 能將複雜的網頁自動化任務封裝成一行觸發指令，
+    可重複執行、可版本控制、可與團隊共享。
+</p>  <h2 id="what-is-skill">1. 什麼是 Skills</h2> <p>
+在 Claude Code 的架構中，<strong>Skill</strong> 是一個儲存在 <code>.md</code> 檔案裡的工作流程描述。
+    當你在對話中輸入觸發指令（如 <code>/twitter-report</code>），Claude 會讀取對應的 Skill 檔案，
+    依照步驟說明逐一執行，包括呼叫 OpenCLI 指令、處理輸出、產生報告。
+</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>比較項目</th> <th>一般 Claude 對話</th> <th>Skill</th> </tr> </thead> <tbody> <tr> <td>執行方式</td> <td>每次手動描述需求</td> <td>一行觸發指令</td> </tr> <tr> <td>一致性</td> <td>每次結果可能不同</td> <td>標準化流程，輸出格式固定</td> </tr> <tr> <td>可重複性</td> <td>低（依賴對話上下文）</td> <td>高（獨立執行，無需上下文）</td> </tr> <tr> <td>共享性</td> <td>無法直接分享</td> <td>一個 .md 檔案即可分享</td> </tr> <tr> <td>版本控制</td> <td>無</td> <td>可加入 git 管理</td> </tr> </tbody> </table> </div> <p>
+OpenCLI Skill 的特殊之處在於：步驟說明中包含具體的 <code>opencli</code> 指令，
+    讓 Claude 能直接操控瀏覽器、呼叫各平台 adapter，完成資料抓取、互動、報告產生等完整流程，
+    而不只是文字生成。
+</p> <div class="call info"> <p> <strong>一句話定義：</strong>Skill = 觸發條件 + 步驟說明 + OpenCLI 工具調用指令。
+      你把重複性的自動化工作寫成一份 Skill，之後只要一行指令，Claude 就能獨立完成整個流程。
+</p> </div>  <h2 id="skill-structure">2. Skill 檔案結構</h2> <p>
+Skill 檔案是標準 Markdown，搭配 YAML frontmatter 描述 metadata。
+    以下是一個完整的範例，涵蓋所有常用欄位：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>twitter-report.md — 完整 Skill 範例</span> <button class="cb-copy" data-code="---
+name: twitter-report
+description: 搜尋 Twitter 趨勢並產生分析報告
+trigger: /twitter-report
+---
+
+# Twitter 趨勢報告
+
+## 前置需求
+- 已執行 `opencli twitter auth` 完成登入
+- 已安裝 Twitter adapter：`opencli adapter install twitter`
+
+## 參數
+- `topic`（可選）：指定搜尋主題，預設搜尋當前熱門趨勢
+
+## 步驟
+1. 執行 `opencli twitter trends --limit 20 --format json` 取得目前趨勢清單
+2. 執行 `opencli twitter search &quot;${topic}&quot; --limit 50 --format json` 搜尋相關推文
+3. 分析結果，找出與 AI／技術相關的話題
+4. 整理熱門度、互動數、關鍵人物資訊
+5. 產生 Markdown 格式報告，包含摘要、熱門推文、趨勢圖
+
+## 輸出格式
+產生一份 Markdown 報告，儲存為 `twitter-report-YYYY-MM-DD.md`，包含：
+- 執行摘要（3-5 句話）
+- 熱門話題 Top 10 表格
+- 值得關注的推文（附連結）
+- 建議行動項目" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">twitter-report</span></span>
+<span class="line"><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">搜尋 Twitter 趨勢並產生分析報告</span></span>
+<span class="line"><span style="color:#E06C75">trigger</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">/twitter-report</span></span>
+<span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75"># Twitter 趨勢報告</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 前置需求</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 已執行 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli twitter auth</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> 完成登入</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 已安裝 Twitter adapter：</span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli adapter install twitter</span><span style="color:#E5C07B">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 參數</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">topic</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">（可選）：指定搜尋主題，預設搜尋當前熱門趨勢</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 步驟</span></span>
+<span class="line"><span style="color:#E5C07B">1.</span><span style="color:#ABB2BF"> 執行 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli twitter trends --limit 20 --format json</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> 取得目前趨勢清單</span></span>
+<span class="line"><span style="color:#E5C07B">2.</span><span style="color:#ABB2BF"> 執行 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli twitter search "${topic}" --limit 50 --format json</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> 搜尋相關推文</span></span>
+<span class="line"><span style="color:#E5C07B">3.</span><span style="color:#ABB2BF"> 分析結果，找出與 AI／技術相關的話題</span></span>
+<span class="line"><span style="color:#E5C07B">4.</span><span style="color:#ABB2BF"> 整理熱門度、互動數、關鍵人物資訊</span></span>
+<span class="line"><span style="color:#E5C07B">5.</span><span style="color:#ABB2BF"> 產生 Markdown 格式報告，包含摘要、熱門推文、趨勢圖</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 輸出格式</span></span>
+<span class="line"><span style="color:#ABB2BF">產生一份 Markdown 報告，儲存為 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">twitter-report-YYYY-MM-DD.md</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">，包含：</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 執行摘要（3-5 句話）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 熱門話題 Top 10 表格</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 值得關注的推文（附連結）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 建議行動項目</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <p>Frontmatter 各欄位說明：</p> <ul> <li><code>name</code>：Skill 的唯一識別名稱，建議使用 kebab-case</li> <li><code>description</code>：一句話說明這個 Skill 做什麼，會顯示在 Claude 的工具列表中</li> <li><code>trigger</code>：觸發指令，以 <code>/</code> 開頭，使用者輸入此指令時啟動 Skill</li> </ul> <p>正文部分建議包含以下段落（非強制，但強烈推薦）：</p> <ul> <li><strong>前置需求</strong>：哪些 adapter 需要先登入？需要特殊權限嗎？</li> <li><strong>參數</strong>：Skill 接受哪些輸入？預設值是什麼？</li> <li><strong>步驟</strong>：詳細的執行流程，包含具體的 <code>opencli</code> 指令</li> <li><strong>輸出格式</strong>：最終產出物的格式、儲存位置</li> </ul> <div class="call tip"> <p> <strong>步驟寫得越具體越好。</strong>直接寫出完整的 <code>opencli</code> 指令，
+      包含 <code>--format json</code>、<code>--limit</code> 等參數，
+      Claude 才能準確執行，不會因為解讀模糊而產生變體行為。
+</p> </div>  <h2 id="skill-location">3. Skills 的存放位置</h2> <p>Claude Code 會從兩個位置載入 Skills，優先順序由下而上（專案層級覆蓋全域）：</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>層級</th> <th>路徑</th> <th>作用範圍</th> <th>適合放什麼</th> </tr> </thead> <tbody> <tr> <td><strong>全域</strong></td> <td><code>~/.claude/skills/</code></td> <td>所有專案</td> <td>通用工具、個人常用 workflow</td> </tr> <tr> <td><strong>專案</strong></td> <td><code>.claude/skills/</code></td> <td>僅此專案</td> <td>專案特定流程、團隊共享 workflow</td> </tr> </tbody> </table> </div> <p>
+Skills 需要透過 <code>CLAUDE.md</code> 顯式引入才會生效。
+    Claude Code 不會自動掃描所有 <code>.md</code> 檔案，
+    你必須在 <code>CLAUDE.md</code> 中用 <code>@</code> 語法告訴 Claude 哪些 Skills 可用：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>CLAUDE.md — 引入 Skills 範例</span> <button class="cb-copy" data-code="# CLAUDE.md 引入範例
+
+## 全域 Skills
+@~/.claude/skills/github-digest.md
+@~/.claude/skills/opencli-pack/twitter-report.md
+
+## 專案 Skills（相對路徑）
+@.claude/skills/deploy-check.md
+@.claude/skills/weekly-report.md" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#E06C75"># CLAUDE.md 引入範例</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 全域 Skills</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/github-digest.md</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/opencli-pack/twitter-report.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 專案 Skills（相對路徑）</span></span>
+<span class="line"><span style="color:#ABB2BF">@.claude/skills/deploy-check.md</span></span>
+<span class="line"><span style="color:#ABB2BF">@.claude/skills/weekly-report.md</span></span></code></pre> </div> </div>   <div class="call warn"> <p> <strong>引入即生效。</strong>只要在 CLAUDE.md 中加入 <code>@path/to/skill.md</code>，
+      Claude 在所有對話中都能使用該 Skill。
+      請確認引入的 Skill 內容安全可信，特別是從第三方來源下載的 Skill。
+</p> </div>  <h2 id="install-community-skills">4. 安裝社群 Skills</h2> <p>
+社群貢獻者和官方套件提供了許多現成的 Skills，可以直接下載使用。
+    安裝流程分三步：下載、檢查、引入。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>下載社群 Skills 到全域目錄</span> <button class="cb-copy" data-code="# 下載單一 skill 到全域目錄
+curl -o ~/.claude/skills/github-digest.md \
+  https://raw.githubusercontent.com/user/opencli-skills/main/github-digest.md
+
+# 使用 git clone 安裝整套 skill 包
+git clone https://github.com/user/opencli-skills ~/.claude/skills/opencli-pack
+
+# 安裝後確認內容（安全第一，先看再用）
+cat ~/.claude/skills/github-digest.md" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 下載單一 skill 到全域目錄</span></span>
+<span class="line"><span style="color:#61AFEF">curl</span><span style="color:#D19A66"> -o</span><span style="color:#98C379"> ~/.claude/skills/github-digest.md</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#98C379">  https://raw.githubusercontent.com/user/opencli-skills/main/github-digest.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 git clone 安裝整套 skill 包</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> clone</span><span style="color:#98C379"> https://github.com/user/opencli-skills</span><span style="color:#98C379"> ~/.claude/skills/opencli-pack</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 安裝後確認內容（安全第一，先看再用）</span></span>
+<span class="line"><span style="color:#61AFEF">cat</span><span style="color:#98C379"> ~/.claude/skills/github-digest.md</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>在專案中建立並使用 Skills</span> <button class="cb-copy" data-code="# 建立專案層級 skill 目錄（只對此專案生效）
+mkdir -p .claude/skills
+
+# 在 CLAUDE.md 中引入專案 skill
+echo &quot;@.claude/skills/my-skill.md&quot; >> CLAUDE.md
+
+# 引入全域 skill
+echo &quot;@~/.claude/skills/github-digest.md&quot; >> CLAUDE.md" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 建立專案層級 skill 目錄（只對此專案生效）</span></span>
+<span class="line"><span style="color:#61AFEF">mkdir</span><span style="color:#D19A66"> -p</span><span style="color:#98C379"> .claude/skills</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在 CLAUDE.md 中引入專案 skill</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "@.claude/skills/my-skill.md"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">CLAUDE.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 引入全域 skill</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "@~/.claude/skills/github-digest.md"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">CLAUDE.md</span></span></code></pre> </div> </div>   <div class="call warn"> <p> <strong>安全原則：先看後用。</strong>
+Skill 檔案本質上是給 Claude 的指令。惡意的 Skill 可能包含
+      「把資料傳送到外部伺服器」或「刪除本地檔案」之類的步驟。
+      在引入任何第三方 Skill 前，務必先用 <code>cat</code> 或文字編輯器閱讀全文，
+      確認步驟合理、OpenCLI 指令符合預期。
+</p> </div>  <h2 id="write-first-skill">5. 實戰：撰寫你的第一個 Skill</h2> <p>
+現在讓我們從零開始寫一個完整的 <code>github-trending-digest.md</code> Skill。
+    這個 Skill 會抓取 GitHub Trending 並產生每日技術摘要報告，是入門的絕佳範例：
+    流程清晰、有參數輸入、有錯誤處理、有明確的輸出格式。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>github-trending-digest.md — 完整 Skill 檔案</span> <button class="cb-copy" data-code="---
+name: github-trending-digest
+description: 抓取 GitHub Trending 並產生每日技術摘要報告
+trigger: /github-digest
+---
+
+# GitHub Trending 每日摘要
+
+## 前置需求
+- 已安裝 GitHub adapter：`opencli adapter install github`
+- 選擇性：已執行 `opencli github auth` 以提高 API 速率限制
+
+## 參數
+- `lang`（可選）：程式語言篩選，例如 `typescript`、`python`、`go`，預設為全語言
+- `since`（可選）：時間範圍，可選 `daily`、`weekly`、`monthly`，預設 `daily`
+
+## 步驟
+
+1. 執行以下指令取得趨勢清單：
+   `opencli github trending --lang &quot;${lang}&quot; --since &quot;${since:-daily}&quot; --limit 25 --format json`
+
+2. 對清單中每個 repo 抓取基本資訊（star 數、語言、簡介）：
+   `opencli github repo-info --repos-from-stdin --format json`
+
+3. 分析結果，依以下維度歸類：
+   - 新興框架與工具
+   - AI／ML 相關專案
+   - 開發者效率工具
+   - 值得注意的新星（< 1 週內暴增 500+ stars）
+
+4. 如果某個 repo 的 README 摘要不清楚，執行：
+   `opencli github readme --repo &quot;${owner}/${repo}&quot; --max-length 500`
+   取得更多描述，但每次執行最多查詢 5 個 repo，避免超出速率限制。
+
+5. 如果步驟 1 或 2 回傳錯誤（exit code 非 0），
+   立即停止並提示使用者：「GitHub adapter 連線失敗，請確認
+   `opencli adapter status github` 後重試。」
+
+## 輸出格式
+
+產生完整 Markdown 報告，格式如下：
+
+```markdown
+# GitHub Trending 摘要 — YYYY-MM-DD
+
+**語言篩選：** {lang 或「全語言」}
+**時間範圍：** {since}
+
+## 今日亮點（Top 5）
+| 名次 | Repo | Stars | 語言 | 簡介 |
+|------|------|-------|------|------|
+| 1    | ...  | ...   | ...  | ...  |
+
+## 分類速覽
+
+### AI／ML 專案
+- **repo-name**：簡短說明（本日新增 X stars）
+
+### 開發工具
+...
+
+## 本週值得追蹤
+列出 3-5 個本週成長最快的專案，附上一句話評論。
+
+## 資料來源
+- 抓取時間：{timestamp}
+- 總計分析：{count} 個 repo
+```
+
+將報告儲存到 `github-trending-YYYY-MM-DD.md`，並在對話中顯示摘要版本。" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">github-trending-digest</span></span>
+<span class="line"><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">抓取 GitHub Trending 並產生每日技術摘要報告</span></span>
+<span class="line"><span style="color:#E06C75">trigger</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">/github-digest</span></span>
+<span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75"># GitHub Trending 每日摘要</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 前置需求</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 已安裝 GitHub adapter：</span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli adapter install github</span><span style="color:#E5C07B">`</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 選擇性：已執行 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">opencli github auth</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> 以提高 API 速率限制</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 參數</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">lang</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">（可選）：程式語言篩選，例如 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">typescript</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">、</span><span style="color:#E5C07B">`</span><span style="color:#98C379">python</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">、</span><span style="color:#E5C07B">`</span><span style="color:#98C379">go</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">，預設為全語言</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">since</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">（可選）：時間範圍，可選 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">daily</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">、</span><span style="color:#E5C07B">`</span><span style="color:#98C379">weekly</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">、</span><span style="color:#E5C07B">`</span><span style="color:#98C379">monthly</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">，預設 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">daily</span><span style="color:#E5C07B">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 步驟</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">1.</span><span style="color:#ABB2BF"> 執行以下指令取得趨勢清單：</span></span>
+<span class="line"><span style="color:#E5C07B">   `</span><span style="color:#98C379">opencli github trending --lang "${lang}" --since "${since:-daily}" --limit 25 --format json</span><span style="color:#E5C07B">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">2.</span><span style="color:#ABB2BF"> 對清單中每個 repo 抓取基本資訊（star 數、語言、簡介）：</span></span>
+<span class="line"><span style="color:#E5C07B">   `</span><span style="color:#98C379">opencli github repo-info --repos-from-stdin --format json</span><span style="color:#E5C07B">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">3.</span><span style="color:#ABB2BF"> 分析結果，依以下維度歸類：</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#ABB2BF"> 新興框架與工具</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#ABB2BF"> AI／ML 相關專案</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#ABB2BF"> 開發者效率工具</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#ABB2BF"> 值得注意的新星（&#x3C; 1 週內暴增 500+ stars）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">4.</span><span style="color:#ABB2BF"> 如果某個 repo 的 README 摘要不清楚，執行：</span></span>
+<span class="line"><span style="color:#E5C07B">   `</span><span style="color:#98C379">opencli github readme --repo "${owner}/${repo}" --max-length 500</span><span style="color:#E5C07B">`</span></span>
+<span class="line"><span style="color:#ABB2BF">   取得更多描述，但每次執行最多查詢 5 個 repo，避免超出速率限制。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">5.</span><span style="color:#ABB2BF"> 如果步驟 1 或 2 回傳錯誤（exit code 非 0），</span></span>
+<span class="line"><span style="color:#ABB2BF">   立即停止並提示使用者：「GitHub adapter 連線失敗，請確認</span></span>
+<span class="line"><span style="color:#E5C07B">   `</span><span style="color:#98C379">opencli adapter status github</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> 後重試。」</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 輸出格式</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">產生完整 Markdown 報告，格式如下：</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">```markdown</span></span>
+<span class="line"><span style="color:#E06C75"># GitHub Trending 摘要 — YYYY-MM-DD</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D19A66">**語言篩選：**</span><span style="color:#ABB2BF"> {lang 或「全語言」}</span></span>
+<span class="line"><span style="color:#D19A66">**時間範圍：**</span><span style="color:#ABB2BF"> {since}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 今日亮點（Top 5）</span></span>
+<span class="line"><span style="color:#ABB2BF">| 名次 | Repo | Stars | 語言 | 簡介 |</span></span>
+<span class="line"><span style="color:#ABB2BF">|------|------|-------|------|------|</span></span>
+<span class="line"><span style="color:#ABB2BF">| 1    | ...  | ...   | ...  | ...  |</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 分類速覽</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">### AI／ML 專案</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **repo-name**</span><span style="color:#ABB2BF">：簡短說明（本日新增 X stars）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">### 開發工具</span></span>
+<span class="line"><span style="color:#ABB2BF">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 本週值得追蹤</span></span>
+<span class="line"><span style="color:#ABB2BF">列出 3-5 個本週成長最快的專案，附上一句話評論。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 資料來源</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 抓取時間：{timestamp}</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> 總計分析：{count} 個 repo</span></span>
+<span class="line"><span style="color:#ABB2BF">```</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">將報告儲存到 </span><span style="color:#E5C07B">`</span><span style="color:#98C379">github-trending-YYYY-MM-DD.md</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF">，並在對話中顯示摘要版本。</span></span></code></pre> </div> </div>   <p>這個 Skill 示範了幾個重要的設計模式：</p> <ul> <li> <strong>參數設計</strong>：使用 shell 預設值語法設定參數，讓參數可選。
+      Claude 在執行時會詢問或從上下文推斷參數值。
+</li> <li> <strong>速率限制保護</strong>：步驟 4 明確限制「最多查詢 5 個 repo」，
+      避免因過度呼叫 API 而被封鎖。
+</li> <li> <strong>錯誤處理</strong>：步驟 5 說明失敗時的處置方式，
+      讓 Claude 知道遇到錯誤不要默默繼續，而是回報給使用者。
+</li> <li> <strong>輸出格式</strong>：用 Markdown 範例明確定義報告結構，
+      確保每次執行的輸出格式一致，方便後續處理或比較。
+</li> </ul> <div class="call tip"> <p> <strong>從真實需求出發。</strong>寫 Skill 的最好時機是：
+      你剛剛手動完成一個重複性任務，並且覺得「下次如果能一鍵完成就好了」。
+      把你剛才做的步驟記錄下來，稍微整理成 Skill 格式，就是一個有用的 Skill。
+</p> </div>  <h2 id="manage-skills">6. 管理已安裝的 Skills</h2> <p>隨著 Skills 數量增加，你需要一套管理策略。以下是常用的管理指令和工作流程：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>列出與搜尋 Skills</span> <button class="cb-copy" data-code="# 列出全域 skills
+ls ~/.claude/skills/
+
+# 列出專案 skills
+ls .claude/skills/
+
+# 查看某個 skill 的詳細內容
+cat ~/.claude/skills/github-digest.md
+
+# 搜尋包含特定 adapter 的 skills（Linux/macOS）
+grep -rl &quot;opencli github&quot; ~/.claude/skills/" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出全域 skills</span></span>
+<span class="line"><span style="color:#61AFEF">ls</span><span style="color:#98C379"> ~/.claude/skills/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 列出專案 skills</span></span>
+<span class="line"><span style="color:#61AFEF">ls</span><span style="color:#98C379"> .claude/skills/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看某個 skill 的詳細內容</span></span>
+<span class="line"><span style="color:#61AFEF">cat</span><span style="color:#98C379"> ~/.claude/skills/github-digest.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋包含特定 adapter 的 skills（Linux/macOS）</span></span>
+<span class="line"><span style="color:#61AFEF">grep</span><span style="color:#D19A66"> -rl</span><span style="color:#98C379"> "opencli github"</span><span style="color:#98C379"> ~/.claude/skills/</span></span></code></pre> </div> </div>   <p>Skills 的日常管理操作：</p> <ul> <li> <strong>更新 Skill</strong>：直接用文字編輯器修改 <code>.md</code> 檔案，
+      下次呼叫時立即生效，不需重啟 Claude Code。
+</li> <li> <strong>停用 Skill</strong>：從 <code>CLAUDE.md</code> 移除對應的 <code>@import</code> 那一行即可，
+      Skill 檔案本身可以保留備用。
+</li> <li> <strong>重新命名</strong>：修改 frontmatter 的 <code>trigger</code> 欄位，
+      同時更新 CLAUDE.md 中的路徑引用與描述。
+</li> <li> <strong>除錯</strong>：如果 Skill 執行結果不如預期，先確認 opencli 指令本身是否正常，
+      再檢查步驟說明是否夠明確，必要時加入「若此步驟失敗，請輸出錯誤訊息並停止」的說明。
+</li> </ul> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>把 Skills 加入版本控制</span> <button class="cb-copy" data-code="# 把專案 skills 加入 git 版本控制
+git add .claude/skills/
+git commit -m &quot;feat: add github-trending-digest skill&quot;
+
+# 建立 .gitignore 排除含有敏感資訊的 skill（如含有 token）
+echo &quot;.claude/skills/private-*.md&quot; >> .gitignore
+
+# 全域 skills 不加入專案 git，改用獨立的備份 repo
+cd ~/.claude/skills
+git init
+git remote add origin git@github.com:yourname/my-claude-skills.git
+git push -u origin main" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 把專案 skills 加入 git 版本控制</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> add</span><span style="color:#98C379"> .claude/skills/</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> commit</span><span style="color:#D19A66"> -m</span><span style="color:#98C379"> "feat: add github-trending-digest skill"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 建立 .gitignore 排除含有敏感資訊的 skill（如含有 token）</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ".claude/skills/private-*.md"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">.gitignore</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 全域 skills 不加入專案 git，改用獨立的備份 repo</span></span>
+<span class="line"><span style="color:#56B6C2">cd</span><span style="color:#98C379"> ~/.claude/skills</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> init</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> remote</span><span style="color:#98C379"> add</span><span style="color:#98C379"> origin</span><span style="color:#98C379"> git@github.com:yourname/my-claude-skills.git</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> push</span><span style="color:#D19A66"> -u</span><span style="color:#98C379"> origin</span><span style="color:#98C379"> main</span></span></code></pre> </div> </div>   <div class="call info"> <p> <strong>團隊共享建議：</strong>
+把 <code>.claude/skills/</code> 目錄加入專案的 git repo，
+      所有成員 clone 後就能立即使用相同的 Skills，
+      確保團隊工作流程的一致性。同時在 CLAUDE.md 中加入 Skills 的引入，
+      讓每個人打開專案就能直接使用，不需要額外設定。
+</p> </div>  <h2 id="best-practices">7. Skills 的最佳實踐</h2> <p>設計良好的 Skill 具備以下特質：</p> <h3>單一職責原則</h3> <p>
+一個 Skill 只做一件事。不要把「抓取 GitHub Trending」和「發 Slack 通知」寫在同一個 Skill 裡，
+    拆成兩個 Skill 各司其職，需要時再組合使用。
+    這樣的好處是個別 Skill 容易測試、容易修改，出錯時也更容易定位問題。
+</p> <h3>明確的前置需求</h3> <p>
+在 Skill 開頭的「前置需求」段落，寫清楚需要哪些 adapter 已登入、
+    需要哪些環境變數、需要什麼權限。
+    好的前置需求說明讓 Skill 在任何機器上都能順利執行，
+    也讓接手的同事不用猜測環境設定。
+</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>實踐項目</th> <th>不好的寫法</th> <th>好的寫法</th> </tr> </thead> <tbody> <tr> <td>OpenCLI 指令</td> <td><code>opencli github trending</code></td> <td><code>opencli github trending --limit 25 --format json</code></td> </tr> <tr> <td>錯誤處理</td> <td>（沒有提及）</td> <td>「若指令失敗，提示用戶執行 adapter status 後重試」</td> </tr> <tr> <td>輸出格式</td> <td>「產生一份報告」</td> <td>提供完整的 Markdown 模板，含表格欄位定義</td> </tr> <tr> <td>參數設計</td> <td>無參數，寫死所有值</td> <td>關鍵值設為參數，提供合理預設值</td> </tr> <tr> <td>速率限制</td> <td>無限制呼叫</td> <td>明確指定最大呼叫次數或加入延遲說明</td> </tr> </tbody> </table> </div> <h3>加上 --limit 與 --format json</h3> <p>
+幾乎所有 OpenCLI 指令都支援 <code>--limit</code> 控制回傳筆數，
+    以及 <code>--format json</code> 輸出結構化資料。
+    在 Skill 步驟中固定加上這兩個參數，讓 Claude 能穩定地解析輸出、
+    避免因資料量過大造成處理超時。
+</p> <h3>錯誤處理說明</h3> <p>
+在關鍵步驟後加入錯誤處理說明，例如：
+    「如果此步驟回傳錯誤（exit code 非 0），立即停止並提示用戶執行 <em>XXX</em>。」
+    Claude 不會自動處理錯誤，需要 Skill 明確告知遇到問題時的行為——
+    否則 Claude 可能會帶著錯誤結果繼續執行，產生無意義的輸出。
+</p>  <h2 id="official-skills">8. OpenCLI 官方 Skills 套件</h2> <p>
+OpenCLI 官方維護了一套精選 Skills，涵蓋最常見的自動化場景。
+    這些 Skills 經過測試、文件完善、定期更新，是快速上手的最佳起點。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>官方 Skills 目錄結構</span> <button class="cb-copy" data-code="# 官方 skills 分類結構
+~/.claude/skills/official/
+├── social/                    # 社群監控類
+│   ├── twitter-monitor.md     # Twitter 趨勢監控
+│   ├── reddit-digest.md       # Reddit 熱門摘要
+│   └── hn-daily.md            # Hacker News 每日精選
+│
+├── devtools/                  # 開發者工具類
+│   ├── github-digest.md       # GitHub Trending 摘要
+│   ├── pr-review-helper.md    # PR 審查輔助
+│   └── release-watcher.md     # 新版本釋出監控
+│
+└── content/                   # 內容聚合類
+    ├── rss-reader.md          # RSS 訂閱摘要
+    ├── newsletter-digest.md   # Newsletter 聚合
+    └── arxiv-daily.md         # arXiv 論文每日精選" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 官方 skills 分類結構</span></span>
+<span class="line"><span style="color:#ABB2BF">~/.claude/skills/official/</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> social/</span><span style="color:#7F848E;font-style:italic">                    # 社群監控類</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> twitter-monitor.md</span><span style="color:#7F848E;font-style:italic">     # Twitter 趨勢監控</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> reddit-digest.md</span><span style="color:#7F848E;font-style:italic">       # Reddit 熱門摘要</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   └──</span><span style="color:#98C379"> hn-daily.md</span><span style="color:#7F848E;font-style:italic">            # Hacker News 每日精選</span></span>
+<span class="line"><span style="color:#61AFEF">│</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> devtools/</span><span style="color:#7F848E;font-style:italic">                  # 開發者工具類</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> github-digest.md</span><span style="color:#7F848E;font-style:italic">       # GitHub Trending 摘要</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> pr-review-helper.md</span><span style="color:#7F848E;font-style:italic">    # PR 審查輔助</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   └──</span><span style="color:#98C379"> release-watcher.md</span><span style="color:#7F848E;font-style:italic">     # 新版本釋出監控</span></span>
+<span class="line"><span style="color:#61AFEF">│</span></span>
+<span class="line"><span style="color:#61AFEF">└──</span><span style="color:#98C379"> content/</span><span style="color:#7F848E;font-style:italic">                   # 內容聚合類</span></span>
+<span class="line"><span style="color:#61AFEF">    ├──</span><span style="color:#98C379"> rss-reader.md</span><span style="color:#7F848E;font-style:italic">          # RSS 訂閱摘要</span></span>
+<span class="line"><span style="color:#61AFEF">    ├──</span><span style="color:#98C379"> newsletter-digest.md</span><span style="color:#7F848E;font-style:italic">   # Newsletter 聚合</span></span>
+<span class="line"><span style="color:#61AFEF">    └──</span><span style="color:#98C379"> arxiv-daily.md</span><span style="color:#7F848E;font-style:italic">         # arXiv 論文每日精選</span></span></code></pre> </div> </div>   <p>三大分類說明：</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>分類</th> <th>代表 Skills</th> <th>適用場景</th> </tr> </thead> <tbody> <tr> <td><strong>社群監控類</strong></td> <td>twitter-monitor、reddit-digest、hn-daily</td> <td>品牌監聽、競品追蹤、話題分析</td> </tr> <tr> <td><strong>開發者工具類</strong></td> <td>github-digest、pr-review-helper、release-watcher</td> <td>技術動態追蹤、開源專案監控</td> </tr> <tr> <td><strong>內容聚合類</strong></td> <td>rss-reader、newsletter-digest、arxiv-daily</td> <td>資訊整合、知識管理、研究追蹤</td> </tr> </tbody> </table> </div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>安裝官方 Skills 套件</span> <button class="cb-copy" data-code="# 安裝 OpenCLI 官方 skills 套件（完整版）
+git clone https://github.com/opencli/skills-official ~/.claude/skills/official
+
+# 只安裝特定分類（社群監控）
+mkdir -p ~/.claude/skills/official-social
+curl -o ~/.claude/skills/official-social/twitter-monitor.md \
+  https://raw.githubusercontent.com/opencli/skills-official/main/social/twitter-monitor.md
+curl -o ~/.claude/skills/official-social/reddit-digest.md \
+  https://raw.githubusercontent.com/opencli/skills-official/main/social/reddit-digest.md
+
+# 更新至最新版本
+cd ~/.claude/skills/official &amp;&amp; git pull" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 安裝 OpenCLI 官方 skills 套件（完整版）</span></span>
+<span class="line"><span style="color:#61AFEF">git</span><span style="color:#98C379"> clone</span><span style="color:#98C379"> https://github.com/opencli/skills-official</span><span style="color:#98C379"> ~/.claude/skills/official</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只安裝特定分類（社群監控）</span></span>
+<span class="line"><span style="color:#61AFEF">mkdir</span><span style="color:#D19A66"> -p</span><span style="color:#98C379"> ~/.claude/skills/official-social</span></span>
+<span class="line"><span style="color:#61AFEF">curl</span><span style="color:#D19A66"> -o</span><span style="color:#98C379"> ~/.claude/skills/official-social/twitter-monitor.md</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#98C379">  https://raw.githubusercontent.com/opencli/skills-official/main/social/twitter-monitor.md</span></span>
+<span class="line"><span style="color:#61AFEF">curl</span><span style="color:#D19A66"> -o</span><span style="color:#98C379"> ~/.claude/skills/official-social/reddit-digest.md</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#98C379">  https://raw.githubusercontent.com/opencli/skills-official/main/social/reddit-digest.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 更新至最新版本</span></span>
+<span class="line"><span style="color:#56B6C2">cd</span><span style="color:#98C379"> ~/.claude/skills/official</span><span style="color:#ABB2BF"> &#x26;&#x26; </span><span style="color:#61AFEF">git</span><span style="color:#98C379"> pull</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>CLAUDE.md — 引入官方 Skills</span> <button class="cb-copy" data-code="# 在 CLAUDE.md 中引入官方 skills
+
+## 社群監控
+@~/.claude/skills/official/social/twitter-monitor.md
+@~/.claude/skills/official/social/hn-daily.md
+
+## 開發工具
+@~/.claude/skills/official/devtools/github-digest.md
+@~/.claude/skills/official/devtools/release-watcher.md" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#E06C75"># 在 CLAUDE.md 中引入官方 skills</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 社群監控</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/official/social/twitter-monitor.md</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/official/social/hn-daily.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 開發工具</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/official/devtools/github-digest.md</span></span>
+<span class="line"><span style="color:#ABB2BF">@~/.claude/skills/official/devtools/release-watcher.md</span></span></code></pre> </div> </div>   <div class="call tip"> <p> <strong>從官方 Skills 學習。</strong>
+即使你有自訂需求，也建議先閱讀官方 Skills 的寫法。
+      官方 Skills 示範了成熟的步驟設計、錯誤處理模式，
+      以及如何與不同 adapter 的特性相配合——
+      這些都是撰寫自己的 Skill 時很好的參考範本。
+</p> </div>  <h2 id="summary">本章小結</h2> <p>本章涵蓋了 Skills 從概念到實戰的完整知識：</p> <ul> <li><strong>Skills 的本質</strong>是觸發條件 + 步驟說明 + OpenCLI 工具調用，讓重複性工作標準化、可共享</li> <li><strong>檔案結構</strong>分為 YAML frontmatter（metadata）和 Markdown 正文（工作流程說明），撰寫門檻極低</li> <li><strong>存放位置</strong>分全域（<code>~/.claude/skills/</code>）和專案（<code>.claude/skills/</code>），都需在 CLAUDE.md 引入才生效</li> <li><strong>安裝社群 Skills</strong>要遵循「先看後用」的安全原則，確認內容後再引入</li> <li><strong>撰寫 Skill</strong>的關鍵是單一職責、明確前置需求、加入 <code>--limit</code> 和 <code>--format json</code>、說明錯誤處理</li> <li><strong>版本控制</strong>專案 Skills 讓團隊共享工作流程，全域 Skills 可用獨立 git repo 備份</li> <li><strong>官方 Skills 套件</strong>提供三大分類的現成工作流程，也是學習 Skill 設計的優良範本</li> </ul> <p>
+下一章我們將進入<strong>自動化任務實戰</strong>，
+    把多個 Skills 組合起來，搭配排程、Webhook 等機制，
+    打造真正無需人工介入的全自動化 pipeline。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span> </a> <a href="/opencli/ch14-automation" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>自動化任務實戰</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

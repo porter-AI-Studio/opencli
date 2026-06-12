@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OpenCLI vs Playwright CLI | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="深度比較 OpenCLI 與微軟 @playwright/cli 的設計哲學、Snapshot 驅動工作流、AI Agent 整合策略與工具選型指南。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 19 章 · Part 6：比較與實戰</span> <h1>OpenCLI vs Playwright CLI</h1> <p class="cdesc">
+微軟在 2026 年推出 <code>@playwright/cli</code>，同樣定位為「給 AI Coding Agent 使用的
+    CLI 瀏覽器工具」。兩者設計理念相近，但核心哲學截然不同——
+    一個說「我要什麼」，另一個說「我看到什麼、我要點哪裡」。
+</p>  <h2>19.1 兩個工具的定位</h2> <p>
+先看最能體現兩者差異的一個對比：同樣是「取得 GitHub 熱門 TypeScript 專案」：
+</p> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;"> <div style="border: 2px solid var(--accent); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.75rem 0; color: var(--accent);">OpenCLI</h4> <code style="font-size: 0.95rem;">opencli github trending --language typescript</code> <p style="margin: 0.75rem 0 0 0; font-size: 0.88rem; color: var(--fg2);">
+告訴工具「我要什麼」。Adapter 封裝了平台知識，無需了解頁面結構。
+</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.75rem 0;">Playwright CLI</h4> <code style="font-size: 0.88rem;">open → snapshot → select e3 "TypeScript" → snapshot → eval e5</code> <p style="margin: 0.75rem 0 0 0; font-size: 0.88rem; color: var(--fg2);">
+告訴工具「我看到什麼、我要怎麼做」。透過 snapshot 理解頁面，再根據元素 ref 操作。
+</p> </div> </div> <p>
+這個差異反映了兩者的根本設計取向：
+</p> <ul> <li><strong>OpenCLI</strong>：語義優先。Adapter 是知識庫，封裝了平台的操作邏輯，使用者只需表達意圖。</li> <li><strong>Playwright CLI</strong>：通用優先。任何網站都能操作，但需要先「看懂頁面」（snapshot），再根據視覺結構互動。</li> </ul>  <h2>19.2 安裝方式</h2> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI</span> <button class="cb-copy" data-code="npm install -g opencli
+opencli --version" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> install</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> opencli</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --version</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright CLI（@playwright/cli）</span> <button class="cb-copy" data-code="npm install -g @playwright/cli@latest
+playwright-cli --version
+
+# 安裝瀏覽器引擎（首次需要）
+npx playwright install" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> install</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> @playwright/cli@latest</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> --version</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 安裝瀏覽器引擎（首次需要）</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> playwright</span><span style="color:#98C379"> install</span></span></code></pre> </div> </div>   </div> </div> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>Playwright CLI 需要額外安裝瀏覽器引擎</strong> <p> <code>npx playwright install</code> 會下載 Chromium / Firefox / WebKit 等引擎（約 200–500 MB）。
+        OpenCLI 連線至已在執行中的 Chrome，不需要額外下載瀏覽器。
+</p> </div> </div>  <h2>19.3 Playwright CLI 的核心機制：Snapshot 驅動</h2> <p>
+Playwright CLI 最核心的設計是 <strong>Snapshot 驅動</strong>：
+    每次操作前先呼叫 <code>snapshot</code>，工具掃描頁面並回傳結構化的元素清單，
+    每個可互動元素都有一個臨時 ref（<code>e1</code>、<code>e2</code>...）。
+    後續操作都基於這些 ref，而非 CSS selector。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Snapshot 驅動工作流程</span> <button class="cb-copy" data-code="# Step 1：打開頁面
+playwright-cli open https://github.com/trending
+
+# Step 2：取得 snapshot（回傳結構化元素列表，每個元素有 ref）
+playwright-cli snapshot
+# 輸出範例（截取）:
+# - e1 [link] &quot;Explore GitHub&quot; href=/explore
+# - e3 [select] language selector
+# - e5 [link] &quot;microsoft/typescript&quot; href=/microsoft/typescript
+# - e6 [text] &quot;⭐ 98,432 stars this week&quot;
+# ...
+
+# Step 3：基於 ref 操作（不需要寫 CSS selector！）
+playwright-cli select e3 &quot;TypeScript&quot;    # 切換語言篩選
+playwright-cli snapshot                  # 取得更新後列表
+playwright-cli eval &quot;el => el.textContent&quot; e5  # 讀取 repo 名稱" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Step 1：打開頁面</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://github.com/trending</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 2：取得 snapshot（回傳結構化元素列表，每個元素有 ref）</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出範例（截取）:</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - e1 [link] "Explore GitHub" href=/explore</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - e3 [select] language selector</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - e5 [link] "microsoft/typescript" href=/microsoft/typescript</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - e6 [text] "⭐ 98,432 stars this week"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 3：基於 ref 操作（不需要寫 CSS selector！）</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> select</span><span style="color:#98C379"> e3</span><span style="color:#98C379"> "TypeScript"</span><span style="color:#7F848E;font-style:italic">    # 切換語言篩選</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span><span style="color:#7F848E;font-style:italic">                  # 取得更新後列表</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "el => el.textContent"</span><span style="color:#98C379"> e5</span><span style="color:#7F848E;font-style:italic">  # 讀取 repo 名稱</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>為什麼 Snapshot 比 CSS Selector 更適合 AI Agent？</strong> <p>
+CSS selector 會隨版本更新而失效（如 <code>data-testid</code> 名稱常改變）。
+        Snapshot ref 是基於頁面當前的語意結構動態產生，
+        即使 class 名稱改變，只要頁面語意不變，ref 仍然可用。
+        更重要的是，AI Agent 不需要學習 CSS 就能理解「e5 是登入按鈕」。
+</p> </div> </div>  <h2>19.4 核心工作流程對比</h2> <h3>已知平台 vs 任意網站</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — 已知平台，語義直達</span> <button class="cb-copy" data-code="# 已知平台：語義指令，1 行搞定
+opencli twitter trending --limit 10
+opencli github trending --language typescript
+opencli youtube search &quot;Astro framework&quot; --limit 5" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 已知平台：語義指令，1 行搞定</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Astro framework"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright CLI — 任意網站，snapshot 探索</span> <button class="cb-copy" data-code="# 任意網站：snapshot → ref → 操作
+playwright-cli open https://twitter.com/explore
+playwright-cli snapshot          # 取得 e1, e2, e3... 元素引用
+playwright-cli click e7          # 點擊 Trending 區塊
+playwright-cli snapshot          # 取得新狀態
+playwright-cli eval &quot;document.querySelectorAll('[data-testid=trend]').length&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 任意網站：snapshot → ref → 操作</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://twitter.com/explore</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span><span style="color:#7F848E;font-style:italic">          # 取得 e1, e2, e3... 元素引用</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e7</span><span style="color:#7F848E;font-style:italic">          # 點擊 Trending 區塊</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span><span style="color:#7F848E;font-style:italic">          # 取得新狀態</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('[data-testid=trend]').length"</span></span></code></pre> </div> </div>   </div> </div> <h3>表單互動對比</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI browser 模式</span> <button class="cb-copy" data-code="# OpenCLI 的 browser 模式（任意網站）
+opencli browser open https://example.com/login
+opencli browser find &quot;input[name=email]&quot;
+opencli browser type &quot;N1&quot; &quot;user@example.com&quot;
+opencli browser type &quot;N2&quot; &quot;password123&quot;
+opencli browser click &quot;button[type=submit]&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI 的 browser 模式（任意網站）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://example.com/login</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> find</span><span style="color:#98C379"> "input[name=email]"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "N1"</span><span style="color:#98C379"> "user@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "N2"</span><span style="color:#98C379"> "password123"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "button[type=submit]"</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright CLI snapshot-ref 方式</span> <button class="cb-copy" data-code="# Playwright CLI 的 snapshot-ref 方式
+playwright-cli open https://example.com/login
+playwright-cli snapshot
+# → e1 [input] email, e2 [input] password, e3 [button] Login
+playwright-cli fill e1 &quot;user@example.com&quot;
+playwright-cli fill e2 &quot;password123&quot; --submit  # --submit 自動按 Enter" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Playwright CLI 的 snapshot-ref 方式</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://example.com/login</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># → e1 [input] email, e2 [input] password, e3 [button] Login</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> e1</span><span style="color:#98C379"> "user@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> e2</span><span style="color:#98C379"> "password123"</span><span style="color:#D19A66"> --submit</span><span style="color:#7F848E;font-style:italic">  # --submit 自動按 Enter</span></span></code></pre> </div> </div>   </div> </div>  <h2>19.5 Playwright CLI 的獨特功能</h2> <h3>自動生成 TypeScript 程式碼</h3> <p>
+Playwright CLI 的殺手級功能：<strong>每個操作自動輸出對應的 Playwright TypeScript 程式碼</strong>。
+    你可以用 CLI 探索頁面，完成後把生成的程式碼直接放進 Playwright 測試套件。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>操作 → 程式碼自動生成</span> <button class="cb-copy" data-code="# 每個 playwright-cli 操作都自動輸出對應的 TypeScript 程式碼
+playwright-cli click e3
+
+# 輸出：
+# Ran Playwright code:
+# ─────────────────────────────────────
+# await page.getByRole('link', { name: 'TypeScript' }).click();
+# ─────────────────────────────────────
+# Generated code saved to: .playwright-cli/actions.ts" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 每個 playwright-cli 操作都自動輸出對應的 TypeScript 程式碼</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Ran Playwright code:</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ─────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># await page.getByRole('link', { name: 'TypeScript' }).click();</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ─────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Generated code saved to: .playwright-cli/actions.ts</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>最佳使用場景</strong> <p>
+需要為新頁面編寫 Playwright E2E 測試時，先用 <code>playwright-cli</code> 互動式探索，
+        收集所有 ref 操作後，生成的 TypeScript 就是 90% 完成的測試腳本。
+        比手寫選擇器快 3–5 倍。
+</p> </div> </div> <h3>網路 Mock 與路由攔截</h3> <p>
+Playwright CLI 支援完整的請求攔截，OpenCLI 目前無此對應功能：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>網路 Mock（Playwright CLI 獨有）</span> <button class="cb-copy" data-code="# Playwright CLI 支援完整的網路 Mock（OpenCLI 無此功能）
+playwright-cli route &quot;https://api.example.com/**&quot; \
+  --body='{&quot;mock&quot;:true,&quot;data&quot;:[]}' \
+  --content-type=application/json
+
+# 模擬 404
+playwright-cli route &quot;**/avatar.png&quot; --status=404
+
+# 移除所有 Mock
+playwright-cli unroute" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Playwright CLI 支援完整的網路 Mock（OpenCLI 無此功能）</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> route</span><span style="color:#98C379"> "https://api.example.com/**"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --body=</span><span style="color:#98C379">'{"mock":true,"data":[]}'</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --content-type=application/json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 模擬 404</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> route</span><span style="color:#98C379"> "**/avatar.png"</span><span style="color:#D19A66"> --status=404</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 移除所有 Mock</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> unroute</span></span></code></pre> </div> </div>   <h3>Session 管理</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — Profile 模式</span> <button class="cb-copy" data-code="# OpenCLI：profile 概念，自動保存登入狀態
+opencli browser start --profile=work
+# 之後所有指令自動沿用 work profile 的 cookies/localStorage" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI：profile 概念，自動保存登入狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> start</span><span style="color:#D19A66"> --profile=work</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 之後所有指令自動沿用 work profile 的 cookies/localStorage</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright CLI — 命名 Session</span> <button class="cb-copy" data-code="# Playwright CLI：命名 session，獨立隔離
+playwright-cli -s=github open https://github.com/login
+playwright-cli -s=github fill e1 &quot;username&quot;
+playwright-cli -s=github fill e2 &quot;password&quot;
+playwright-cli -s=github click e3
+
+# 保存 / 載入 session 狀態
+playwright-cli -s=github state-save github-auth.json
+playwright-cli -s=github state-load github-auth.json  # 之後重用" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Playwright CLI：命名 session，獨立隔離</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://github.com/login</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> e1</span><span style="color:#98C379"> "username"</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> e2</span><span style="color:#98C379"> "password"</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 保存 / 載入 session 狀態</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> state-save</span><span style="color:#98C379"> github-auth.json</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#D19A66"> -s=github</span><span style="color:#98C379"> state-load</span><span style="color:#98C379"> github-auth.json</span><span style="color:#7F848E;font-style:italic">  # 之後重用</span></span></code></pre> </div> </div>   </div> </div>  <h2>19.6 AI Agent 整合比較</h2> <p>
+兩個工具都聲稱為 AI Coding Agent 設計，但整合方式不同：
+</p> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — 語義工具調用</span> <button class="cb-copy" data-code="# Claude Code 呼叫 OpenCLI skill（語義指令）
+# claude code 的 skill 描述：
+# &quot;搜尋 GitHub 熱門 TypeScript 專案&quot;
+# → Claude 直接執行：
+opencli github trending --language typescript --limit 10 --json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Claude Code 呼叫 OpenCLI skill（語義指令）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># claude code 的 skill 描述：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># "搜尋 GitHub 熱門 TypeScript 專案"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># → Claude 直接執行：</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --json</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright CLI — Snapshot 感知循環</span> <button class="cb-copy" data-code="# Claude Code 呼叫 playwright-cli skill（snapshot 驅動）
+# claude code 的 skill 描述：
+# &quot;在任意網站上操作表單或擷取資料&quot;
+# → Claude 先 snapshot 理解頁面，再根據 ref 操作：
+playwright-cli open https://some-internal-tool.com
+playwright-cli snapshot
+# Claude 讀取 snapshot 輸出，決定下一步操作
+playwright-cli click e12
+playwright-cli fill e15 &quot;query text&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Claude Code 呼叫 playwright-cli skill（snapshot 驅動）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># claude code 的 skill 描述：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># "在任意網站上操作表單或擷取資料"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># → Claude 先 snapshot 理解頁面，再根據 ref 操作：</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://some-internal-tool.com</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Claude 讀取 snapshot 輸出，決定下一步操作</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e12</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> e15</span><span style="color:#98C379"> "query text"</span></span></code></pre> </div> </div>   </div> </div> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>AI Agent 整合維度</th> <th>OpenCLI</th> <th>Playwright CLI</th> </tr> </thead> <tbody> <tr> <td><strong>指令可預測性</strong></td> <td>高（語義指令固定）</td> <td>中（需先 snapshot 才知道 ref）</td> </tr> <tr> <td><strong>Token 消耗</strong></td> <td>極低（1 行語義指令）</td> <td>低（snapshot 比 accessibility tree 省）</td> </tr> <tr> <td><strong>通用性</strong></td> <td>受限於 Adapter 支援的平台</td> <td>任何網站均可操作</td> </tr> <tr> <td><strong>Agent 決策複雜度</strong></td> <td>低（知道指令名稱即可）</td> <td>中（需閱讀 snapshot 決定 ref）</td> </tr> <tr> <td><strong>輸出結構化程度</strong></td> <td>JSON / CSV（由 Adapter 定義）</td> <td>文字 + 自動生成 TS 程式碼</td> </tr> <tr> <td><strong>Skills 安裝</strong></td> <td><code>opencli skills install</code></td> <td><code>playwright-cli install --skills</code></td> </tr> </tbody> </table> </div>  <h2>19.7 核心功能對比表</h2> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>功能</th> <th>OpenCLI</th> <th>Playwright CLI</th> </tr> </thead> <tbody> <tr> <td><strong>元素定位</strong></td> <td>Adapter 封裝（零選擇器）</td> <td>Snapshot ref（e1, e2...）</td> </tr> <tr> <td><strong>支援的網站</strong></td> <td>需要 Adapter（80+ 內建）</td> <td>任意網站</td> </tr> <tr> <td><strong>自動生成程式碼</strong></td> <td>❌</td> <td>✅ TypeScript</td> </tr> <tr> <td><strong>網路 Mock</strong></td> <td>❌</td> <td>✅ route 指令</td> </tr> <tr> <td><strong>截圖 / PDF</strong></td> <td>基本截圖</td> <td>✅ 進階（含元素截圖、video）</td> </tr> <tr> <td><strong>多瀏覽器支援</strong></td> <td>Chrome（連線至現有實例）</td> <td>Chromium / Firefox / WebKit / Edge</td> </tr> <tr> <td><strong>Session 並行</strong></td> <td>Profile 模式</td> <td><code>-s=name</code> 命名 session</td> </tr> <tr> <td><strong>Tracing / 追蹤</strong></td> <td>❌</td> <td>✅ tracing-start / stop</td> </tr> <tr> <td><strong>Custom Adapter</strong></td> <td>✅（TypeScript SDK）</td> <td>❌（透過 run-code 執行 JS）</td> </tr> <tr> <td><strong>冷啟動時間</strong></td> <td>~50–200 ms（連線至現有 Chrome）</td> <td>~1–2 秒（啟動 Chromium 實例）</td> </tr> </tbody> </table> </div>  <h2>19.8 工具選擇決策樹</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI vs Playwright CLI 決策指南</span> <button class="cb-copy" data-code="需要 CLI 瀏覽器自動化？
+│
+├─ 目標是已知平台（Twitter / GitHub / YouTube / Bilibili 等）？
+│  └─ 是 → OpenCLI（語義指令，零選擇器知識）✅
+│
+├─ 目標是內部系統 / 任意網站，需要 AI Agent 互動？
+│  ├─ 會生成 Playwright 測試程式碼的需求？ → Playwright CLI ✅
+│  └─ 純操作不需要程式碼 → OpenCLI browser 模式 or Playwright CLI
+│
+├─ 需要 Network Mock / 路由攔截？
+│  └─ 是 → Playwright CLI（OpenCLI 目前無此功能）✅
+│
+├─ 需要多個獨立隔離的瀏覽器 Session 同時並行？
+│  └─ 是 → Playwright CLI（-s=name 命名 session）✅
+│
+├─ AI Agent 工具調用，需要 token 最省？
+│  ├─ 已知平台 → OpenCLI（語義指令，1 行 = 1 token 描述）✅
+│  └─ 未知頁面 → Playwright CLI（snapshot 比 accessibility tree 更省 token）✅
+│
+└─ 需要截圖 / PDF / 追蹤 / 錄影？
+   └─ 是 → Playwright CLI（screenshot, pdf, tracing-start, video-start）✅" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span>需要 CLI 瀏覽器自動化？</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 目標是已知平台（Twitter / GitHub / YouTube / Bilibili 等）？</span></span>
+<span class="line"><span>│  └─ 是 → OpenCLI（語義指令，零選擇器知識）✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 目標是內部系統 / 任意網站，需要 AI Agent 互動？</span></span>
+<span class="line"><span>│  ├─ 會生成 Playwright 測試程式碼的需求？ → Playwright CLI ✅</span></span>
+<span class="line"><span>│  └─ 純操作不需要程式碼 → OpenCLI browser 模式 or Playwright CLI</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 需要 Network Mock / 路由攔截？</span></span>
+<span class="line"><span>│  └─ 是 → Playwright CLI（OpenCLI 目前無此功能）✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 需要多個獨立隔離的瀏覽器 Session 同時並行？</span></span>
+<span class="line"><span>│  └─ 是 → Playwright CLI（-s=name 命名 session）✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ AI Agent 工具調用，需要 token 最省？</span></span>
+<span class="line"><span>│  ├─ 已知平台 → OpenCLI（語義指令，1 行 = 1 token 描述）✅</span></span>
+<span class="line"><span>│  └─ 未知頁面 → Playwright CLI（snapshot 比 accessibility tree 更省 token）✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>└─ 需要截圖 / PDF / 追蹤 / 錄影？</span></span>
+<span class="line"><span>   └─ 是 → Playwright CLI（screenshot, pdf, tracing-start, video-start）✅</span></span></code></pre> </div> </div>    <h2>19.9 搭配使用：OpenCLI 探索 + Playwright CLI 生成程式碼</h2> <p>
+兩個工具互補性很強——OpenCLI 快速取得入口資料，Playwright CLI 負責深度互動並輸出可重用的程式碼：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>hybrid-discovery.sh — 語義搜尋 + snapshot 深度操作</span> <button class="cb-copy" data-code="#!/usr/bin/env bash
+# hybrid-discovery.sh
+# 用 OpenCLI 找到目標 URL → 用 Playwright CLI 深度互動 + 生成測試程式碼
+
+# Step 1：OpenCLI 語義搜尋（快速，不需要 snapshot）
+TARGET_URL=$(opencli github trending --language rust --limit 1 --json | jq -r '.[0].url')
+echo &quot;Target: $TARGET_URL&quot;
+
+# Step 2：Playwright CLI 開啟並拍快照（任意頁面結構探索）
+playwright-cli open &quot;$TARGET_URL&quot;
+playwright-cli snapshot > page-snapshot.txt
+
+# Step 3：基於 snapshot 讓 AI Agent 決定如何互動
+# （Claude Code 讀取 page-snapshot.txt 後決定 ref）
+playwright-cli click e8       # 例：點擊 Star 按鈕
+playwright-cli screenshot --filename=&quot;result.png&quot;
+
+echo &quot;Done. Generated TS code in .playwright-cli/actions.ts&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># hybrid-discovery.sh</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用 OpenCLI 找到目標 URL → 用 Playwright CLI 深度互動 + 生成測試程式碼</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 1：OpenCLI 語義搜尋（快速，不需要 snapshot）</span></span>
+<span class="line"><span style="color:#E06C75">TARGET_URL</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> rust</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 1</span><span style="color:#D19A66"> --json</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[0].url'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Target: </span><span style="color:#E06C75">$TARGET_URL</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 2：Playwright CLI 開啟並拍快照（任意頁面結構探索）</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> open</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$TARGET_URL</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> snapshot</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">page-snapshot.txt</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 3：基於 snapshot 讓 AI Agent 決定如何互動</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># （Claude Code 讀取 page-snapshot.txt 後決定 ref）</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e8</span><span style="color:#7F848E;font-style:italic">       # 例：點擊 Star 按鈕</span></span>
+<span class="line"><span style="color:#61AFEF">playwright-cli</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --filename=</span><span style="color:#98C379">"result.png"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Done. Generated TS code in .playwright-cli/actions.ts"</span></span></code></pre> </div> </div>   <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>典型使用案例</strong> <p>
+在建立新平台的 Custom Adapter 時，先用 <code>playwright-cli</code> 探索目標頁面的結構、
+        取得 snapshot ref、確認互動路徑，生成的 TypeScript 程式碼直接作為 Adapter 實作的骨架。
+        這個流程可以把 Adapter 開發時間從幾小時縮短到幾十分鐘。
+</p> </div> </div>  <h2>19.10 本章小結</h2> <p>
+OpenCLI 與 Playwright CLI 都是為 AI Agent 設計的 CLI 瀏覽器工具，但面向不同的問題：
+</p> <ul> <li><strong>OpenCLI</strong>：已知平台的語義自動化。當你知道「我要什麼」，1 行搞定。</li> <li><strong>Playwright CLI</strong>：任意網站的通用探索。當你面對未知頁面，snapshot 讓 AI 「看見」頁面結構後再行動。</li> <li>Playwright CLI 的程式碼生成功能是 OpenCLI 沒有的：它是探索 → 生成測試腳本的最佳橋樑。</li> <li>搭配策略：OpenCLI 處理已知平台日常操作，Playwright CLI 處理未知頁面探索與 Adapter 開發的啟動期。</li> </ul> <div class="call tip"> <span class="ci">💡</span> <div> <strong>下一章預告</strong> <p>
+第 20 章「常見問題 & FAQ」整理了使用 OpenCLI 過程中最頻繁遇到的問題，
+        包含 browser 連線失敗、Adapter 認證問題、CI 環境配置等實用解答。
+</p> </div> </div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright</span> </a> <a href="/opencli/ch20-vs-playwright-mcp" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

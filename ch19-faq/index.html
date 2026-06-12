@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>常見問題 &amp; FAQ | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="OpenCLI 使用過程中最常遇到的 16 個問題與解決方案，涵蓋連線問題、Profile 衝突、N-ref 失效、type 指令無效、DOM 互動、版本相容等。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 21 章 · Part 6：比較與實戰</span> <h1>常見問題 & FAQ</h1> <p class="cdesc">遇到問題？這裡收錄了最常見的 16 個使用疑難，附上完整解決方案。</p> <h2>連線與環境問題</h2> <h3>Q1：daemon 無法啟動，顯示 "Address already in use"</h3> <p>端口 7070 已被其他程序佔用：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>解決方案</span> <button class="cb-copy" data-code="# 找出佔用端口的程序
+lsof -i :7070         # macOS / Linux
+netstat -ano | findstr :7070  # Windows
+
+# 強制停止舊的 daemon
+opencli daemon stop --force
+
+# 或使用不同端口
+opencli daemon start --port 7071
+export OPENCLI_DAEMON_PORT=7071" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 找出佔用端口的程序</span></span>
+<span class="line"><span style="color:#61AFEF">lsof</span><span style="color:#D19A66"> -i</span><span style="color:#98C379"> :7070</span><span style="color:#7F848E;font-style:italic">         # macOS / Linux</span></span>
+<span class="line"><span style="color:#61AFEF">netstat</span><span style="color:#D19A66"> -ano</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">findstr</span><span style="color:#98C379"> :7070</span><span style="color:#7F848E;font-style:italic">  # Windows</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 強制停止舊的 daemon</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> stop</span><span style="color:#D19A66"> --force</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 或使用不同端口</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> start</span><span style="color:#D19A66"> --port</span><span style="color:#D19A66"> 7071</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> OPENCLI_DAEMON_PORT</span><span style="color:#56B6C2">=</span><span style="color:#D19A66">7071</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <h3>Q2：Browser Bridge Extension 顯示「未連接」</h3> <p>Extension 和 Daemon 之間的 WebSocket 連線中斷：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>排除步驟</span> <button class="cb-copy" data-code="# 1. 確認 daemon 正在運行
+opencli daemon status
+
+# 2. 重啟 daemon
+opencli daemon restart
+
+# 3. 重新整理 Extension（在 chrome://extensions/ 頁面點擊重新整理圖示）
+
+# 4. 全套診斷
+opencli doctor" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 1. 確認 daemon 正在運行</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> status</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 2. 重啟 daemon</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> restart</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 3. 重新整理 Extension（在 chrome://extensions/ 頁面點擊重新整理圖示）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 4. 全套診斷</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> doctor</span></span></code></pre> </div> </div>   <p>如果問題持續，檢查防火牆是否阻擋了 localhost:7070 的連線。</p> <h3>Q3：在 CI/CD 環境中執行失敗，顯示 "No browser connected"</h3> <p>CI 環境沒有實體瀏覽器，需要改用 CDP 模式：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>CI 環境設定</span> <button class="cb-copy" data-code="# 使用 browserless 容器
+docker run -d -p 3000:3000 browserless/chromium
+
+# 設定 CDP 端點
+export OPENCLI_CDP_ENDPOINT=ws://localhost:3000
+
+# 執行指令
+opencli browser work navigate &quot;https://example.com&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 使用 browserless 容器</span></span>
+<span class="line"><span style="color:#61AFEF">docker</span><span style="color:#98C379"> run</span><span style="color:#D19A66"> -d</span><span style="color:#D19A66"> -p</span><span style="color:#98C379"> 3000:3000</span><span style="color:#98C379"> browserless/chromium</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 設定 CDP 端點</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> OPENCLI_CDP_ENDPOINT</span><span style="color:#56B6C2">=</span><span style="color:#E06C75">ws</span><span style="color:#ABB2BF">://</span><span style="color:#E06C75">localhost</span><span style="color:#ABB2BF">:</span><span style="color:#E06C75">3000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 執行指令</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> "https://example.com"</span></span></code></pre> </div> </div>   <p>詳細 CI 設定請參考第 11 章。</p> <h3>Q4：連線超時，顯示 "Browser connect timeout"</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>調整超時設定</span> <button class="cb-copy" data-code="# 增加連線超時時間（預設 10 秒，單位毫秒）
+export OPENCLI_BROWSER_CONNECT_TIMEOUT=30000
+
+# 或在指令中指定
+opencli --timeout 30000 browser work navigate &quot;https://slow-site.com&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 增加連線超時時間（預設 10 秒，單位毫秒）</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> OPENCLI_BROWSER_CONNECT_TIMEOUT</span><span style="color:#56B6C2">=</span><span style="color:#D19A66">30000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 或在指令中指定</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 30000</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> "https://slow-site.com"</span></span></code></pre> </div> </div>   <h2>Session 與 Profile 問題</h2> <h3>Q5：多個 Session 操作時互相干擾</h3> <p>Session 名稱衝突，兩個任務操作了同一個分頁：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Session 隔離</span> <button class="cb-copy" data-code="# 使用不同的 Session 名稱
+opencli browser task-a open &quot;https://site-a.com&quot;
+opencli browser task-b open &quot;https://site-b.com&quot;
+
+# 查看所有 Session
+opencli browser list
+
+# 確認每個 Session 對應正確的分頁
+opencli browser task-a screenshot --output a.png
+opencli browser task-b screenshot --output b.png" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 使用不同的 Session 名稱</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> task-a</span><span style="color:#98C379"> open</span><span style="color:#98C379"> "https://site-a.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> task-b</span><span style="color:#98C379"> open</span><span style="color:#98C379"> "https://site-b.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看所有 Session</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 確認每個 Session 對應正確的分頁</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> task-a</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> a.png</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> task-b</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> b.png</span></span></code></pre> </div> </div>   <h3>Q6：Chrome Profile 衝突，Extension 連接到錯誤的 Profile</h3> <p>如果你有多個 Chrome Profile，需要確認 Extension 安裝在正確的 Profile 中：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Profile 管理</span> <button class="cb-copy" data-code="# 查看當前連接的 Profile 資訊
+opencli browser info
+
+# 如果需要切換 Profile，在啟動 Chrome 時指定
+google-chrome --profile-directory=&quot;Profile 1&quot;
+
+# 確認 Extension 在目標 Profile 中已啟用
+# chrome://extensions/ → 確認 OpenCLI Browser Bridge 已啟用" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 查看當前連接的 Profile 資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> info</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 如果需要切換 Profile，在啟動 Chrome 時指定</span></span>
+<span class="line"><span style="color:#61AFEF">google-chrome</span><span style="color:#D19A66"> --profile-directory=</span><span style="color:#98C379">"Profile 1"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 確認 Extension 在目標 Profile 中已啟用</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># chrome://extensions/ → 確認 OpenCLI Browser Bridge 已啟用</span></span></code></pre> </div> </div>   <h2>元素定位問題</h2> <h3>Q7：N-ref 操作後顯示 "Element not found: [N]"</h3> <p>N-ref 是頁面快照，頁面更新後舊的 N-ref 就失效了：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>重新取得 N-ref</span> <button class="cb-copy" data-code="# ❌ 錯誤做法：假設 N-ref 永久有效
+opencli browser work state  # 取得 [1] = 搜尋框
+# ... 一段時間後 ...
+opencli browser work type &quot;[1]&quot; &quot;新搜尋&quot;  # 可能失敗！
+
+# ✅ 正確做法：操作前重新執行 state
+opencli browser work state
+opencli browser work type &quot;[1]&quot; &quot;新搜尋&quot;  # 立即使用" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 錯誤做法：假設 N-ref 永久有效</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span><span style="color:#7F848E;font-style:italic">  # 取得 [1] = 搜尋框</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ... 一段時間後 ...</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "新搜尋"</span><span style="color:#7F848E;font-style:italic">  # 可能失敗！</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 正確做法：操作前重新執行 state</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "新搜尋"</span><span style="color:#7F848E;font-style:italic">  # 立即使用</span></span></code></pre> </div> </div>   <h3>Q8：state 指令找不到目標元素</h3> <p>元素可能在 iframe 中，或是動態載入的：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>處理特殊元素</span> <button class="cb-copy" data-code="# 等待動態元素載入後再取得 state
+opencli browser work wait --selector &quot;.dynamic-content&quot;
+opencli browser work state
+
+# 如果元素在 iframe 中，使用 CSS selector 直接操作
+opencli browser work click &quot;iframe#myframe button.submit&quot;
+
+# 使用 evaluate 操作 iframe 內的元素
+opencli browser work evaluate &quot;document.getElementById('myframe').contentDocument.querySelector('.btn').click()&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待動態元素載入後再取得 state</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".dynamic-content"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 如果元素在 iframe 中，使用 CSS selector 直接操作</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "iframe#myframe button.submit"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 evaluate 操作 iframe 內的元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> evaluate</span><span style="color:#98C379"> "document.getElementById('myframe').contentDocument.querySelector('.btn').click()"</span></span></code></pre> </div> </div>   <h2>輸入與互動問題</h2> <h3>Q9：type 指令輸入後沒有觸發表單驗證</h3> <p>某些框架（React、Vue）的 input 需要觸發特定事件才能更新狀態：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>觸發框架事件</span> <button class="cb-copy" data-code="# 方法一：使用 fill（模擬真實使用者輸入，觸發 input/change 事件）
+opencli browser work fill &quot;[1]&quot; &quot;my-input-value&quot;
+
+# 方法二：用 evaluate 手動觸發事件
+opencli browser work evaluate &quot;const el = document.querySelector('#my-input'); el.value='my-value'; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true }));&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 方法一：使用 fill（模擬真實使用者輸入，觸發 input/change 事件）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "my-input-value"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方法二：用 evaluate 手動觸發事件</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> evaluate</span><span style="color:#98C379"> "const el = document.querySelector('#my-input'); el.value='my-value'; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true }));"</span></span></code></pre> </div> </div>   <h3>Q10：click 指令點擊後沒有反應</h3> <p>元素可能被其他元素覆蓋，或需要先捲動到可視範圍：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>點擊問題排查</span> <button class="cb-copy" data-code="# 先捲動到元素位置
+opencli browser work scroll &quot;[5]&quot;
+
+# 使用 evaluate 直接呼叫 click（繞過覆蓋問題）
+opencli browser work evaluate &quot;document.querySelectorAll('.btn')[4].click()&quot;
+
+# 截圖確認頁面狀態
+opencli browser work screenshot --output debug.png" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 先捲動到元素位置</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> scroll</span><span style="color:#98C379"> "[5]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 evaluate 直接呼叫 click（繞過覆蓋問題）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> evaluate</span><span style="color:#98C379"> "document.querySelectorAll('.btn')[4].click()"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 截圖確認頁面狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> debug.png</span></span></code></pre> </div> </div>   <h3>Q11：select 下拉選單無法選取正確選項</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>下拉選單操作</span> <button class="cb-copy" data-code="# 使用 select 指令（比 click 更穩定）
+opencli browser work select &quot;[3]&quot; &quot;option-value&quot;
+
+# 如果是自定義下拉選單（非原生 select），用 click 模擬
+opencli browser work click &quot;[3]&quot;  # 展開選單
+opencli browser work wait --text &quot;選項文字&quot;
+opencli browser work click &quot;[N]&quot;  # 點選目標選項" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 使用 select 指令（比 click 更穩定）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> select</span><span style="color:#98C379"> "[3]"</span><span style="color:#98C379"> "option-value"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 如果是自定義下拉選單（非原生 select），用 click 模擬</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[3]"</span><span style="color:#7F848E;font-style:italic">  # 展開選單</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "選項文字"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[N]"</span><span style="color:#7F848E;font-style:italic">  # 點選目標選項</span></span></code></pre> </div> </div>   <h2>資料擷取問題</h2> <h3>Q12：extract 擷取結果為空</h3> <p>Selector 不正確，或頁面尚未完全載入：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>debug extract</span> <button class="cb-copy" data-code="# 確認 selector 存在
+opencli browser work evaluate &quot;document.querySelectorAll('.target-class').length&quot;
+
+# 等待內容載入後再擷取
+opencli browser work wait --selector &quot;.target-class&quot;
+opencli browser work extract --selector &quot;.target-class&quot;
+
+# 查看頁面原始碼確認 selector
+opencli browser work evaluate &quot;document.querySelector('.target-class')?.outerHTML&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 確認 selector 存在</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> evaluate</span><span style="color:#98C379"> "document.querySelectorAll('.target-class').length"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待內容載入後再擷取</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".target-class"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".target-class"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看頁面原始碼確認 selector</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> evaluate</span><span style="color:#98C379"> "document.querySelector('.target-class')?.outerHTML"</span></span></code></pre> </div> </div>   <h3>Q13：network 指令攔截不到 API 請求</h3> <p>需要在頁面載入前就開始攔截：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>正確的 network 攔截順序</span> <button class="cb-copy" data-code="# ✅ 正確：先設定攔截，再導航
+opencli browser work network intercept --pattern &quot;*/api/*&quot;
+opencli browser work navigate &quot;https://example.com&quot;
+
+# ❌ 錯誤：先導航再攔截（可能錯過請求）
+opencli browser work navigate &quot;https://example.com&quot;
+opencli browser work network intercept --pattern &quot;*/api/*&quot;  # 太晚了" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 正確：先設定攔截，再導航</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#98C379"> intercept</span><span style="color:#D19A66"> --pattern</span><span style="color:#98C379"> "*/api/*"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> "https://example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 錯誤：先導航再攔截（可能錯過請求）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> "https://example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#98C379"> intercept</span><span style="color:#D19A66"> --pattern</span><span style="color:#98C379"> "*/api/*"</span><span style="color:#7F848E;font-style:italic">  # 太晚了</span></span></code></pre> </div> </div>   <h2>版本與相容問題</h2> <h3>Q14：升級後 Adapter 指令失效</h3> <p>主版本升級可能有 Breaking Changes：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>版本管理</span> <button class="cb-copy" data-code="# 查看當前版本
+opencli --version
+opencli adapter info twitter
+
+# 查看 changelog
+opencli changelog
+
+# 如需回滾
+npm install -g opencli@2.2.0" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 查看當前版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --version</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapter</span><span style="color:#98C379"> info</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看 changelog</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> changelog</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 如需回滾</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> install</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> opencli@2.2.0</span></span></code></pre> </div> </div>   <h3>Q15：CLI、Daemon、Extension 版本不一致</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>版本同步</span> <button class="cb-copy" data-code="# 查看所有組件版本
+opencli doctor
+
+# 更新所有組件
+npm update -g opencli
+# 然後在 chrome://extensions/ 更新 Extension" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 查看所有組件版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> doctor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 更新所有組件</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> update</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> opencli</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 然後在 chrome://extensions/ 更新 Extension</span></span></code></pre> </div> </div>   <h2>效能與快取問題</h2> <h3>Q16：相同指令第一次慢、後面快，但突然又變慢了</h3> <p>Adapter 快取過期，或瀏覽器 Session 中斷後重建：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>快取管理</span> <button class="cb-copy" data-code="# 清除 Adapter 快取
+opencli cache clear
+
+# 清除特定平台快取
+opencli cache clear --adapter twitter
+
+# 查看快取狀態
+opencli cache status
+
+# 強制跳過快取（重新從網路取得）
+opencli --no-cache twitter trends" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 清除 Adapter 快取</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> cache</span><span style="color:#98C379"> clear</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 清除特定平台快取</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> cache</span><span style="color:#98C379"> clear</span><span style="color:#D19A66"> --adapter</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看快取狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> cache</span><span style="color:#98C379"> status</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 強制跳過快取（重新從網路取得）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --no-cache</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trends</span></span></code></pre> </div> </div>   <h2>還是找不到解答？</h2> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>取得更多協助</strong> <ul> <li>執行 <code>opencli --debug &lt;command&gt;</code> 取得詳細錯誤日誌</li> <li>執行 <code>opencli doctor --verbose</code> 取得完整環境報告</li> <li>前往 GitHub Issues 搜尋類似問題</li> <li>加入 OpenCLI Discord 社群向其他使用者求助</li> </ul> </div> </div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span> </a> <div class="ph" data-astro-cid-mw7aashj></div> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

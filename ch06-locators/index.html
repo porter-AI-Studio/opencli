@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>元素定位策略 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="OpenCLI 元素定位策略完整指南：N 索引互動探索、CSS Selector 自動化、find 指令查詢，以及如何挑選穩定 selector 讓自動化腳本不容易壞掉。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 6 章 · Part 2：瀏覽器自動化</span> <h1>元素定位策略</h1> <p class="cdesc">
+告訴 OpenCLI「要操作哪個元素」，是自動化的核心挑戰。本章系統介紹三種定位方式——N 索引、CSS Selector、find 指令——並說明各自的適用場景、穩定性差異，以及如何在動態頁面中找到最可靠的定位方案。
+</p>  <h2>6.1 三種定位方式概覽</h2> <p>
+OpenCLI 提供三種方式來指定目標元素，從最快速的互動探索到最穩定的自動化腳本，各有其最佳使用時機：
+</p> <table> <thead> <tr><th>方式</th><th>語法範例</th><th>適用場景</th><th>自動化穩定性</th></tr> </thead> <tbody> <tr> <td><strong>N 索引</strong></td> <td><code>click 3</code></td> <td>互動式探索、快速測試</td> <td>❌ 不穩定</td> </tr> <tr> <td><strong>CSS Selector</strong></td> <td><code>click "#submit-btn"</code></td> <td>自動化腳本、CI 測試</td> <td>✅ 穩定（取決於 selector 品質）</td> </tr> <tr> <td><strong>find 指令</strong></td> <td><code>find --text "送出"</code></td> <td>動態內容、沒有好 selector 時</td> <td>⚠️ 視頁面而定</td> </tr> </tbody> </table>  <h2>6.2 N 索引：互動式探索利器</h2> <p>
+執行 <code>state</code> 指令後，OpenCLI 會列出頁面所有可互動元素，並在每個元素前標上 <code>[N]</code> 編號。你可以直接把這個數字傳給 <code>click</code>、<code>fill</code> 等指令，無需輸入任何 selector。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>先用 state 查看頁面元素</span> <button class="cb-copy" data-code="opencli browser work state
+
+# 典型輸出示例：
+# Interactive elements:
+# [1] a &quot;首頁&quot; href=&quot;/&quot;
+# [2] a &quot;關於我們&quot; href=&quot;/about&quot;
+# [3] input[type=&quot;search&quot;] #search placeholder=&quot;搜尋...&quot;
+# [4] button &quot;搜尋&quot; .search-btn
+# [5] textarea #message-input placeholder=&quot;輸入訊息&quot;
+# [6] button &quot;送出&quot; .submit-btn[disabled]" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 典型輸出示例：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Interactive elements:</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [1] a "首頁" href="/"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [2] a "關於我們" href="/about"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [3] input[type="search"] #search placeholder="搜尋..."</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [4] button "搜尋" .search-btn</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [5] textarea #message-input placeholder="輸入訊息"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [6] button "送出" .submit-btn[disabled]</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>用 N 索引直接操作</span> <button class="cb-copy" data-code="# 點擊第 4 個元素（搜尋按鈕）
+opencli browser work click 4
+
+# 在第 3 個元素（搜尋框）輸入文字
+opencli browser work fill 3 &quot;OpenCLI 教學&quot;
+
+# 點擊第 6 個元素（送出按鈕）
+opencli browser work click 6" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 點擊第 4 個元素（搜尋按鈕）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> 4</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在第 3 個元素（搜尋框）輸入文字</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#D19A66"> 3</span><span style="color:#98C379"> "OpenCLI 教學"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 點擊第 6 個元素（送出按鈕）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> 6</span></span></code></pre> </div> </div>   <p>
+N 索引的優點是<strong>零學習成本</strong>——打開 <code>state</code> 看一眼就能操作。在終端機裡快速探索一個陌生頁面時非常好用。
+</p> <div class="call danger"><span class="ci">🚫</span><div><strong>N 索引不能用於自動化腳本</strong><p>N 索引在頁面任何內容變化後都會<strong>重新編號</strong>。頁面 AJAX 更新、新增一則通知、展開一個選單，都可能讓 <code>[3]</code> 變成別的元素。將 N 索引寫進自動化腳本，等於埋下難以追蹤的定時炸彈——腳本可能在某天毫無預警地點錯地方。請改用 CSS Selector。</p></div></div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>❌ 錯誤用法：在自動化腳本中使用 N 索引</span> <button class="cb-copy" data-code="# ❌ 不要這樣做——頁面一有變化就會壞掉
+opencli browser work click 3
+opencli browser work fill 5 &quot;porter@example.com&quot;
+opencli browser work click 7" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 不要這樣做——頁面一有變化就會壞掉</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> 3</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#D19A66"> 5</span><span style="color:#98C379"> "porter@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> 7</span></span></code></pre> </div> </div>    <h2>6.3 state 指令深入說明</h2> <p> <code>state</code> 不只是列出 N 索引，它同時提供了選擇 CSS Selector 的重要線索。每行輸出包含：
+</p> <ul> <li><code>[N]</code> — N 索引編號</li> <li>元素標籤（<code>input</code>、<code>button</code>、<code>a</code>、<code>textarea</code> 等）</li> <li>顯示文字（如有，以引號包圍）</li> <li>CSS selector 提示（<code>#id</code>、<code>.class</code>）</li> <li>特殊屬性（<code>href</code>、<code>placeholder</code>、<code>disabled</code> 等）</li> </ul> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>state 輸出範例解讀</span> <button class="cb-copy" data-code="opencli browser work state
+
+# [1] a &quot;首頁&quot; href=&quot;/&quot;
+#  └─ 可用：click &quot;a[href='/']&quot;  或  click 1（互動探索）
+#
+# [3] input[type=&quot;search&quot;] #search placeholder=&quot;搜尋...&quot;
+#  └─ 可用：fill &quot;#search&quot; &quot;關鍵字&quot;
+#
+# [6] button &quot;送出&quot; .submit-btn[disabled]
+#  └─ 元素目前 disabled，click 會被忽略或報錯，需先確認狀態" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [1] a "首頁" href="/"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#  └─ 可用：click "a[href='/']"  或  click 1（互動探索）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [3] input[type="search"] #search placeholder="搜尋..."</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#  └─ 可用：fill "#search" "關鍵字"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [6] button "送出" .submit-btn[disabled]</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#  └─ 元素目前 disabled，click 會被忽略或報錯，需先確認狀態</span></span></code></pre> </div> </div>   <div class="call tip"><span class="ci">💡</span><div><strong>從 state 輸出挑 selector 的技巧</strong><p>優先選 <code>#id</code> 形式的 selector（最穩定）。若沒有 id，看有沒有語意化的 class 名稱（避開 <code>.css-1a2b3c</code> 這類 CSS-in-JS 生成的亂碼 class）。也可以注意 <code>placeholder</code>、<code>name</code>、<code>type</code> 等屬性，用屬性 selector 定位。</p></div></div>  <h2>6.4 CSS Selector：自動化首選</h2> <p>
+CSS Selector 是 OpenCLI 自動化腳本的標準定位方式。只要頁面結構沒有大幅重構，selector 就能穩定工作。
+</p> <h3>基礎 Selector 類型</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>ID、Class、屬性 Selector</span> <button class="cb-copy" data-code="# ID selector（最穩定，頁面內唯一）
+opencli browser work click &quot;#submit-btn&quot;
+opencli browser work fill &quot;#username&quot; &quot;porter&quot;
+
+# Class selector
+opencli browser work click &quot;.btn-primary&quot;
+
+# 屬性 selector（name、type、data-* 屬性）
+opencli browser work fill &quot;[name='username']&quot; &quot;porter&quot;
+opencli browser work fill &quot;[name='password']&quot; &quot;secret&quot;
+opencli browser work click &quot;[type='submit']&quot;
+
+# data-testid（測試專用屬性，最推薦）
+opencli browser work fill &quot;[data-testid='username-input']&quot; &quot;porter&quot;
+opencli browser work click &quot;[data-testid='login-button']&quot;
+
+# aria 屬性（語意化，不依賴視覺樣式）
+opencli browser work click &quot;[aria-label='關閉對話框']&quot;
+opencli browser work click &quot;[role='button'][aria-label='送出']&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ID selector（最穩定，頁面內唯一）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "#submit-btn"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "#username"</span><span style="color:#98C379"> "porter"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Class selector</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".btn-primary"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 屬性 selector（name、type、data-* 屬性）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[name='username']"</span><span style="color:#98C379"> "porter"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[name='password']"</span><span style="color:#98C379"> "secret"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[type='submit']"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># data-testid（測試專用屬性，最推薦）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[data-testid='username-input']"</span><span style="color:#98C379"> "porter"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[data-testid='login-button']"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># aria 屬性（語意化，不依賴視覺樣式）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[aria-label='關閉對話框']"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[role='button'][aria-label='送出']"</span></span></code></pre> </div> </div>   <h3>組合與結構性 Selector</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>組合 Selector 精確定位</span> <button class="cb-copy" data-code="# 限定在特定容器內
+opencli browser work click &quot;form.login-form button[type='submit']&quot;
+opencli browser work fill &quot;.chat-panel textarea.chat-input&quot; &quot;你好&quot;
+
+# 最後一個子元素
+opencli browser work click &quot;.message-list .message:last-child&quot;
+
+# 第 N 個元素
+opencli browser work click &quot;.tab-item:nth-child(2)&quot;
+
+# 直接子元素（避免找到嵌套子孫）
+opencli browser work click &quot;.nav > a.active&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 限定在特定容器內</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "form.login-form button[type='submit']"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> ".chat-panel textarea.chat-input"</span><span style="color:#98C379"> "你好"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 最後一個子元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".message-list .message:last-child"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 第 N 個元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".tab-item:nth-child(2)"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 直接子元素（避免找到嵌套子孫）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".nav > a.active"</span></span></code></pre> </div> </div>   <div class="call info"><strong>雙引號 vs 單引號</strong><br>CSS Selector 本身含有單引號時（如 <code>[name='email']</code>），外層請用雙引號包裹整個 selector 字串。在 shell 腳本中，可用跳脫字元或調整引號層次避免衝突。</div>  <h2>6.5 find 指令：彈性查詢</h2> <p>
+當頁面沒有好的 CSS selector，或你想用文字描述元素時，<code>find</code> 指令提供更彈性的查詢方式。<code>find</code> 回傳元素的 ref 資訊，也可直接用於定位。
+</p> <h3>find 語法</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>find 指令完整語法</span> <button class="cb-copy" data-code="opencli browser <session> find [--text <文字>] [--selector <css>]
+
+# 用顯示文字找元素
+opencli browser work find --text &quot;新增&quot;
+opencli browser work find --text &quot;Submit&quot;
+opencli browser work find --text &quot;確認刪除&quot;
+
+# 用 CSS selector 找（回傳詳細資訊）
+opencli browser work find --selector &quot;textarea.chat-input&quot;
+opencli browser work find --selector &quot;#login-form input[name=email]&quot;
+
+# 在特定容器內用文字找
+opencli browser work find --selector &quot;.sidebar a&quot; --text &quot;設定&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">sessio</span><span style="color:#ABB2BF">n> </span><span style="color:#98C379">find</span><span style="color:#ABB2BF"> [--text &#x3C;</span><span style="color:#98C379">文</span><span style="color:#ABB2BF">字></span><span style="color:#98C379">]</span><span style="color:#ABB2BF"> [--selector &#x3C;</span><span style="color:#98C379">cs</span><span style="color:#ABB2BF">s></span><span style="color:#98C379">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用顯示文字找元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "新增"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "Submit"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "確認刪除"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用 CSS selector 找（回傳詳細資訊）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "textarea.chat-input"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "#login-form input[name=email]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在特定容器內用文字找</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".sidebar a"</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "設定"</span></span></code></pre> </div> </div>   <h3>find 輸出格式</h3> <p> <code>find</code> 成功後回傳 JSON 格式的元素資訊，包含 ref 編號、標籤、文字內容與 selector：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>find 回傳範例</span> <button class="cb-copy" data-code="# 執行
+opencli browser work find --text &quot;送出&quot;
+
+# 輸出
+# {
+#   &quot;ref&quot;: 5,
+#   &quot;tag&quot;: &quot;button&quot;,
+#   &quot;text&quot;: &quot;送出&quot;,
+#   &quot;selector&quot;: &quot;.submit-btn&quot;,
+#   &quot;visible&quot;: true
+# }" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 執行</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "送出"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "ref": 5,</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "tag": "button",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "text": "送出",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "selector": ".submit-btn",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "visible": true</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># }</span></span></code></pre> </div> </div>   <div class="call tip"><span class="ci">💡</span><div><strong>find 的 --text 是部分比對</strong><p><code>--text "送出"</code> 會比對包含「送出」文字的所有可見元素。若頁面有多個符合的元素，<code>find</code> 回傳第一個。需要更精確時，搭配 <code>--selector</code> 縮小範圍。</p></div></div>  <h2>6.6 定位策略選擇原則</h2> <p>
+面對不同情境，有不同的最佳定位策略。以下表格彙整常見情境的建議做法：
+</p> <table> <thead> <tr><th>情境</th><th>建議方式</th><th>範例</th></tr> </thead> <tbody> <tr> <td>互動式探索頁面</td> <td>N 索引（配合 state）</td> <td><code>state</code> → <code>click 4</code></td> </tr> <tr> <td>自動化腳本、CI 測試</td> <td>CSS Selector</td> <td><code>click "#login-btn"</code></td> </tr> <tr> <td>前端有設 data-testid</td> <td><code>[data-testid="..."]</code>（最優先）</td> <td><code>click "[data-testid='submit']"</code></td> </tr> <tr> <td>表單元素有 name 屬性</td> <td><code>[name="..."]</code></td> <td><code>fill "[name='email']" "test@example.com"</code></td> </tr> <tr> <td>沒有好的 CSS selector</td> <td><code>find --text "..."</code></td> <td><code>find --text "確認"</code></td> </tr> <tr> <td>動態生成的元素</td> <td>wait 後再用 CSS Selector</td> <td><code>wait selector ".result"</code> → <code>click ".result .action"</code></td> </tr> <tr> <td>CSS-in-JS 框架（亂碼 class）</td> <td>aria 屬性或 eval</td> <td><code>click "[aria-label='送出']"</code></td> </tr> </tbody> </table>  <h2>6.7 穩定 vs 脆弱的 Selector</h2> <p>
+selector 的品質直接決定自動化腳本的壽命。以下對比常見的好壞範例：
+</p> <h3>容易壞的 Selector</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>❌ 脆弱 Selector 範例</span> <button class="cb-copy" data-code="# ❌ CSS-in-JS 動態生成的亂碼 class（每次 build 都不一樣）
+opencli browser work click &quot;.css-1a2b3c4&quot;
+opencli browser work click &quot;.sc-bdnxRM&quot;
+
+# ❌ N 索引（頁面任何變化都會重新編號）
+opencli browser work click 7
+opencli browser work fill 3 &quot;porter@example.com&quot;
+
+# ❌ 過度依賴 DOM 層級結構（重構就壞）
+opencli browser work click &quot;div > div > div:nth-child(3) > span > button&quot;
+
+# ❌ 用 inline style 定位（樣式改了就找不到）
+opencli browser work click &quot;[style='color: red; font-weight: bold']&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ CSS-in-JS 動態生成的亂碼 class（每次 build 都不一樣）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".css-1a2b3c4"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".sc-bdnxRM"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ❌ N 索引（頁面任何變化都會重新編號）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> 7</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#D19A66"> 3</span><span style="color:#98C379"> "porter@example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 過度依賴 DOM 層級結構（重構就壞）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "div > div > div:nth-child(3) > span > button"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 用 inline style 定位（樣式改了就找不到）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[style='color: red; font-weight: bold']"</span></span></code></pre> </div> </div>   <h3>穩定的 Selector</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>✅ 穩定 Selector 範例</span> <button class="cb-copy" data-code="# ✅ ID（最穩定，頁面內唯一）
+opencli browser work click &quot;#login-btn&quot;
+opencli browser work fill &quot;#email-input&quot; &quot;porter@example.com&quot;
+
+# ✅ data-testid（測試專用屬性，不受樣式重構影響）
+opencli browser work fill &quot;[data-testid='username']&quot; &quot;porter&quot;
+opencli browser work click &quot;[data-testid='submit-button']&quot;
+
+# ✅ aria-label（語意化，不依賴視覺實作）
+opencli browser work click &quot;[aria-label='關閉對話框']&quot;
+opencli browser work click &quot;[aria-label='下一頁']&quot;
+
+# ✅ name 屬性（表單元素幾乎不會改）
+opencli browser work fill &quot;[name='email']&quot; &quot;test@example.com&quot;
+opencli browser work fill &quot;[name='password']&quot; &quot;secret&quot;
+
+# ✅ 語意化結構（不太會變，且意圖明確）
+opencli browser work click &quot;nav .main-menu a[href='/dashboard']&quot;
+opencli browser work click &quot;header button[type='submit']&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ✅ ID（最穩定，頁面內唯一）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "#login-btn"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "#email-input"</span><span style="color:#98C379"> "porter@example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ data-testid（測試專用屬性，不受樣式重構影響）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[data-testid='username']"</span><span style="color:#98C379"> "porter"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[data-testid='submit-button']"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ aria-label（語意化，不依賴視覺實作）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[aria-label='關閉對話框']"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[aria-label='下一頁']"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ name 屬性（表單元素幾乎不會改）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[name='email']"</span><span style="color:#98C379"> "test@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[name='password']"</span><span style="color:#98C379"> "secret"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 語意化結構（不太會變，且意圖明確）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "nav .main-menu a[href='/dashboard']"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "header button[type='submit']"</span></span></code></pre> </div> </div>   <div class="call tip"><span class="ci">💡</span><div><strong>說服前端工程師加 data-testid</strong><p>若你維護的專案有前端代碼控制權，在關鍵元素加上 <code>data-testid</code> 屬性是最低成本、最高回報的自動化投資。這個屬性對使用者不可見、不影響樣式，卻能讓測試腳本完全不受 UI 重構影響。</p></div></div>  <h2>6.8 處理動態元素</h2> <p>
+現代 SPA 頁面大量使用 AJAX 和動態渲染，元素可能在操作後才出現或消失。直接定位尚未出現的元素會得到 <code>selector_not_found</code> 錯誤。正確做法是先等待再定位。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>等待元素出現後再操作</span> <button class="cb-copy" data-code="# 等待 API 回應後出現的結果列表
+opencli browser work wait selector &quot;.search-results&quot; --timeout 10000
+
+# 等出現後再操作列表內的元素
+opencli browser work click &quot;.search-results .result-item:first-child a&quot;
+
+# 等待聊天機器人回覆出現
+opencli browser work wait selector &quot;.message.bot-message:last-child&quot; --timeout 30000
+
+# 等待後取得最新回覆的內容
+opencli browser work eval &quot;document.querySelector('.message.bot-message:last-child .content').textContent&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待 API 回應後出現的結果列表</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".search-results"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等出現後再操作列表內的元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> ".search-results .result-item:first-child a"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待聊天機器人回覆出現</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".message.bot-message:last-child"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 30000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待後取得最新回覆的內容</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('.message.bot-message:last-child .content').textContent"</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>等待元素消失（確認操作完成）</span> <button class="cb-copy" data-code="# 點擊刪除後，等待確認對話框出現
+opencli browser work click &quot;[data-testid='delete-btn']&quot;
+opencli browser work wait selector &quot;.confirm-dialog&quot; --timeout 5000
+
+# 確認刪除
+opencli browser work click &quot;[data-testid='confirm-delete']&quot;
+
+# 等待對話框消失，確認操作完成
+# （若對話框關閉後頁面重整，直接 wait selector 新頁面的元素）
+opencli browser work wait selector &quot;.success-toast&quot; --timeout 5000" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 點擊刪除後，等待確認對話框出現</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[data-testid='delete-btn']"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".confirm-dialog"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 5000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 確認刪除</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[data-testid='confirm-delete']"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待對話框消失，確認操作完成</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># （若對話框關閉後頁面重整，直接 wait selector 新頁面的元素）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".success-toast"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 5000</span></span></code></pre> </div> </div>   <div class="call warning"><span class="ci">⚠️</span><div><strong>避免使用固定 wait time</strong><p>不要用 <code>wait time 3</code> 來「等頁面載入」。固定等待在快速環境下浪費時間，在慢速環境下又不夠用。請改用 <code>wait selector</code> 或 <code>wait text</code> 等事件驅動的等待策略，腳本才能在各種環境下穩定運行。</p></div></div>  <h2>6.9 在 Vitest 測試中使用 Selector</h2> <p>
+將 OpenCLI 整合進 Vitest 測試時，selector 策略的品質尤為關鍵。以下示範標準的包裝與使用模式：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>helpers/opencli.ts — 包裝 OpenCLI 指令</span> <button class="cb-copy" data-code="// helpers/opencli.ts
+import { execa } from 'execa';
+
+export async function browser(...args: string[]) {
+  const result = await execa('opencli', ['browser', 'work', ...args]);
+  return JSON.parse(result.stdout);
+}
+
+export async function click(selector: string) {
+  return browser('click', selector);
+}
+
+export async function fill(selector: string, value: string) {
+  return browser('fill', selector, value);
+}
+
+export async function waitFor(selector: string, timeout = 10000) {
+  return browser('wait', 'selector', selector, '--timeout', String(timeout));
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">//</span><span style="color:#98C379"> helpers/opencli.ts</span></span>
+<span class="line"><span style="color:#61AFEF">import</span><span style="color:#98C379"> {</span><span style="color:#98C379"> execa</span><span style="color:#98C379"> }</span><span style="color:#98C379"> from</span><span style="color:#98C379"> 'execa'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> async</span><span style="color:#E06C75"> function</span><span style="color:#E06C75"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#56B6C2">..</span><span style="color:#98C379">.args:</span><span style="color:#98C379"> string[]</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#61AFEF">  const</span><span style="color:#98C379"> result</span><span style="color:#98C379"> =</span><span style="color:#98C379"> await</span><span style="color:#98C379"> execa</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'opencli'</span><span style="color:#61AFEF">,</span><span style="color:#ABB2BF"> [</span><span style="color:#98C379">'browser'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'work',</span><span style="color:#98C379"> ...args]</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#98C379"> JSON.parse</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">result.stdout</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> async</span><span style="color:#E06C75"> function</span><span style="color:#E06C75"> click</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">selector:</span><span style="color:#98C379"> string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'click'</span><span style="color:#61AFEF">,</span><span style="color:#98C379"> selector</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> async</span><span style="color:#E06C75"> function</span><span style="color:#E06C75"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">selector:</span><span style="color:#98C379"> string,</span><span style="color:#98C379"> value:</span><span style="color:#98C379"> string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'fill'</span><span style="color:#61AFEF">,</span><span style="color:#98C379"> selector,</span><span style="color:#98C379"> value</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> async</span><span style="color:#E06C75"> function</span><span style="color:#E06C75"> waitFor</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">selector:</span><span style="color:#98C379"> string,</span><span style="color:#98C379"> timeout</span><span style="color:#98C379"> =</span><span style="color:#D19A66"> 10000</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'wait'</span><span style="color:#61AFEF">,</span><span style="color:#98C379"> 'selector',</span><span style="color:#98C379"> selector,</span><span style="color:#98C379"> '--timeout',</span><span style="color:#98C379"> String</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">timeout</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>spec 中使用穩定 Selector</span> <button class="cb-copy" data-code="// tests/chat.spec.ts
+import { click, fill, waitFor, browser } from './helpers/opencli';
+
+test('送出訊息並收到回覆', async () => {
+  // 使用 data-testid（最穩定）
+  await fill('[data-testid=&quot;message-input&quot;]', '你好，請介紹一下自己');
+  await click('[data-testid=&quot;send-button&quot;]');
+
+  // 等待 bot 回覆出現
+  await waitFor('.message.bot-message', 30000);
+
+  // 取得最新回覆文字
+  const text = await browser('eval',
+    &quot;document.querySelector('.message.bot-message:last-child .content').textContent&quot;
+  );
+
+  expect(text.length).toBeGreaterThan(10);
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">//</span><span style="color:#98C379"> tests/chat.spec.ts</span></span>
+<span class="line"><span style="color:#61AFEF">import</span><span style="color:#98C379"> {</span><span style="color:#98C379"> click,</span><span style="color:#98C379"> fill,</span><span style="color:#98C379"> waitFor,</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> }</span><span style="color:#98C379"> from</span><span style="color:#98C379"> './helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">test</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'送出訊息並收到回覆'</span><span style="color:#61AFEF">,</span><span style="color:#98C379"> async</span><span style="color:#ABB2BF"> () => {</span></span>
+<span class="line"><span style="color:#61AFEF">  //</span><span style="color:#98C379"> 使用</span><span style="color:#98C379"> data-testid（最穩定）</span></span>
+<span class="line"><span style="color:#61AFEF">  await</span><span style="color:#98C379"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'[data-testid="message-input"]'</span><span style="color:#61AFEF">,</span><span style="color:#98C379"> '你好，請介紹一下自己'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">  await</span><span style="color:#98C379"> click</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'[data-testid="send-button"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  //</span><span style="color:#98C379"> 等待</span><span style="color:#98C379"> bot</span><span style="color:#98C379"> 回覆出現</span></span>
+<span class="line"><span style="color:#61AFEF">  await</span><span style="color:#98C379"> waitFor</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'.message.bot-message'</span><span style="color:#61AFEF">,</span><span style="color:#D19A66"> 30000</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  //</span><span style="color:#98C379"> 取得最新回覆文字</span></span>
+<span class="line"><span style="color:#61AFEF">  const</span><span style="color:#98C379"> text</span><span style="color:#98C379"> =</span><span style="color:#98C379"> await</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'eval'</span><span style="color:#61AFEF">,</span></span>
+<span class="line"><span style="color:#61AFEF">    "document.querySelector('.message.bot-message:last-child .content').textContent"</span></span>
+<span class="line"><span style="color:#ABB2BF">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  expect(text.length</span><span style="color:#ABB2BF">).toBeGreaterThan(</span><span style="color:#61AFEF">10</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>    <h2>6.10 eval：終極定位手段</h2> <p>
+當頁面結構極為特殊、CSS selector 難以精確命中，或需要複雜的條件定位時，<code>eval</code> 讓你用完整的 JavaScript 邏輯找到元素。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>eval 定位與操作範例</span> <button class="cb-copy" data-code="# 找特定文字的元素然後點擊
+opencli browser work eval &quot;document.querySelector('.messages .message:last-child .copy-btn').click()&quot;
+
+# 計算頁面上 bot 訊息的數量（用於等待或斷言）
+opencli browser work eval &quot;document.querySelectorAll('.message.bot').length&quot;
+
+# 找所有包含特定文字的按鈕，點擊第一個
+opencli browser work eval &quot;
+  Array.from(document.querySelectorAll('button'))
+    .find(btn => btn.textContent.trim() === '複製')
+    ?.click()
+&quot;
+
+# 讀取特定位置的表格儲存格值
+opencli browser work eval &quot;document.querySelector('table tbody tr:nth-child(2) td:nth-child(3)').textContent.trim()&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 找特定文字的元素然後點擊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('.messages .message:last-child .copy-btn').click()"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 計算頁面上 bot 訊息的數量（用於等待或斷言）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('.message.bot').length"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 找所有包含特定文字的按鈕，點擊第一個</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "</span></span>
+<span class="line"><span style="color:#98C379">  Array.from(document.querySelectorAll('button'))</span></span>
+<span class="line"><span style="color:#98C379">    .find(btn => btn.textContent.trim() === '複製')</span></span>
+<span class="line"><span style="color:#98C379">    ?.click()</span></span>
+<span class="line"><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取特定位置的表格儲存格值</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('table tbody tr:nth-child(2) td:nth-child(3)').textContent.trim()"</span></span></code></pre> </div> </div>   <div class="call warning"><span class="ci">⚠️</span><div><strong>eval 是最後手段，不是首選</strong><p>雖然 <code>eval</code> 威力強大，但它繞過了 OpenCLI 的事件模擬機制，直接執行 JS 的 <code>.click()</code> 不一定會觸發框架的事件處理器（React、Vue 的合成事件系統）。能用 CSS Selector 解決的，優先用 CSS Selector；需要等待的，先用 <code>wait</code> 再定位；只有真的找不到合適 selector 時，才動用 <code>eval</code>。</p></div></div>  <h2>6.11 定位方式快速決策流程</h2> <p>
+面對一個要操作的元素，依以下順序評估：
+</p> <ol> <li><strong>有 <code>data-testid</code> 嗎？</strong> → 直接用 <code>[data-testid="..."]</code>，最優先</li> <li><strong>有唯一的 <code>id</code> 嗎？</strong> → 用 <code>#id-name</code></li> <li><strong>是表單元素且有 <code>name</code> 嗎？</strong> → 用 <code>[name="field-name"]</code></li> <li><strong>有語意化的 <code>aria-label</code> 嗎？</strong> → 用 <code>[aria-label="..."]</code></li> <li><strong>有穩定的語意 class（非 CSS-in-JS）嗎？</strong> → 組合結構 selector</li> <li><strong>以上都不適合？</strong> → 用 <code>find --text "..."</code> 或 <code>eval</code></li> <li><strong>只是快速探索？</strong> → 用 <code>state</code> + N 索引，但不寫進腳本</li> </ol> <div class="call info"><strong>小結：定位是可維護性的基礎</strong><br>好的 selector 策略讓腳本在頁面改版後繼續工作；壞的 selector 讓你在每次 UI 調整後都要重寫測試。從一開始就選對定位方式，是讓自動化投資長期有效的關鍵。</div> <p>
+掌握元素定位後，下一章將深入探討 <code>eval</code>、<code>wait</code>、<code>network</code> 三個進階指令的完整用法——包括如何攔截 API 回應、設計可靠的等待策略，以及用 JavaScript 直接操控頁面狀態。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>完整指令參考</span> </a> <a href="/opencli/ch07-advanced" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

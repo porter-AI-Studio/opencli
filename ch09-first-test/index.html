@@ -1,0 +1,637 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>撰寫第一個 E2E 測試 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="從零開始寫出完整的 E2E 測試：登入流程、表單互動、截圖除錯，建立可靠測試的三個好習慣，並展示第二個搜尋功能測試範例。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 9 章 · Part 3：E2E 測試</span> <h1>撰寫第一個 E2E 測試</h1> <p class="cdesc">
+上一章建立了 Vitest + OpenCLI 的測試基礎架構，這一章我們把它用起來。
+    從一個真實的登入流程出發，逐步拆解每個測試步驟，學習如何找元素、填表單、
+    斷言結果，以及在失敗時用截圖快速定位問題。
+</p>    <h2 id="target">1. 測試目標：一個真實的登入流程</h2> <p>
+為什麼第一個 E2E 測試要選「登入」？因為登入流程具備幾乎所有 E2E 測試的共同元素：
+    頁面導航、表單填寫、按鈕點擊、非同步等待、URL 跳轉、狀態驗證。
+    把登入流程測好，後續所有測試都是同一套思路的延伸。
+</p> <p>我們要驗證的行為如下：</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>步驟</th> <th>操作</th> <th>預期結果</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>開啟 <code>/login</code></td> <td>頁面顯示 email、password 輸入框</td> </tr> <tr> <td>2</td> <td>填入合法帳號密碼，點擊送出</td> <td>頁面出現「歡迎」文字（非同步）</td> </tr> <tr> <td>3</td> <td>驗證登入後狀態</td> <td>頁面包含「儀表板」與「登出」</td> </tr> <tr> <td>4</td> <td>點擊登出</td> <td>跳轉回 <code>/login</code>，表單再度出現</td> </tr> </tbody> </table> </div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試目標概覽（偽程式碼）</span> <button class="cb-copy" data-code="// 我們要驗證的三個關鍵行為：
+// 1. /login 頁面正確渲染登入表單
+// 2. 填入合法帳號密碼後，成功跳轉至儀表板
+// 3. 點擊登出後，回到 /login
+
+// 每一步都有明確的「輸入 → 操作 → 斷言」結構" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// 我們要驗證的三個關鍵行為：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 1. /login 頁面正確渲染登入表單</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 2. 填入合法帳號密碼後，成功跳轉至儀表板</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 3. 點擊登出後，回到 /login</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 每一步都有明確的「輸入 → 操作 → 斷言」結構</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script>    <h2 id="structure">2. 測試檔案結構</h2> <p>
+在 <code>e2e/specs/</code> 資料夾建立 <code>01-login.spec.ts</code>。
+    用數字前綴命名是個好習慣——Vitest 預設按字母順序執行，前綴讓執行順序一目了然，
+    也方便之後插入新的測試檔案。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/specs/01-login.spec.ts — 完整版本</span> <button class="cb-copy" data-code="import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import * as cli from '../helpers/opencli';
+
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3000';
+
+describe('登入流程', () => {
+  // 整個 describe 只開一次瀏覽器分頁
+  beforeAll(async () => {
+    await cli.open(`${BASE_URL}/login`);
+  });
+
+  // 測試結束後關閉 session，釋放資源
+  afterAll(async () => {
+    await cli.browser('session', 'close');
+  });
+
+  it('應顯示登入表單', async () => {
+    const html = await cli.state();
+    expect(html).toContain('type=&quot;email&quot;');
+    expect(html).toContain('type=&quot;password&quot;');
+  });
+
+  it('填入帳號密碼後應登入成功', async () => {
+    await cli.fill('input[type=&quot;email&quot;]',    'user@example.com');
+    await cli.fill('input[type=&quot;password&quot;]', 'secret123');
+    await cli.click('button[type=&quot;submit&quot;]');
+    await cli.browser('wait', 'text', '歡迎', '--timeout', '10000');
+  });
+
+  it('登入後應顯示儀表板', async () => {
+    const html = await cli.state();
+    expect(html).toContain('儀表板');
+    expect(html).toContain('登出');
+  });
+
+  it('登出後應回到登入頁', async () => {
+    await cli.click('a[href*=&quot;logout&quot;], button.logout');
+    await cli.browser('wait', 'selector', 'input[type=&quot;email&quot;]', '--timeout', '8000');
+    const html = await cli.state();
+    expect(html).toContain('type=&quot;email&quot;');
+  });
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">describe</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">it</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">expect</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">beforeAll</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">afterAll</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> cli</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> '../helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> BASE_URL</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> process</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">env</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">BASE_URL</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> 'http://localhost:3000'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">describe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入流程'</span><span style="color:#ABB2BF">, () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 整個 describe 只開一次瀏覽器分頁</span></span>
+<span class="line"><span style="color:#61AFEF">  beforeAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">BASE_URL</span><span style="color:#C678DD">}</span><span style="color:#98C379">/login`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 測試結束後關閉 session，釋放資源</span></span>
+<span class="line"><span style="color:#61AFEF">  afterAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'session'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'close'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'應顯示登入表單'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="email"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="password"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'填入帳號密碼後應登入成功'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">,    </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="password"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'歡迎'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入後應顯示儀表板'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'儀表板'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登出'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登出後應回到登入頁'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'a[href*="logout"], button.logout'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'selector'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'8000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="email"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call info"> <strong>describe / it / beforeAll / afterAll 的職責分工</strong> <ul> <li><code>describe</code>：把相關的 it 群組在一起，提供語意上的分類</li> <li><code>beforeAll</code>：整個 describe 執行前跑一次，適合做一次性的準備工作（開瀏覽器、登入）</li> <li><code>afterAll</code>：整個 describe 執行後跑一次，適合清理資源（關閉 session）</li> <li><code>it</code>（或 <code>test</code>）：一個獨立的測試案例，只測一件事</li> </ul> </div>    <h2 id="breakdown">3. 逐步拆解每個 it 區塊</h2> <p>
+現在我們把完整的 spec 拆開來看，理解每一個 <code>it</code> 裡面發生了什麼事。
+</p> <h3>Step 1：驗證登入表單存在</h3> <p>
+第一個 <code>it</code> 最單純：開啟頁面之後，確認 DOM 裡有 email 和 password 的輸入框。
+<code>cli.state()</code> 會回傳當前頁面的完整 HTML 字串，我們用 <code>toContain</code> 斷言。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>it #1：確認表單元素存在</span> <button class="cb-copy" data-code="it('應顯示登入表單', async () => {
+  // cli.state() 回傳當前頁面的 HTML（字串）
+  const html = await cli.state();
+
+  // 斷言：頁面裡存在 email 輸入欄位
+  expect(html).toContain('type=&quot;email&quot;');
+  // 斷言：頁面裡存在 password 輸入欄位
+  expect(html).toContain('type=&quot;password&quot;');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#61AFEF">it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'應顯示登入表單'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // cli.state() 回傳當前頁面的 HTML（字串）</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 斷言：頁面裡存在 email 輸入欄位</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="email"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 斷言：頁面裡存在 password 輸入欄位</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="password"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call tip"> <strong>為什麼用 state() 而不是 find()?</strong> <p> <code>cli.state()</code> 一次拿回整個頁面 HTML，適合做「頁面整體狀態」的斷言。
+      如果你需要驗證某個特定元素的屬性或文字，也可以搭配 <code>cli.evalJs()</code>
+精確讀取。選擇哪個，取決於你想驗證「整體」還是「細節」。
+</p> </div> <h3>Step 2：填寫表單並登入</h3> <p>
+第二個 <code>it</code> 是整個測試的核心操作：填表單 → 點送出 → 等待結果。
+<code>cli.fill()</code> 接受 CSS 選擇器和填入值；<code>cli.click()</code> 觸發點擊；
+<code>cli.browser('wait', 'text', ...)</code> 等待特定文字出現，這是處理非同步跳轉最可靠的方式。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>it #2：填表單 + 等待登入成功</span> <button class="cb-copy" data-code="it('填入帳號密碼後應登入成功', async () => {
+  // 1. 填寫 email 欄位
+  await cli.fill('input[type=&quot;email&quot;]', 'user@example.com');
+
+  // 2. 填寫密碼欄位
+  await cli.fill('input[type=&quot;password&quot;]', 'secret123');
+
+  // 3. 點擊送出按鈕
+  await cli.click('button[type=&quot;submit&quot;]');
+
+  // 4. 等待「歡迎」文字出現，確認登入成功（最多 10 秒）
+  await cli.browser('wait', 'text', '歡迎', '--timeout', '10000');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#61AFEF">it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'填入帳號密碼後應登入成功'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 1. 填寫 email 欄位</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 2. 填寫密碼欄位</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="password"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 3. 點擊送出按鈕</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 4. 等待「歡迎」文字出現，確認登入成功（最多 10 秒）</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'歡迎'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call warn"> <strong>不要用 sleep 等待，要用 wait</strong> <p>
+你可能會想到用 <code>await new Promise(r => setTimeout(r, 3000))</code> 等 3 秒。
+      這樣做有兩個問題：一是慢，明明 500ms 就完成了卻等了 3 秒；二是脆弱，
+      如果網路變慢超過 3 秒就會失敗。<code>wait text</code> 會持續輪詢直到條件成立或超時，
+      既快又可靠。
+</p> </div> <h3>Step 3：驗證儀表板頁面</h3> <p>
+登入成功後，驗證當前頁面確實是儀表板，而不是停留在錯誤頁或其他位置。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>it #3：確認儀表板內容</span> <button class="cb-copy" data-code="it('登入後應顯示儀表板', async () => {
+  // 登入成功後取得當前頁面 HTML
+  const html = await cli.state();
+
+  // 應包含儀表板標題
+  expect(html).toContain('儀表板');
+
+  // 應包含登出入口（確認使用者狀態正確）
+  expect(html).toContain('登出');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#61AFEF">it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入後應顯示儀表板'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 登入成功後取得當前頁面 HTML</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 應包含儀表板標題</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'儀表板'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 應包含登出入口（確認使用者狀態正確）</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登出'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <h3>Step 4：登出並確認跳轉</h3> <p>
+最後一步：觸發登出，等待 email 輸入框再次出現（代表已回到登入頁），
+    再次確認頁面狀態。注意選擇器 <code>'a[href*="logout"], button.logout'</code> 使用逗號
+    分隔兩個選擇器，相容不同網站的登出按鈕實作方式。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>it #4：登出並驗證跳回登入頁</span> <button class="cb-copy" data-code="it('登出後應回到登入頁', async () => {
+  // 點擊登出連結或按鈕（相容不同網站的選擇器寫法）
+  await cli.click('a[href*=&quot;logout&quot;], button.logout');
+
+  // 等待登入表單再次出現，確認已跳轉回 /login
+  await cli.browser('wait', 'selector', 'input[type=&quot;email&quot;]', '--timeout', '8000');
+
+  const html = await cli.state();
+  expect(html).toContain('type=&quot;email&quot;');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#61AFEF">it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登出後應回到登入頁'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 點擊登出連結或按鈕（相容不同網站的選擇器寫法）</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'a[href*="logout"], button.logout'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 等待登入表單再次出現，確認已跳轉回 /login</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'selector'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'8000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="email"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>      <h2 id="run">4. 跑起來</h2> <p>
+確認開發伺服器已在 <code>http://localhost:3000</code> 執行後，
+    在另一個終端機執行測試指令：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>執行測試</span> <button class="cb-copy" data-code="# 執行單一測試檔案
+npx vitest run e2e/specs/01-login.spec.ts
+
+# 搭配環境變數（指向 staging 環境）
+BASE_URL=https://staging.example.com npx vitest run e2e/specs/01-login.spec.ts" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 執行單一測試檔案</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> vitest</span><span style="color:#98C379"> run</span><span style="color:#98C379"> e2e/specs/01-login.spec.ts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 搭配環境變數（指向 staging 環境）</span></span>
+<span class="line"><span style="color:#E06C75">BASE_URL</span><span style="color:#56B6C2">=</span><span style="color:#98C379">https://staging.example.com</span><span style="color:#61AFEF"> npx</span><span style="color:#98C379"> vitest</span><span style="color:#98C379"> run</span><span style="color:#98C379"> e2e/specs/01-login.spec.ts</span></span></code></pre> </div> </div>   <h3>通過時的輸出</h3> <p>所有測試通過，你會看到類似以下的輸出：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試全部通過</span> <button class="cb-copy" data-code=" PASS  e2e/specs/01-login.spec.ts (3.21 s)
+  登入流程
+    ✓ 應顯示登入表單 (412 ms)
+    ✓ 填入帳號密碼後應登入成功 (1834 ms)
+    ✓ 登入後應顯示儀表板 (298 ms)
+    ✓ 登出後應回到登入頁 (671 ms)
+
+ Test Files  1 passed (1)
+ Tests       4 passed (4)
+ Duration    3.34 s" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF"> PASS</span><span style="color:#98C379">  e2e/specs/01-login.spec.ts</span><span style="color:#ABB2BF"> (3.21 </span><span style="color:#98C379">s</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">  登入流程</span></span>
+<span class="line"><span style="color:#61AFEF">    ✓</span><span style="color:#98C379"> 應顯示登入表單</span><span style="color:#ABB2BF"> (412 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">    ✓</span><span style="color:#98C379"> 填入帳號密碼後應登入成功</span><span style="color:#ABB2BF"> (1834 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">    ✓</span><span style="color:#98C379"> 登入後應顯示儀表板</span><span style="color:#ABB2BF"> (298 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">    ✓</span><span style="color:#98C379"> 登出後應回到登入頁</span><span style="color:#ABB2BF"> (671 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF"> Test</span><span style="color:#98C379"> Files</span><span style="color:#D19A66">  1</span><span style="color:#98C379"> passed</span><span style="color:#ABB2BF"> (1)</span></span>
+<span class="line"><span style="color:#61AFEF"> Tests</span><span style="color:#D19A66">       4</span><span style="color:#98C379"> passed</span><span style="color:#ABB2BF"> (4)</span></span>
+<span class="line"><span style="color:#61AFEF"> Duration</span><span style="color:#D19A66">    3.34</span><span style="color:#98C379"> s</span></span></code></pre> </div> </div>   <h3>失敗時的輸出</h3> <p>
+當測試失敗，Vitest 會精確指出哪個 <code>it</code> 失敗、錯誤原因，
+    以及呼叫堆疊的位置：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試失敗範例</span> <button class="cb-copy" data-code=" FAIL  e2e/specs/01-login.spec.ts (5.14 s)
+  登入流程
+    ✓ 應顯示登入表單 (398 ms)
+    ✗ 填入帳號密碼後應登入成功 (10042 ms)
+      → Error: timeout exceeded waiting for text &quot;歡迎&quot;
+        at waitText (helpers/opencli.ts:61:11)
+        at 01-login.spec.ts:23:5
+    - 登入後應顯示儀表板 (skipped)
+    - 登出後應回到登入頁 (skipped)
+
+ Test Files  1 failed (1)
+ Tests       1 failed | 3 skipped (4)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF"> FAIL</span><span style="color:#98C379">  e2e/specs/01-login.spec.ts</span><span style="color:#ABB2BF"> (5.14 </span><span style="color:#98C379">s</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">  登入流程</span></span>
+<span class="line"><span style="color:#61AFEF">    ✓</span><span style="color:#98C379"> 應顯示登入表單</span><span style="color:#ABB2BF"> (398 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">    ✗</span><span style="color:#98C379"> 填入帳號密碼後應登入成功</span><span style="color:#ABB2BF"> (10042 </span><span style="color:#98C379">ms</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#61AFEF">      →</span><span style="color:#98C379"> Error:</span><span style="color:#98C379"> timeout</span><span style="color:#98C379"> exceeded</span><span style="color:#98C379"> waiting</span><span style="color:#98C379"> for</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "歡迎"</span></span>
+<span class="line"><span style="color:#61AFEF">        at</span><span style="color:#98C379"> waitText</span><span style="color:#ABB2BF"> (helpers/opencli.ts:61:11)</span></span>
+<span class="line"><span style="color:#61AFEF">        at</span><span style="color:#98C379"> 01-login.spec.ts:23:5</span></span>
+<span class="line"><span style="color:#61AFEF">    -</span><span style="color:#98C379"> 登入後應顯示儀表板</span><span style="color:#ABB2BF"> (skipped)</span></span>
+<span class="line"><span style="color:#61AFEF">    -</span><span style="color:#98C379"> 登出後應回到登入頁</span><span style="color:#ABB2BF"> (skipped)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF"> Test</span><span style="color:#98C379"> Files</span><span style="color:#D19A66">  1</span><span style="color:#98C379"> failed</span><span style="color:#ABB2BF"> (1)</span></span>
+<span class="line"><span style="color:#61AFEF"> Tests</span><span style="color:#D19A66">       1</span><span style="color:#98C379"> failed</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">3</span><span style="color:#98C379"> skipped</span><span style="color:#ABB2BF"> (4)</span></span></code></pre> </div> </div>   <div class="call info"> <strong>讀懂失敗訊息</strong> <ul> <li><code>→ Error: timeout exceeded waiting for text "歡迎"</code>：等了 10 秒，頁面始終沒出現「歡迎」——可能是後端返回錯誤，或選擇器不對</li> <li><code>skipped</code>：因為前面的 it 失敗，後續的 it 被跳過——這是正常行為，避免在錯誤狀態下繼續執行</li> <li>最後一行 <code>Duration</code> 約等於 timeout 設定值，代表是「等到超時」而不是「立刻失敗」</li> </ul> </div>    <h2 id="screenshot">5. 加上截圖輔助除錯</h2> <p>
+文字訊息說「timeout」，但你不知道當下頁面長什麼樣子。
+    截圖是 E2E 測試除錯最直覺的工具——一張截圖勝過千行 log。
+</p> <h3>手動在失敗點截圖</h3> <p>
+最直接的做法：在你懷疑會失敗的地方，用 try/catch 包住操作，
+    失敗時立刻截圖。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>手動在失敗點截圖</span> <button class="cb-copy" data-code="it('填入帳號密碼後應登入成功', async () => {
+  await cli.fill('input[type=&quot;email&quot;]',    'user@example.com');
+  await cli.fill('input[type=&quot;password&quot;]', 'secret123');
+
+  // 填寫後截圖，確認表單狀態正確
+  await cli.screenshot('02-form-filled.png');
+
+  await cli.click('button[type=&quot;submit&quot;]');
+
+  try {
+    await cli.browser('wait', 'text', '歡迎', '--timeout', '10000');
+  } catch (e) {
+    // 失敗時截圖，保留現場
+    await cli.screenshot('02-login-failed.png');
+    throw e;
+  }
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#61AFEF">it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'填入帳號密碼後應登入成功'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">,    </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="password"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 填寫後截圖，確認表單狀態正確</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">screenshot</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'02-form-filled.png'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'歡迎'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">e</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 失敗時截圖，保留現場</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">screenshot</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'02-login-failed.png'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    throw</span><span style="color:#E06C75"> e</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <h3>afterEach 自動截圖模式</h3> <p>
+更系統化的做法：用 <code>afterEach</code> 鉤子，在每個 <code>it</code> 失敗後自動截圖，
+    不需要在每個 test case 裡手動加 try/catch。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>afterEach 自動截圖（放在 setup 或 spec 最上方）</span> <button class="cb-copy" data-code="import { afterEach } from 'vitest';
+import * as cli from '../helpers/opencli';
+
+// 每個 it 結束後，若失敗就自動截圖
+afterEach(async (ctx) => {
+  if (ctx.task.result?.state === 'fail') {
+    const safeName = ctx.task.name.replace(/\s+/g, '_');
+    await cli.screenshot(`FAILED-${safeName}-${Date.now()}.png`);
+    console.error(`截圖已儲存：artifacts/FAILED-${safeName}-*.png`);
+  }
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">afterEach</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> cli</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> '../helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 每個 it 結束後，若失敗就自動截圖</span></span>
+<span class="line"><span style="color:#61AFEF">afterEach</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">ctx</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">result</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">state</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'fail'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> safeName</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">name</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/\s</span><span style="color:#D19A66">+</span><span style="color:#E06C75">/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'_'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">screenshot</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`FAILED-</span><span style="color:#C678DD">${</span><span style="color:#E06C75">safeName</span><span style="color:#C678DD">}</span><span style="color:#98C379">-</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">()</span><span style="color:#C678DD">}</span><span style="color:#98C379">.png`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">error</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`截圖已儲存：artifacts/FAILED-</span><span style="color:#C678DD">${</span><span style="color:#E06C75">safeName</span><span style="color:#C678DD">}</span><span style="color:#98C379">-*.png`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call tip"> <strong>截圖儲存在哪裡？</strong> <p> <code>cli.screenshot()</code> helper 已在第 8 章設計為儲存至 <code>e2e/artifacts/</code> 資料夾。
+      記得把 <code>e2e/artifacts/</code> 加入 <code>.gitignore</code>，避免把截圖 commit 進去。
+      本地開發時直接打開圖檔檢查即可。
+</p> </div> <h3>CI 環境上傳截圖</h3> <p>
+在 CI 流程中，測試失敗產生的截圖可以上傳為 artifact，方便事後查看。
+    以 GitHub Actions 為例：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>GitHub Actions：上傳截圖 artifact</span> <button class="cb-copy" data-code="# .github/workflows/e2e.yml 節錄
+- name: Upload screenshots on failure
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: e2e-screenshots
+    path: e2e/artifacts/*.png
+    retention-days: 7" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># .github/workflows/e2e.yml 節錄</span></span>
+<span class="line"><span style="color:#61AFEF">-</span><span style="color:#98C379"> name:</span><span style="color:#98C379"> Upload</span><span style="color:#98C379"> screenshots</span><span style="color:#98C379"> on</span><span style="color:#98C379"> failure</span></span>
+<span class="line"><span style="color:#ABB2BF">  if: </span><span style="color:#61AFEF">failure</span><span style="color:#ABB2BF">()</span></span>
+<span class="line"><span style="color:#61AFEF">  uses:</span><span style="color:#98C379"> actions/upload-artifact@v4</span></span>
+<span class="line"><span style="color:#61AFEF">  with:</span></span>
+<span class="line"><span style="color:#61AFEF">    name:</span><span style="color:#98C379"> e2e-screenshots</span></span>
+<span class="line"><span style="color:#61AFEF">    path:</span><span style="color:#98C379"> e2e/artifacts/</span><span style="color:#E5C07B">*</span><span style="color:#98C379">.png</span></span>
+<span class="line"><span style="color:#61AFEF">    retention-days:</span><span style="color:#D19A66"> 7</span></span></code></pre> </div> </div>      <h2 id="best-practices">6. 測試的三個好習慣</h2> <h3>好習慣一：每個 it 只測一件事</h3> <p>
+每個 <code>it</code> 的名稱就是它的規格說明，名稱應該能完整描述「在什麼情況下，
+    預期什麼行為」。如果你的 it 名稱裡出現「並且」，通常代表你塞了太多東西進去，
+    應該拆成兩個 it。
+</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>範例</th> <th>問題</th> </tr> </thead> <tbody> <tr> <td><code>it('登入並進入儀表板並驗證使用者名稱')</code></td> <td>三件事混在一起，哪裡壞掉不容易定位</td> </tr> <tr> <td><code>it('填入帳號密碼後應登入成功')</code></td> <td>一件事，清楚明確</td> </tr> <tr> <td><code>it('登入後應顯示儀表板')</code></td> <td>一件事，清楚明確</td> </tr> </tbody> </table> </div> <h3>好習慣二：用 beforeAll 做一次性準備</h3> <p>
+每個 <code>it</code> 都呼叫 <code>cli.open()</code> 是常見的反模式。
+    開瀏覽器、載入頁面本身就需要時間，重複做只會讓測試變慢，
+    而且在某些情況下還會造成 session 衝突。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>❌ 反模式 vs ✅ 正確做法</span> <button class="cb-copy" data-code="// ❌ 反模式：每個 it 都重新打開瀏覽器（慢、資源浪費）
+describe('登入流程', () => {
+  it('應顯示登入表單', async () => {
+    await cli.open('http://localhost:3000/login'); // 重複開啟
+    const html = await cli.state();
+    expect(html).toContain('type=&quot;email&quot;');
+  });
+
+  it('填入帳號密碼', async () => {
+    await cli.open('http://localhost:3000/login'); // 又再開一次！
+    await cli.fill('input[type=&quot;email&quot;]', 'user@example.com');
+    // ...
+  });
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// ❌ 反模式：每個 it 都重新打開瀏覽器（慢、資源浪費）</span></span>
+<span class="line"><span style="color:#61AFEF">describe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入流程'</span><span style="color:#ABB2BF">, () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'應顯示登入表單'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'http://localhost:3000/login'</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 重複開啟</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="email"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'填入帳號密碼'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'http://localhost:3000/login'</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 又再開一次！</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // ...</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>✅ 正確做法：beforeAll 只開一次</span> <button class="cb-copy" data-code="// ✅ 正確做法：beforeAll 只開一次，所有 it 共用同一個 session
+describe('登入流程', () => {
+  beforeAll(async () => {
+    await cli.open('http://localhost:3000/login'); // 只開一次
+  });
+
+  afterAll(async () => {
+    await cli.browser('session', 'close');         // 最後統一關
+  });
+
+  it('應顯示登入表單', async () => { /* ... */ });
+  it('填入帳號密碼後應登入成功', async () => { /* ... */ });
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// ✅ 正確做法：beforeAll 只開一次，所有 it 共用同一個 session</span></span>
+<span class="line"><span style="color:#61AFEF">describe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入流程'</span><span style="color:#ABB2BF">, () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#61AFEF">  beforeAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'http://localhost:3000/login'</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 只開一次</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  afterAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'session'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'close'</span><span style="color:#ABB2BF">);         </span><span style="color:#7F848E;font-style:italic">// 最後統一關</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'應顯示登入表單'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> { </span><span style="color:#7F848E;font-style:italic">/* ... */</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'填入帳號密碼後應登入成功'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> { </span><span style="color:#7F848E;font-style:italic">/* ... */</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call warn"> <strong>注意：it 之間有執行順序依賴時才共用 session</strong> <p>
+共用 session 的前提是：後面的 it 依賴前面的 it 所建立的狀態（例如登入狀態）。
+      如果你的 it 之間完全獨立，應該考慮用 <code>beforeEach</code> 各自準備初始狀態，
+      避免一個 it 改變狀態後影響下一個。
+</p> </div> <h3>好習慣三：斷言要明確具體</h3> <p>
+模糊的斷言幾乎永遠是通過的，但它沒有驗證到任何有意義的東西。
+    好的斷言應該精確到「這個頁面特有的內容」。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>❌ 模糊斷言（幾乎永遠通過）</span> <button class="cb-copy" data-code="// ❌ 模糊斷言：通過了，但沒有驗證到任何有意義的東西
+const html = await cli.state();
+expect(html).toBeTruthy();          // 頁面有內容就過，幾乎永遠是 true
+expect(html.length).toBeGreaterThan(0); // 同上，毫無意義" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// ❌ 模糊斷言：通過了，但沒有驗證到任何有意義的東西</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBeTruthy</span><span style="color:#ABB2BF">();          </span><span style="color:#7F848E;font-style:italic">// 頁面有內容就過，幾乎永遠是 true</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">html</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBeGreaterThan</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 同上，毫無意義</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>✅ 具體斷言（真正驗證行為）</span> <button class="cb-copy" data-code="// ✅ 具體斷言：明確說出期望的內容
+const html = await cli.state();
+expect(html).toContain('歡迎，Porter');          // 精確到使用者名稱
+expect(html).toContain('data-page=&quot;dashboard&quot;'); // 確認是儀表板頁面
+expect(html).not.toContain('type=&quot;password&quot;');   // 確認已脫離登入頁" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// ✅ 具體斷言：明確說出期望的內容</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'歡迎，Porter'</span><span style="color:#ABB2BF">);          </span><span style="color:#7F848E;font-style:italic">// 精確到使用者名稱</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'data-page="dashboard"'</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 確認是儀表板頁面</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#E5C07B">not</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'type="password"'</span><span style="color:#ABB2BF">);   </span><span style="color:#7F848E;font-style:italic">// 確認已脫離登入頁</span></span></code></pre> </div> </div>      <h2 id="second-test">7. 加第二個測試：搜尋功能</h2> <p>
+登入流程測完了，我們接著加第二個測試：搜尋功能。
+    這個範例展示一個重要的現實情境——測試功能本身需要先完成登入才能使用。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/specs/02-search.spec.ts — 完整版本</span> <button class="cb-copy" data-code="import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import * as cli from '../helpers/opencli';
+
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3000';
+
+describe('搜尋功能', () => {
+  beforeAll(async () => {
+    // 搜尋功能需要先登入，beforeAll 先完成登入流程
+    await cli.open(`${BASE_URL}/login`);
+    await cli.fill('input[type=&quot;email&quot;]',    'user@example.com');
+    await cli.fill('input[type=&quot;password&quot;]', 'secret123');
+    await cli.click('button[type=&quot;submit&quot;]');
+    await cli.browser('wait', 'text', '歡迎', '--timeout', '10000');
+
+    // 登入後前往搜尋頁
+    await cli.open(`${BASE_URL}/search`);
+  });
+
+  afterAll(async () => {
+    await cli.browser('session', 'close');
+  });
+
+  it('應顯示搜尋輸入框', async () => {
+    const html = await cli.state();
+    expect(html).toContain('placeholder');
+    expect(html).toContain('search');
+  });
+
+  it('輸入關鍵字後應顯示結果', async () => {
+    await cli.fill('input[type=&quot;search&quot;]', 'Claude');
+    await cli.click('button[type=&quot;submit&quot;]');
+
+    // 等待結果列表出現
+    await cli.browser('wait', 'selector', '.search-results', '--timeout', '8000');
+
+    const html = await cli.state();
+    expect(html).toContain('Claude');
+  });
+
+  it('清空關鍵字後應重設結果', async () => {
+    // 清空搜尋欄（用空字串覆蓋）
+    await cli.fill('input[type=&quot;search&quot;]', '');
+    await cli.click('button[type=&quot;submit&quot;]');
+
+    await cli.browser('wait', 'selector', '.empty-state', '--timeout', '5000');
+    const html = await cli.state();
+    expect(html).toContain('empty-state');
+  });
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">describe</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">it</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">expect</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">beforeAll</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">afterAll</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> cli</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> '../helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> BASE_URL</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> process</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">env</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">BASE_URL</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> 'http://localhost:3000'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">describe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'搜尋功能'</span><span style="color:#ABB2BF">, () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#61AFEF">  beforeAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 搜尋功能需要先登入，beforeAll 先完成登入流程</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">BASE_URL</span><span style="color:#C678DD">}</span><span style="color:#98C379">/login`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">,    </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="password"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'歡迎'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 登入後前往搜尋頁</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">BASE_URL</span><span style="color:#C678DD">}</span><span style="color:#98C379">/search`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  afterAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'session'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'close'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'應顯示搜尋輸入框'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'placeholder'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'search'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'輸入關鍵字後應顯示結果'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="search"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'Claude'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 等待結果列表出現</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'selector'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'.search-results'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'8000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Claude'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">  it</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'清空關鍵字後應重設結果'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 清空搜尋欄（用空字串覆蓋）</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="search"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">''</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'selector'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'.empty-state'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'5000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> html</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">state</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">    expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'empty-state'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <h3>Session 策略：獨立 vs 共用</h3> <p>
+當你有多個 spec 檔案時，需要決定 session 如何管理：
+    是每個 spec 各自擁有獨立的 session，還是所有 spec 共用同一個已登入的 session？
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>兩種 Session 策略比較</span> <button class="cb-copy" data-code="// 策略 A：獨立 session（每個 spec 完全隔離，互不干擾）
+// helpers/opencli.ts 中 SESSION 名稱固定為 'e2e'，
+// 每個 spec 的 afterAll 都呼叫 session close，
+// 下一個 spec 的 beforeAll 再重新開啟。
+
+// 策略 B：共用 session（跨 spec 保留瀏覽器狀態）
+// 在 vitest.setup.ts 裡只開一次，globalThis 傳遞
+// vitest.setup.ts
+import * as cli from './helpers/opencli';
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3000';
+
+beforeAll(async () => {
+  await cli.open(`${BASE_URL}/login`);
+  await cli.fill('input[type=&quot;email&quot;]',    'user@example.com');
+  await cli.fill('input[type=&quot;password&quot;]', 'secret123');
+  await cli.click('button[type=&quot;submit&quot;]');
+  await cli.browser('wait', 'text', '歡迎', '--timeout', '10000');
+});
+
+afterAll(async () => {
+  await cli.browser('session', 'close');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// 策略 A：獨立 session（每個 spec 完全隔離，互不干擾）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// helpers/opencli.ts 中 SESSION 名稱固定為 'e2e'，</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 每個 spec 的 afterAll 都呼叫 session close，</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 下一個 spec 的 beforeAll 再重新開啟。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 策略 B：共用 session（跨 spec 保留瀏覽器狀態）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 在 vitest.setup.ts 裡只開一次，globalThis 傳遞</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// vitest.setup.ts</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> cli</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> './helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> BASE_URL</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> process</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">env</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">BASE_URL</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> 'http://localhost:3000'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">beforeAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">open</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">BASE_URL</span><span style="color:#C678DD">}</span><span style="color:#98C379">/login`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="email"]'</span><span style="color:#ABB2BF">,    </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[type="password"]'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'歡迎'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">afterAll</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> cli</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'session'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'close'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>策略</th> <th>優點</th> <th>缺點</th> <th>適合場景</th> </tr> </thead> <tbody> <tr> <td>獨立 session</td> <td>每個 spec 完全隔離，互不干擾</td> <td>每個 spec 都要重新登入，速度較慢</td> <td>spec 數量少、或需要測試不同登入狀態</td> </tr> <tr> <td>共用 session</td> <td>登入一次就好，速度較快</td> <td>前面的 spec 出錯可能影響後面的 spec</td> <td>所有測試都在同一個登入使用者下執行</td> </tr> </tbody> </table> </div> <h3>執行多個 spec</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>執行所有 spec 或指定 spec</span> <button class="cb-copy" data-code="# 執行所有 spec 檔案（按檔名字母順序）
+npx vitest run e2e/specs/
+
+# 只跑特定 spec
+npx vitest run e2e/specs/02-search.spec.ts
+
+# 開發模式：監聽變更自動重跑
+npx vitest watch e2e/specs/" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 執行所有 spec 檔案（按檔名字母順序）</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> vitest</span><span style="color:#98C379"> run</span><span style="color:#98C379"> e2e/specs/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只跑特定 spec</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> vitest</span><span style="color:#98C379"> run</span><span style="color:#98C379"> e2e/specs/02-search.spec.ts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 開發模式：監聽變更自動重跑</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> vitest</span><span style="color:#98C379"> watch</span><span style="color:#98C379"> e2e/specs/</span></span></code></pre> </div> </div>   <div class="call tip"> <strong>spec 命名規範建議</strong> <p>
+用數字前綴（<code>01-</code>、<code>02-</code>）明確控制執行順序。
+      如果 spec 之間有依賴關係（例如必須先執行登入測試才跑搜尋測試），
+      數字前綴讓順序變得顯而易見，也方便日後插入新的測試檔案。
+</p> </div>    <h2 id="summary">小結</h2> <p>
+本章從一個真實的登入流程出發，示範了完整 E2E 測試的撰寫方式：
+</p> <ul> <li>用 <code>describe + beforeAll + afterAll</code> 組織測試結構，管理 session 生命週期</li> <li>每個 <code>it</code> 對應一個明確的行為：找元素、填表單、點擊、等待非同步、斷言</li> <li>用 <code>wait text / wait selector</code> 處理非同步，絕對不用 sleep</li> <li>用截圖（手動或 <code>afterEach</code> 自動）保留失敗現場，快速定位問題</li> <li>三個好習慣：每個 it 只測一件事、beforeAll 做一次性準備、斷言要具體</li> </ul> <p>
+下一章，我們會面對實際測試中最常遇到的三大陷阱：元素選擇器不穩定、
+    非同步時序問題、以及在 CI 環境中的奇怪行為，並學習對應的 debug 技巧。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span> </a> <a href="/opencli/ch10-pitfalls" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

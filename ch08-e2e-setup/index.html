@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vitest + OpenCLI 測試架構 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="從零建立 Vitest + OpenCLI E2E 測試架構：目錄結構、配置檔案、spawn 包裝、三大 Windows 坑，讓你的自動化測試穩定落地。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 8 章 · Part 3：E2E 測試</span> <h1>Vitest + OpenCLI 測試架構</h1> <p class="cdesc">
+OpenCLI 是一支 CLI 工具，本身沒有內建 test runner。本章帶你從零搭建一套以 Vitest 為核心的 E2E 測試架構，
+    涵蓋目錄結構、所有配置檔案、跨平台 spawn 包裝，以及 Windows 環境下三個容易踩到的坑。
+</p>  <h2>為什麼選 Vitest 搭配 OpenCLI</h2> <p>
+OpenCLI 透過 <code>child_process.spawn</code> 呼叫，任何能執行 Node.js 的 test runner 都可以搭配。
+    選擇 Vitest 的理由：
+</p> <ul> <li><strong>輕量、零設定 TypeScript</strong>：內建 ts-node/esbuild，不需要額外的 Babel 或 ts-jest 設定</li> <li><strong>原生支援 ESM</strong>：OpenCLI helper 以 ESM 撰寫，Vitest 不需要任何轉換設定</li> <li><strong>彈性 timeout</strong>：E2E 測試需要遠比 unit test 更長的等待時間，Vitest 支援 per-suite 細調</li> <li><strong>JUnit reporter 內建</strong>：CI 環境（GitHub Actions、GitLab CI）可直接讀取測試報告</li> </ul> <p>整體架構如下：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>整體呼叫鏈</span> <button class="cb-copy" data-code="Vitest spec
+  └── describe / it / expect        ← 測試邏輯 + 斷言
+        └── helpers/opencli.ts      ← spawn 包裝
+              └── child_process.spawn('opencli', [...args])
+                    └── OpenCLI daemon
+                          └── Chrome（CDP）" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">Vitest</span><span style="color:#98C379"> spec</span></span>
+<span class="line"><span style="color:#61AFEF">  └──</span><span style="color:#98C379"> describe</span><span style="color:#98C379"> /</span><span style="color:#98C379"> it</span><span style="color:#98C379"> /</span><span style="color:#98C379"> expect</span><span style="color:#98C379">        ←</span><span style="color:#98C379"> 測試邏輯</span><span style="color:#98C379"> +</span><span style="color:#98C379"> 斷言</span></span>
+<span class="line"><span style="color:#61AFEF">        └──</span><span style="color:#98C379"> helpers/opencli.ts</span><span style="color:#98C379">      ←</span><span style="color:#98C379"> spawn</span><span style="color:#98C379"> 包裝</span></span>
+<span class="line"><span style="color:#61AFEF">              └──</span><span style="color:#98C379"> child_process.spawn</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">'opencli'</span><span style="color:#61AFEF">,</span><span style="color:#ABB2BF"> [...args])</span></span>
+<span class="line"><span style="color:#61AFEF">                    └──</span><span style="color:#98C379"> OpenCLI</span><span style="color:#98C379"> daemon</span></span>
+<span class="line"><span style="color:#61AFEF">                          └──</span><span style="color:#98C379"> Chrome（CDP）</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="call tip"> <span class="ci">💡</span> <div> <strong>daemon 模式</strong> <p>
+OpenCLI daemon 在第一次呼叫時自動啟動，後續指令複用同一個 Chrome session。
+        測試完畢後 daemon 會繼續存活，方便手動除錯。若要強制重啟，執行 <code>opencli browser &lt;session&gt; close</code>。
+</p> </div> </div>  <h2>目錄結構</h2> <p>
+建議將 E2E 測試放在專案根目錄的 <code>e2e/</code> 子目錄，與主應用程式的 <code>package.json</code> 完全隔離，
+    避免開發依賴污染正式 bundle。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/ 目錄結構</span> <button class="cb-copy" data-code="project-root/e2e/
+├── package.json
+├── tsconfig.json
+├── vitest.config.ts
+├── .env.example
+├── .gitignore
+├── helpers/
+│   ├── opencli.ts            # spawn 包裝（跨平台）
+│   └── chat.ts               # 業務專屬 helper（針對目標站）
+├── specs/
+│   ├── 01-smoke.spec.ts      # 冒煙測試
+│   └── 02-flow.spec.ts       # 完整流程測試
+└── artifacts/                # 截圖、JUnit 報告（gitignored）" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">project-root/e2e/</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> package.json</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> tsconfig.json</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> vitest.config.ts</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> .env.example</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> .gitignore</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> helpers/</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> opencli.ts</span><span style="color:#7F848E;font-style:italic">            # spawn 包裝（跨平台）</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   └──</span><span style="color:#98C379"> chat.ts</span><span style="color:#7F848E;font-style:italic">               # 業務專屬 helper（針對目標站）</span></span>
+<span class="line"><span style="color:#61AFEF">├──</span><span style="color:#98C379"> specs/</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   ├──</span><span style="color:#98C379"> 01-smoke.spec.ts</span><span style="color:#7F848E;font-style:italic">      # 冒煙測試</span></span>
+<span class="line"><span style="color:#61AFEF">│</span><span style="color:#98C379">   └──</span><span style="color:#98C379"> 02-flow.spec.ts</span><span style="color:#7F848E;font-style:italic">       # 完整流程測試</span></span>
+<span class="line"><span style="color:#61AFEF">└──</span><span style="color:#98C379"> artifacts/</span><span style="color:#7F848E;font-style:italic">                # 截圖、JUnit 報告（gitignored）</span></span></code></pre> </div> </div>   <ul> <li><code>helpers/opencli.ts</code>：唯一知道如何呼叫 opencli CLI 的模組，所有 spec 透過它操作瀏覽器</li> <li><code>helpers/chat.ts</code>（選用）：封裝業務邏輯，例如「登入」「送出一則訊息」等高階動作</li> <li><code>specs/</code>：純測試邏輯，只使用 helper 函數，不直接呼叫 spawn</li> <li><code>artifacts/</code>：執行期產生，全部 gitignore，CI 透過 upload-artifact 保存</li> </ul>  <h2>配置檔案逐一說明</h2> <h3>package.json</h3> <p>
+最小依賴集：只需要 <code>vitest</code>、<code>typescript</code>、<code>tsx</code>（Vitest 內部用）以及 <code>@types/node</code>。
+<strong>不需要</strong>安裝 Playwright、Puppeteer 或任何瀏覽器 driver——OpenCLI 負責所有 Chrome 通訊。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/package.json</span> <button class="cb-copy" data-code="{
+  &quot;name&quot;: &quot;my-e2e&quot;,
+  &quot;private&quot;: true,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;e2e&quot;: &quot;vitest run&quot;,
+    &quot;e2e:watch&quot;: &quot;vitest&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;@types/node&quot;: &quot;^22.10.0&quot;,
+    &quot;tsx&quot;: &quot;^4.19.2&quot;,
+    &quot;typescript&quot;: &quot;^5.7.2&quot;,
+    &quot;vitest&quot;: &quot;^2.1.8&quot;
+  }
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"my-e2e"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "private"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"module"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "scripts"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    "e2e"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"vitest run"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "e2e:watch"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"vitest"</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#E06C75">  "devDependencies"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    "@types/node"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"^22.10.0"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "tsx"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"^4.19.2"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "typescript"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"^5.7.2"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "vitest"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"^2.1.8"</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <h3>vitest.config.ts</h3> <p>以下是針對 E2E 場景調整的完整設定，每個關鍵項目都有說明：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/vitest.config.ts</span> <button class="cb-copy" data-code="import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    globals: true,
+    include: ['specs/**/*.spec.ts'],
+    testTimeout: 120_000,       // 2 分鐘：E2E 操作遠比 unit test 慢
+    hookTimeout: 60_000,        // beforeAll/afterAll 也需要寬鬆的超時
+    reporters: ['default', 'junit'],
+    outputFile: { junit: 'artifacts/junit.xml' },
+    pool: 'forks',
+    poolOptions: {
+      forks: { singleFork: true },   // ⚠️ 關鍵：避免 session 衝突
+    },
+  },
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">defineConfig</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest/config'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> default</span><span style="color:#61AFEF"> defineConfig</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">  test</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    globals</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    include</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'specs/**/*.spec.ts'</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#E06C75">    testTimeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">120_000</span><span style="color:#ABB2BF">,       </span><span style="color:#7F848E;font-style:italic">// 2 分鐘：E2E 操作遠比 unit test 慢</span></span>
+<span class="line"><span style="color:#E06C75">    hookTimeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">60_000</span><span style="color:#ABB2BF">,        </span><span style="color:#7F848E;font-style:italic">// beforeAll/afterAll 也需要寬鬆的超時</span></span>
+<span class="line"><span style="color:#E06C75">    reporters</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'default'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'junit'</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#E06C75">    outputFile</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">junit</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'artifacts/junit.xml'</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">    pool</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'forks'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    poolOptions</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      forks</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">singleFork</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> },   </span><span style="color:#7F848E;font-style:italic">// ⚠️ 關鍵：避免 session 衝突</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call info"> <strong>為什麼 <code>singleFork: true</code> 是關鍵設定？</strong><br>
+Vitest 預設使用多個 worker process 並行跑測試以提升速度。但 OpenCLI session 是以名稱識別的全域資源：
+    如果 <code>01-smoke.spec.ts</code> 和 <code>02-flow.spec.ts</code> 同時跑，兩個 worker 都會對同一個
+<code>e2e</code> session 下指令，造成點擊錯位、截圖混亂等難以重現的失敗。
+<code>singleFork: true</code> 強制所有 spec 在同一個 process 中依序執行，犧牲少量速度換取穩定性。
+</div> <h3>helpers/opencli.ts（完整 spawn 包裝）</h3> <p>
+這是整個架構的核心模組。它封裝了三件事：跨平台引號處理、session 名稱注入、以及統一的錯誤拋出。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/helpers/opencli.ts</span> <button class="cb-copy" data-code="import { spawn } from 'node:child_process';
+
+/**
+ * shell:true 在 Windows 不會自動 quote 含空白的 args（Node DEP0190）。
+ * 此函數確保任何含有特殊字元的 arg 都被正確加上引號。
+ */
+function quoteForShell(a: string): string {
+  if (a === '' || /[\s&quot;'`$&amp;|<>(){};,?*^!%]/.test(a)) {
+    return '&quot;' + a.replace(/([&quot;\\])/g, '\\$1') + '&quot;';
+  }
+  return a;
+}
+
+const SESSION = process.env.OPENCLI_SESSION ?? 'e2e';
+
+export async function runCli(args: string[]) {
+  const quoted = args.map(quoteForShell);
+  return new Promise<{ code: number; stdout: string; stderr: string }>((res) => {
+    const p = spawn('opencli', quoted, {
+      shell: true,
+      env: { ...process.env, NODE_OPTIONS: '--use-system-ca' },
+    });
+    let stdout = '', stderr = '';
+    p.stdout.on('data', d => stdout += d);
+    p.stderr.on('data', d => stderr += d);
+    p.on('close', code => res({ code: code ?? -1, stdout, stderr }));
+  });
+}
+
+export const browser = (...a: string[]) => runCli(['browser', SESSION, ...a]);
+
+export async function open(url: string)          { return must(await browser('open', url)); }
+export async function state()                    { return must(await browser('state')).stdout; }
+export async function click(t: string)           { return must(await browser('click', t)); }
+export async function fill(t: string, x: string) { return must(await browser('fill', t, x)); }
+export async function keys(k: string)            { return must(await browser('keys', k)); }
+export async function screenshot(p: string)      { return must(await browser('screenshot', `artifacts/${p}`)); }
+
+export async function evalJs(js: string) {
+  const r = must(await browser('eval', js));
+  try { return JSON.parse(r.stdout); } catch { return r.stdout.trim(); }
+}
+
+function must(r: { code: number; stdout: string; stderr: string }) {
+  if (r.code !== 0) throw new Error(r.stderr || r.stdout);
+  return r;
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">spawn</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'node:child_process'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">/**</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> * shell:true 在 Windows 不會自動 quote 含空白的 args（Node DEP0190）。</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> * 此函數確保任何含有特殊字元的 arg 都被正確加上引號。</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> */</span></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> quoteForShell</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">a</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">a</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> ''</span><span style="color:#56B6C2"> ||</span><span style="color:#E06C75"> /</span><span style="color:#D19A66">[</span><span style="color:#E06C75">\s</span><span style="color:#D19A66">"'`$&#x26;|&#x3C;>(){};,?*^!%]</span><span style="color:#E06C75">/</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">test</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">a</span><span style="color:#ABB2BF">)) {</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#98C379"> '"'</span><span style="color:#56B6C2"> +</span><span style="color:#E5C07B"> a</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/(</span><span style="color:#D19A66">["</span><span style="color:#56B6C2">\\</span><span style="color:#D19A66">]</span><span style="color:#E06C75">)/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'</span><span style="color:#56B6C2">\\</span><span style="color:#98C379">$1'</span><span style="color:#ABB2BF">) </span><span style="color:#56B6C2">+</span><span style="color:#98C379"> '"'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E06C75"> a</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> SESSION</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> process</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">env</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">OPENCLI_SESSION</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> 'e2e'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> runCli</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">args</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[]) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> quoted</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> args</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">quoteForShell</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#C678DD"> new</span><span style="color:#E5C07B"> Promise</span><span style="color:#ABB2BF">&#x3C;{ </span><span style="color:#E06C75">code</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">number</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">stderr</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> }>((</span><span style="color:#E06C75;font-style:italic">res</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> p</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> spawn</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'opencli'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">quoted</span><span style="color:#ABB2BF">, {</span></span>
+<span class="line"><span style="color:#E06C75">      shell</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      env</span><span style="color:#ABB2BF">: { ...</span><span style="color:#E5C07B">process</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">env</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">NODE_OPTIONS</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'--use-system-ca'</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">    });</span></span>
+<span class="line"><span style="color:#C678DD">    let</span><span style="color:#E06C75"> stdout</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stderr</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E5C07B">    p</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stdout</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">on</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'data'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">d</span><span style="color:#C678DD"> =></span><span style="color:#E06C75"> stdout</span><span style="color:#56B6C2"> +=</span><span style="color:#E06C75"> d</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">    p</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stderr</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">on</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'data'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">d</span><span style="color:#C678DD"> =></span><span style="color:#E06C75"> stderr</span><span style="color:#56B6C2"> +=</span><span style="color:#E06C75"> d</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">    p</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">on</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'close'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">code</span><span style="color:#C678DD"> =></span><span style="color:#61AFEF"> res</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">code</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">code</span><span style="color:#56B6C2"> ??</span><span style="color:#56B6C2"> -</span><span style="color:#D19A66">1</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stderr</span><span style="color:#ABB2BF"> }));</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> const</span><span style="color:#61AFEF"> browser</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> (...</span><span style="color:#E06C75;font-style:italic">a</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[]) </span><span style="color:#C678DD">=></span><span style="color:#61AFEF"> runCli</span><span style="color:#ABB2BF">([</span><span style="color:#98C379">'browser'</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">SESSION</span><span style="color:#ABB2BF">, ...</span><span style="color:#E06C75">a</span><span style="color:#ABB2BF">]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> open</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">url</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">)          { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'open'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">)); }</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> state</span><span style="color:#ABB2BF">()                    { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'state'</span><span style="color:#ABB2BF">)).</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">; }</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> click</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">t</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">)           { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'click'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">t</span><span style="color:#ABB2BF">)); }</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">t</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">x</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'fill'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">t</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">x</span><span style="color:#ABB2BF">)); }</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> keys</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">k</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">)            { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'keys'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">k</span><span style="color:#ABB2BF">)); }</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> screenshot</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">p</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">)      { </span><span style="color:#C678DD">return</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'screenshot'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">`artifacts/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">p</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">)); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">js</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> r</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'eval'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">js</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> { </span><span style="color:#C678DD">return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">); } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> { </span><span style="color:#C678DD">return</span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stdout</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">(); }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">r</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">code</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">number</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">stderr</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> }) {</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">code</span><span style="color:#56B6C2"> !==</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">throw</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> Error</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stderr</span><span style="color:#56B6C2"> ||</span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E06C75"> r</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong><code>NODE_OPTIONS: '--use-system-ca'</code></strong> <p>
+在公司 proxy 或自簽憑證環境下，Node.js 18+ 預設不信任系統憑證庫。
+        加上這個環境變數可讓 OpenCLI daemon 的 HTTPS 請求正常通過 proxy，避免 <code>CERT_UNTRUSTED</code> 錯誤。
+</p> </div> </div> <h3>.env.example</h3> <p>
+提交 <code>.env.example</code> 到 git，讓團隊成員知道需要哪些環境變數。
+    實際的 <code>.env</code> 放進 <code>.gitignore</code>，永遠不提交。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/.env.example</span> <button class="cb-copy" data-code="# OpenCLI 設定
+OPENCLI_SESSION=e2e
+OPENCLI_CDP_ENDPOINT=  # CI 時設為 ws://localhost:3000
+
+# 測試目標
+APP_URL=http://localhost:8090
+
+# ⚠️ 注意：不要用 BASE_URL！
+# Vitest 繼承 Vite，會自動把 BASE_URL 蓋成 /" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI 設定</span></span>
+<span class="line"><span style="color:#E06C75">OPENCLI_SESSION</span><span style="color:#56B6C2">=</span><span style="color:#98C379">e2e</span></span>
+<span class="line"><span style="color:#E06C75">OPENCLI_CDP_ENDPOINT</span><span style="color:#56B6C2">=</span><span style="color:#7F848E;font-style:italic">  # CI 時設為 ws://localhost:3000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 測試目標</span></span>
+<span class="line"><span style="color:#E06C75">APP_URL</span><span style="color:#56B6C2">=</span><span style="color:#98C379">http://localhost:8090</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ⚠️ 注意：不要用 BASE_URL！</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Vitest 繼承 Vite，會自動把 BASE_URL 蓋成 /</span></span></code></pre> </div> </div>   <h3>.gitignore</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/.gitignore</span> <button class="cb-copy" data-code="artifacts/
+node_modules/
+.env" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">artifacts/</span></span>
+<span class="line"><span style="color:#61AFEF">node_modules/</span></span>
+<span class="line"><span style="color:#61AFEF">.env</span></span></code></pre> </div> </div>   <h3>tsconfig.json</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>e2e/tsconfig.json</span> <button class="cb-copy" data-code="{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2022&quot;,
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;strict&quot;: true,
+    &quot;types&quot;: [&quot;vitest/globals&quot;]
+  },
+  &quot;include&quot;: [&quot;**/*.ts&quot;]
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "compilerOptions"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    "target"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ES2022"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "module"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ESNext"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "moduleResolution"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"bundler"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "strict"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "types"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"vitest/globals"</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#E06C75">  "include"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"**/*.ts"</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong><code>"types": ["vitest/globals"]</code></strong> <p>
+加上這一行，TypeScript 才能認識 <code>describe</code>、<code>it</code>、<code>expect</code> 等全域函數，
+        不需要在每個 spec 檔案頂端 import。對應 <code>vitest.config.ts</code> 裡的 <code>globals: true</code>。
+</p> </div> </div>  <h2>⚠️ Windows + Vitest 環境三大坑</h2> <p>
+在 Windows 環境下整合 Vitest 與 OpenCLI，有三個坑幾乎每個人都會踩到。
+    以下逐一說明症狀、原因與解法。
+</p> <div class="call danger"> <span class="ci">🚫</span> <div> <strong>坑 1：<code>BASE_URL</code> 環境變數被 Vitest 蓋成 <code>/</code></strong> <p> <strong>症狀：</strong>在 PowerShell 設好 <code>$env:BASE_URL="http://localhost:8090"</code>，
+        但 spec 裡讀到的卻是 <code>/</code>，導致所有 <code>open()</code> 呼叫都失敗。
+</p> <p> <strong>原因：</strong>Vitest 繼承 Vite 的環境變數機制，啟動時會強制把
+<code>process.env.BASE_URL</code> 設成 <code>/</code>（Vite 的 public base path）。
+        同樣受影響的還有 <code>MODE</code>、<code>PROD</code>、<code>DEV</code>、<code>SSR</code>、<code>NODE_ENV</code>。
+</p> <p> <strong>解法：</strong>改用任何其他名稱，例如 <code>APP_URL</code>、<code>PORTAL_URL</code>、
+<code>E2E_BASE_URL</code>。只要不叫 <code>BASE_URL</code> 就安全。
+</p> </div> </div> <div class="call danger"> <span class="ci">🚫</span> <div> <strong>坑 2：<code>spawn(cmd, args, &#123;shell:true&#125;)</code> 在 Windows 不自動 quote 參數</strong> <p> <strong>症狀：</strong>填入含空白的文字（例如 <code>'Alarm Code 有幾種'</code>），
+        CLI 收到的不是一個 arg，而是被空白切成多個 token，造成指令解析失敗。
+        Node.js 也會印出 <code>DEP0190</code> 棄用警告。
+</p> <p> <strong>原因：</strong>在 Unix 上，<code>shell:true</code> 使用 <code>/bin/sh -c</code>，
+        args 陣列會被正確合併；在 Windows 上使用 <code>cmd.exe /c</code>，含空白的 arg 必須手動加引號才能被正確解析。
+</p> <p> <strong>解法：</strong>使用上方 <code>opencli.ts</code> 中的 <code>quoteForShell()</code> 函數，
+        在傳入 spawn 前先將所有含特殊字元的 arg 包上雙引號。
+</p> </div> </div> <div class="call danger"> <span class="ci">🚫</span> <div> <strong>坑 3：<code>opencli browser eval</code> 不接受多行 JavaScript</strong> <p> <strong>症狀：</strong>把多行 JS（含換行）傳給 <code>eval</code> 指令，CLI 回傳語法錯誤或只執行第一行。
+</p> <p> <strong>原因：</strong>OpenCLI 透過 shell 傳遞 eval 參數，換行字元在 shell 層被截斷。
+</p> <p> <strong>解法：</strong>所有 eval 邏輯寫成單行。善用 <code>Array.from()</code>、
+        三元運算子、逗號運算子等技巧取代 IIFE 或多行語句。例如：
+</p> <pre><code>// ✅ 正確：單行
+await evalJs('Array.from(document.querySelectorAll("h2")).map(e => e.textContent)');
+
+// ❌ 錯誤：多行（含換行）
+await evalJs(\`
+  const items = document.querySelectorAll("h2");
+  return Array.from(items).map(e => e.textContent);
+\`);</code></pre> </div> </div>  <h2>執行測試</h2> <p>確認 OpenCLI daemon 已啟動（或讓第一個 <code>open()</code> 呼叫自動觸發啟動），然後：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>本機執行</span> <button class="cb-copy" data-code="cd e2e
+npm install
+
+# 設定環境變數（注意：不要用 BASE_URL）
+$env:APP_URL = &quot;http://localhost:8090&quot;
+$env:OPENCLI_SESSION = &quot;e2e&quot;
+
+# 執行所有測試
+npm run e2e
+
+# Watch 模式（開發時即時重跑）
+npm run e2e:watch
+
+# 只跑特定 spec（除錯用）
+npx vitest run specs/01-smoke.spec.ts" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="powershell"><code><span class="line"><span style="color:#ABB2BF">cd e2e</span></span>
+<span class="line"><span style="color:#ABB2BF">npm install</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 設定環境變數（注意：不要用 BASE_URL）</span></span>
+<span class="line"><span style="color:#E06C75">$env:APP_URL</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> "http://localhost:8090"</span></span>
+<span class="line"><span style="color:#E06C75">$env:OPENCLI_SESSION</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> "e2e"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 執行所有測試</span></span>
+<span class="line"><span style="color:#ABB2BF">npm run e2e</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Watch 模式（開發時即時重跑）</span></span>
+<span class="line"><span style="color:#ABB2BF">npm run e2e:watch</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只跑特定 spec（除錯用）</span></span>
+<span class="line"><span style="color:#ABB2BF">npx vitest run specs</span><span style="color:#56B6C2">/</span><span style="color:#D19A66">01</span><span style="color:#56B6C2">-</span><span style="color:#ABB2BF">smoke.spec.ts</span></span></code></pre> </div> </div>   <p>
+測試完成後，JUnit 報告會寫到 <code>artifacts/junit.xml</code>，
+    截圖則依 spec 中 <code>screenshot()</code> 的呼叫存到 <code>artifacts/</code> 目錄。
+</p> <h3>CI 環境設定（GitHub Actions）</h3> <p>在 CI 環境中，瀏覽器通常以 headless 模式由 CDP endpoint 提供，需額外設定 <code>OPENCLI_CDP_ENDPOINT</code>：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>GitHub Actions 片段</span> <button class="cb-copy" data-code="- name: Install OpenCLI
+  run: npm install -g @jackwener/opencli
+
+- name: Install E2E dependencies
+  run: cd e2e &amp;&amp; npm install
+
+- name: Run E2E tests
+  run: cd e2e &amp;&amp; npm run e2e
+  env:
+    OPENCLI_CDP_ENDPOINT: ws://localhost:3000
+    APP_URL: http://localhost:8090
+
+- name: Upload artifacts
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: e2e-artifacts
+    path: e2e/artifacts/" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Install OpenCLI</span></span>
+<span class="line"><span style="color:#E06C75">  run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">npm install -g @jackwener/opencli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Install E2E dependencies</span></span>
+<span class="line"><span style="color:#E06C75">  run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">cd e2e &#x26;&#x26; npm install</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Run E2E tests</span></span>
+<span class="line"><span style="color:#E06C75">  run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">cd e2e &#x26;&#x26; npm run e2e</span></span>
+<span class="line"><span style="color:#E06C75">  env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ws://localhost:3000</span></span>
+<span class="line"><span style="color:#E06C75">    APP_URL</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">http://localhost:8090</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Upload artifacts</span></span>
+<span class="line"><span style="color:#E06C75">  if</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">always()</span></span>
+<span class="line"><span style="color:#E06C75">  uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">actions/upload-artifact@v4</span></span>
+<span class="line"><span style="color:#E06C75">  with</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">e2e-artifacts</span></span>
+<span class="line"><span style="color:#E06C75">    path</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">e2e/artifacts/</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong><code>if: always()</code></strong> <p>
+即使測試失敗，也要上傳 artifacts。失敗時的截圖和 JUnit XML 是除錯最重要的依據，
+        務必設成 <code>always()</code> 而非預設的「只在成功時執行」。
+</p> </div> </div>  <h2>架構建好，準備寫第一支測試</h2> <p>
+到這裡，你已經有了一套完整的 E2E 測試骨架：
+</p> <ul> <li>目錄結構清晰，helpers 與 specs 分離</li> <li>Vitest 配置針對 E2E 情境調整（超時、單 fork、JUnit 報告）</li> <li><code>opencli.ts</code> helper 處理跨平台引號問題，統一錯誤拋出</li> <li>三大坑已知曉，不會再踩</li> </ul> <p>
+下一章，我們會在這個架構上撰寫真實的 spec 檔案——從冒煙測試（smoke test）開始，
+    逐步加入登入流程、表單填寫、以及如何用截圖記錄測試過程。
+</p> <div class="call info"> <strong>下一章預覽</strong><br>
+第 9 章「撰寫第一個 E2E 測試」將涵蓋：<code>beforeAll</code> 開啟頁面、
+<code>it</code> 斷言 DOM 元素、<code>afterAll</code> 截圖存檔，以及如何閱讀
+    Vitest 的失敗訊息快速定位問題。
+</div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span> </a> <a href="/opencli/ch09-first-test" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

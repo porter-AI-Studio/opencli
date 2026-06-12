@@ -1,0 +1,636 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>自製 Custom Adapter | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="學習如何為任意網站建立 OpenCLI Custom Adapter，涵蓋 YAML 宣告式設計、TypeScript 進階實作、五種標準指令模式，以及 Hacker News 完整案例實戰。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 17 章 · Part 5：Adapters</span> <h1>自製 Custom Adapter</h1> <p class="cdesc">為任意網站打造專屬適配器，讓 OpenCLI 的能力無限延伸。</p> <h2>為什麼需要 Custom Adapter？</h2> <p>
+OpenCLI 雖然內建 80+ 平台適配器，但你的工作中難免會遇到需要自動化的內部系統、小眾平台，或是有特殊需求的網站。
+    Custom Adapter 讓你能用統一的 OpenCLI 介面封裝任意網站的操作，讓 AI Agent 能無縫使用。
+</p> <h2>四種開發方式</h2> <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0;"> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">方式 A：Browser Init</h4> <p style="margin: 0; font-size: 0.9rem;">在已開啟的瀏覽器 Session 中直接定義 Adapter，最快速，適合快速原型。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">方式 B：Plugin Create</h4> <p style="margin: 0; font-size: 0.9rem;">使用 YAML 宣告式格式建立 Plugin 檔案，適合大多數靜態網站。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">方式 C：External Register</h4> <p style="margin: 0; font-size: 0.9rem;">從外部 npm 套件或本地目錄載入 Adapter，適合跨專案共用。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">方式 D：AI Skill</h4> <p style="margin: 0; font-size: 0.9rem;">使用 <code>opencli-adapter-author</code> Skill，讓 AI 自動生成 Adapter 程式碼。</p> </div> </div> <h2>方式 B：YAML 宣告式格式</h2> <p>YAML 格式是最常用的 Adapter 開發方式，語法簡單直觀，適合大多數場景。</p> <h3>基本結構</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>adapter.yaml 基本結構</span> <button class="cb-copy" data-code="name: my-site          # Adapter 名稱（用於 CLI 呼叫）
+version: &quot;1.0.0&quot;
+description: &quot;My custom site adapter&quot;
+baseUrl: &quot;https://example.com&quot;
+
+# 認證策略
+auth:
+  strategy: cookie     # public / local / cookie / intercept / ui
+  cookieDomain: &quot;.example.com&quot;
+
+# 指令定義
+commands:
+  - name: search
+    description: &quot;搜尋文章&quot;
+    args:
+      - name: query
+        type: string
+        required: true
+    steps:
+      - navigate: &quot;${baseUrl}/search?q=${args.query}&quot;
+      - wait:
+          selector: &quot;.results&quot;
+      - extract:
+          selector: &quot;.result-item&quot;
+          fields:
+            - title: &quot;h3&quot;
+            - url: &quot;a[href]&quot;
+            - summary: &quot;.description&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">my-site</span><span style="color:#7F848E;font-style:italic">          # Adapter 名稱（用於 CLI 呼叫）</span></span>
+<span class="line"><span style="color:#E06C75">version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"1.0.0"</span></span>
+<span class="line"><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"My custom site adapter"</span></span>
+<span class="line"><span style="color:#E06C75">baseUrl</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"https://example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 認證策略</span></span>
+<span class="line"><span style="color:#E06C75">auth</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  strategy</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">cookie</span><span style="color:#7F848E;font-style:italic">     # public / local / cookie / intercept / ui</span></span>
+<span class="line"><span style="color:#E06C75">  cookieDomain</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 指令定義</span></span>
+<span class="line"><span style="color:#E06C75">commands</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">search</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"搜尋文章"</span></span>
+<span class="line"><span style="color:#E06C75">    args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">query</span></span>
+<span class="line"><span style="color:#E06C75">        type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">        required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/search?q=${args.query}"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".results"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".result-item"</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"h3"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"a[href]"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">summary</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".description"</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <h3>五種認證策略</h3> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>策略</th> <th>適用場景</th> <th>說明</th> </tr> </thead> <tbody> <tr> <td><code>public</code></td> <td>公開內容</td> <td>無需認證，直接存取公開頁面</td> </tr> <tr> <td><code>local</code></td> <td>內部系統</td> <td>本地網路或 VPN 環境，無需帳號</td> </tr> <tr> <td><code>cookie</code></td> <td>一般登入網站</td> <td>使用瀏覽器現有登入 Cookie</td> </tr> <tr> <td><code>intercept</code></td> <td>API 型網站</td> <td>攔截 XHR/Fetch 請求，直接呼叫 API</td> </tr> <tr> <td><code>ui</code></td> <td>需要互動登入</td> <td>模擬使用者操作完成登入流程</td> </tr> </tbody> </table> </div> <h3>Pipeline Steps 完整參考</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>所有可用的 Pipeline Steps</span> <button class="cb-copy" data-code="steps:
+  # 導航到頁面
+  - navigate: &quot;https://example.com/page&quot;
+
+  # 等待選擇器出現
+  - wait:
+      selector: &quot;.content&quot;
+      timeout: 5000
+
+  # 等待文字出現
+  - wait:
+      text: &quot;載入完成&quot;
+
+  # 擷取資料
+  - extract:
+      selector: &quot;.item&quot;
+      fields:
+        - name: &quot;h3.title&quot;
+        - price: &quot;.price&quot;
+        - link: &quot;a[href]&quot;
+
+  # 執行 JavaScript
+  - evaluate: &quot;document.querySelector('.btn').click()&quot;
+
+  # 對列表進行 map 操作
+  - map:
+      source: &quot;${{results}}&quot;
+      template: &quot;${{item.title}} - ${{item.price}}&quot;
+
+  # 過濾結果
+  - filter:
+      source: &quot;${{results}}&quot;
+      condition: &quot;item.price > 100&quot;
+
+  # 排序
+  - sort:
+      source: &quot;${{results}}&quot;
+      by: &quot;price&quot;
+      order: &quot;asc&quot;
+
+  # 限制數量
+  - limit:
+      source: &quot;${{results}}&quot;
+      count: 10" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#E06C75">steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 導航到頁面</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"https://example.com/page"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 等待選擇器出現</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".content"</span></span>
+<span class="line"><span style="color:#E06C75">      timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">5000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 等待文字出現</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      text</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"載入完成"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 擷取資料</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".item"</span></span>
+<span class="line"><span style="color:#E06C75">      fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">        - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"h3.title"</span></span>
+<span class="line"><span style="color:#ABB2BF">        - </span><span style="color:#E06C75">price</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".price"</span></span>
+<span class="line"><span style="color:#ABB2BF">        - </span><span style="color:#E06C75">link</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"a[href]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 執行 JavaScript</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">evaluate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"document.querySelector('.btn').click()"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 對列表進行 map 操作</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">map</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">      template</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{item.title}} - ${{item.price}}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 過濾結果</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">filter</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">      condition</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"item.price > 100"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 排序</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">sort</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">      by</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"price"</span></span>
+<span class="line"><span style="color:#E06C75">      order</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"asc"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 限制數量</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">limit</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">      count</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">10</span></span></code></pre> </div> </div>   <h2>方式 C：TypeScript 完整實作</h2> <p>對於複雜邏輯或需要精細控制的場景，TypeScript 提供更強大的能力：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>my-adapter/index.ts</span> <button class="cb-copy" data-code="import { defineAdapter } from '@opencli/adapter-sdk'
+
+export default defineAdapter({
+  name: 'my-site',
+  version: '1.0.0',
+  description: 'My custom site adapter',
+  baseUrl: 'https://example.com',
+
+  auth: {
+    strategy: 'cookie',
+    validate: async (browser) => {
+      const cookies = await browser.getCookies()
+      return cookies.some(c => c.name === 'session_token')
+    }
+  },
+
+  commands: {
+    search: {
+      description: '搜尋內容',
+      args: {
+        query: { type: 'string', required: true },
+        limit: { type: 'number', default: 10 }
+      },
+      async execute({ args, browser }) {
+        await browser.navigate('https://example.com/search?q=' + encodeURIComponent(args.query))
+        await browser.waitForSelector('.results')
+        const results = await browser.extract({
+          selector: '.result-item',
+          fields: { title: 'h3', url: 'a[href]', summary: '.desc' }
+        })
+        return results.slice(0, args.limit)
+      }
+    },
+
+    detail: {
+      description: '取得詳細資訊',
+      args: {
+        id: { type: 'string', required: true }
+      },
+      async execute({ args, browser }) {
+        await browser.navigate('https://example.com/item/' + args.id)
+        await browser.waitForSelector('.item-detail')
+        return browser.extract({
+          selector: '.item-detail',
+          fields: { title: 'h1', content: '.content', author: '.author', date: 'time[datetime]' }
+        })
+      }
+    }
+  }
+})" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">defineAdapter</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> '@opencli/adapter-sdk'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> default</span><span style="color:#61AFEF"> defineAdapter</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">  name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'my-site'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'1.0.0'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'My custom site adapter'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  baseUrl</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'https://example.com'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  auth</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    strategy</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'cookie'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#61AFEF">    validate</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">browser</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> cookies</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">getCookies</span><span style="color:#ABB2BF">()</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#E5C07B"> cookies</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">some</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">c</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> c</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">name</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'session_token'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  commands</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    search</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'搜尋內容'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      args</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        query</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">        limit</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'number'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">default</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">10</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#C678DD">      async</span><span style="color:#61AFEF"> execute</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75;font-style:italic">args</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">browser</span><span style="color:#ABB2BF"> }) {</span></span>
+<span class="line"><span style="color:#C678DD">        await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">navigate</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'https://example.com/search?q='</span><span style="color:#56B6C2"> +</span><span style="color:#61AFEF"> encodeURIComponent</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">query</span><span style="color:#ABB2BF">))</span></span>
+<span class="line"><span style="color:#C678DD">        await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.results'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#C678DD">        const</span><span style="color:#E5C07B"> results</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">extract</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'.result-item'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'h3'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'a[href]'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">summary</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'.desc'</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">        })</span></span>
+<span class="line"><span style="color:#C678DD">        return</span><span style="color:#E5C07B"> results</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">slice</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">limit</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">    detail</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'取得詳細資訊'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      args</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        id</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#C678DD">      async</span><span style="color:#61AFEF"> execute</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75;font-style:italic">args</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">browser</span><span style="color:#ABB2BF"> }) {</span></span>
+<span class="line"><span style="color:#C678DD">        await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">navigate</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'https://example.com/item/'</span><span style="color:#56B6C2"> +</span><span style="color:#E5C07B"> args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">id</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#C678DD">        await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.item-detail'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#C678DD">        return</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">extract</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'.item-detail'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'h1'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'.content'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">author</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'.author'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">date</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'time[datetime]'</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">        })</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">})</span></span></code></pre> </div> </div>   <h2>五種標準指令模式</h2> <p>大多數平台的操作都可以歸納為這五種模式：</p> <h3>1. List（列表）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>List 模式</span> <button class="cb-copy" data-code="- name: list
+  description: &quot;取得列表資料&quot;
+  args:
+    - name: limit
+      type: number
+      default: 20
+  steps:
+    - navigate: &quot;${baseUrl}/items&quot;
+    - wait:
+        selector: &quot;.item-list&quot;
+    - extract:
+        selector: &quot;.item&quot;
+        fields:
+          - title: &quot;h3&quot;
+          - id: &quot;[data-id]&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">list</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"取得列表資料"</span></span>
+<span class="line"><span style="color:#E06C75">  args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">limit</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">number</span></span>
+<span class="line"><span style="color:#E06C75">      default</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">20</span></span>
+<span class="line"><span style="color:#E06C75">  steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/items"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".item-list"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".item"</span></span>
+<span class="line"><span style="color:#E06C75">        fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"h3"</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">id</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"[data-id]"</span></span></code></pre> </div> </div>   <h3>2. Search（搜尋）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Search 模式</span> <button class="cb-copy" data-code="- name: search
+  description: &quot;搜尋內容&quot;
+  args:
+    - name: query
+      type: string
+      required: true
+  steps:
+    - navigate: &quot;${baseUrl}/search?q=${args.query}&quot;
+    - wait:
+        selector: &quot;.search-results&quot;
+    - extract:
+        selector: &quot;.result&quot;
+        fields:
+          - title: &quot;h3&quot;
+          - url: &quot;a[href]&quot;
+          - snippet: &quot;.snippet&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">search</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"搜尋內容"</span></span>
+<span class="line"><span style="color:#E06C75">  args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">query</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#E06C75">  steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/search?q=${args.query}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".search-results"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".result"</span></span>
+<span class="line"><span style="color:#E06C75">        fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"h3"</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"a[href]"</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">snippet</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".snippet"</span></span></code></pre> </div> </div>   <h3>3. Get（取得單筆）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Get 模式</span> <button class="cb-copy" data-code="- name: get
+  description: &quot;取得詳細資訊&quot;
+  args:
+    - name: id
+      type: string
+      required: true
+  steps:
+    - navigate: &quot;${baseUrl}/item/${args.id}&quot;
+    - wait:
+        selector: &quot;.detail&quot;
+    - extract:
+        selector: &quot;.detail&quot;
+        fields:
+          - title: &quot;h1&quot;
+          - body: &quot;.content&quot;
+          - date: &quot;time&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">get</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"取得詳細資訊"</span></span>
+<span class="line"><span style="color:#E06C75">  args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">id</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#E06C75">  steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/item/${args.id}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".detail"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".detail"</span></span>
+<span class="line"><span style="color:#E06C75">        fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"h1"</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">body</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".content"</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#E06C75">date</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"time"</span></span></code></pre> </div> </div>   <h3>4. Action（操作）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Action 模式</span> <button class="cb-copy" data-code="- name: like
+  description: &quot;按讚&quot;
+  args:
+    - name: id
+      type: string
+      required: true
+  steps:
+    - navigate: &quot;${baseUrl}/item/${args.id}&quot;
+    - wait:
+        selector: &quot;.like-btn&quot;
+    - evaluate: &quot;document.querySelector('.like-btn').click()&quot;
+    - wait:
+        selector: &quot;.like-btn.active&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">like</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"按讚"</span></span>
+<span class="line"><span style="color:#E06C75">  args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">id</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#E06C75">  steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/item/${args.id}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".like-btn"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">evaluate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"document.querySelector('.like-btn').click()"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".like-btn.active"</span></span></code></pre> </div> </div>   <h3>5. Monitor（監控）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Monitor 模式</span> <button class="cb-copy" data-code="- name: monitor
+  description: &quot;監控頁面變化&quot;
+  args:
+    - name: url
+      type: string
+      required: true
+    - name: selector
+      type: string
+      required: true
+    - name: interval
+      type: number
+      default: 30000
+  steps:
+    - navigate: &quot;${args.url}&quot;
+    - wait:
+        selector: &quot;${args.selector}&quot;
+    - fetch:
+        selector: &quot;${args.selector}&quot;
+        field: &quot;textContent&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">- </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">monitor</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"監控頁面變化"</span></span>
+<span class="line"><span style="color:#E06C75">  args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">url</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">selector</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">interval</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">number</span></span>
+<span class="line"><span style="color:#E06C75">      default</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">30000</span></span>
+<span class="line"><span style="color:#E06C75">  steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${args.url}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${args.selector}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">fetch</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${args.selector}"</span></span>
+<span class="line"><span style="color:#E06C75">        field</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"textContent"</span></span></code></pre> </div> </div>   <h2>實戰案例：Hacker News Adapter</h2> <p>讓我們建立一個完整的 Hacker News Adapter 作為實戰練習：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>hackernews/adapter.yaml</span> <button class="cb-copy" data-code="name: hn
+version: &quot;1.0.0&quot;
+description: &quot;Hacker News adapter for OpenCLI&quot;
+baseUrl: &quot;https://news.ycombinator.com&quot;
+
+auth:
+  strategy: public
+
+commands:
+  - name: top
+    description: &quot;取得 Hacker News 頭條&quot;
+    args:
+      - name: limit
+        type: number
+        default: 30
+    steps:
+      - navigate: &quot;${baseUrl}&quot;
+      - wait:
+          selector: &quot;.athing&quot;
+      - extract:
+          selector: &quot;.athing&quot;
+          fields:
+            - rank: &quot;.rank&quot;
+            - title: &quot;.titleline a&quot;
+            - url: &quot;.titleline a[href]&quot;
+            - points: &quot;.score&quot;
+            - comments: &quot;.subline a:last-child&quot;
+      - limit:
+          source: &quot;${{results}}&quot;
+          count: &quot;${{args.limit}}&quot;
+
+  - name: new
+    description: &quot;取得最新文章&quot;
+    steps:
+      - navigate: &quot;${baseUrl}/newest&quot;
+      - wait:
+          selector: &quot;.athing&quot;
+      - extract:
+          selector: &quot;.athing&quot;
+          fields:
+            - title: &quot;.titleline a&quot;
+            - url: &quot;.titleline a[href]&quot;
+            - by: &quot;.hnuser&quot;
+            - time: &quot;.age a&quot;
+
+  - name: comments
+    description: &quot;取得文章評論&quot;
+    args:
+      - name: id
+        type: string
+        required: true
+      - name: limit
+        type: number
+        default: 20
+    steps:
+      - navigate: &quot;${baseUrl}/item?id=${args.id}&quot;
+      - wait:
+          selector: &quot;.comment&quot;
+      - extract:
+          selector: &quot;.comment&quot;
+          fields:
+            - author: &quot;.hnuser&quot;
+            - text: &quot;.commtext&quot;
+            - time: &quot;.age a&quot;
+      - limit:
+          source: &quot;${{results}}&quot;
+          count: &quot;${{args.limit}}&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">hn</span></span>
+<span class="line"><span style="color:#E06C75">version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"1.0.0"</span></span>
+<span class="line"><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Hacker News adapter for OpenCLI"</span></span>
+<span class="line"><span style="color:#E06C75">baseUrl</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"https://news.ycombinator.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">auth</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  strategy</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">public</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">commands</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">top</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"取得 Hacker News 頭條"</span></span>
+<span class="line"><span style="color:#E06C75">    args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">limit</span></span>
+<span class="line"><span style="color:#E06C75">        type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">number</span></span>
+<span class="line"><span style="color:#E06C75">        default</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">30</span></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".athing"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".athing"</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">rank</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".rank"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".titleline a"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".titleline a[href]"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">points</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".score"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">comments</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".subline a:last-child"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">limit</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">          count</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{args.limit}}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">new</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"取得最新文章"</span></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/newest"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".athing"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".athing"</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".titleline a"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".titleline a[href]"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">by</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".hnuser"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">time</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".age a"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">comments</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"取得文章評論"</span></span>
+<span class="line"><span style="color:#E06C75">    args</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">id</span></span>
+<span class="line"><span style="color:#E06C75">        type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">string</span></span>
+<span class="line"><span style="color:#E06C75">        required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">limit</span></span>
+<span class="line"><span style="color:#E06C75">        type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">number</span></span>
+<span class="line"><span style="color:#E06C75">        default</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">20</span></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">navigate</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${baseUrl}/item?id=${args.id}"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">wait</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".comment"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">extract</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          selector</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".comment"</span></span>
+<span class="line"><span style="color:#E06C75">          fields</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">author</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".hnuser"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">text</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".commtext"</span></span>
+<span class="line"><span style="color:#ABB2BF">            - </span><span style="color:#E06C75">time</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">".age a"</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">limit</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          source</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{results}}"</span></span>
+<span class="line"><span style="color:#E06C75">          count</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"${{args.limit}}"</span></span></code></pre> </div> </div>   <h3>載入並使用自製 Adapter</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>載入 Adapter</span> <button class="cb-copy" data-code="# 載入 YAML Adapter
+opencli plugin load ./hackernews/adapter.yaml
+
+# 確認載入成功
+opencli adapters list | grep hn
+
+# 使用自製 Adapter
+opencli hn top --limit 20
+opencli hn new --limit 10
+opencli hn comments 12345678 --limit 30" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 載入 YAML Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> plugin</span><span style="color:#98C379"> load</span><span style="color:#98C379"> ./hackernews/adapter.yaml</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 確認載入成功</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">grep</span><span style="color:#98C379"> hn</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用自製 Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> new</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> comments</span><span style="color:#D19A66"> 12345678</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span></span></code></pre> </div> </div>   <h2>測試與發佈</h2> <h3>本地測試</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試 Adapter</span> <button class="cb-copy" data-code="# 啟用 debug 模式（顯示詳細執行步驟）
+opencli --debug hn top
+
+# 使用 dry-run（不實際操作瀏覽器）
+opencli --dry-run hn search &quot;typescript&quot;
+
+# 取得 Adapter 資訊
+opencli adapter info hn" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 啟用 debug 模式（顯示詳細執行步驟）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --debug</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> top</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 dry-run（不實際操作瀏覽器）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --dry-run</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "typescript"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得 Adapter 資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapter</span><span style="color:#98C379"> info</span><span style="color:#98C379"> hn</span></span></code></pre> </div> </div>   <h3>發佈到 npm</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>發佈流程</span> <button class="cb-copy" data-code="# 初始化 npm 套件並標記為 opencli adapter
+npm init
+# 在 package.json 加入: &quot;keywords&quot;: [&quot;opencli&quot;, &quot;opencli-adapter&quot;]
+
+# 發佈
+npm publish
+
+# 其他使用者安裝
+npm install -g opencli-adapter-hackernews
+
+# 載入已安裝的 Adapter
+opencli plugin load opencli-adapter-hackernews" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 初始化 npm 套件並標記為 opencli adapter</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> init</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在 package.json 加入: "keywords": ["opencli", "opencli-adapter"]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 發佈</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> publish</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 其他使用者安裝</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> install</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> opencli-adapter-hackernews</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 載入已安裝的 Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> plugin</span><span style="color:#98C379"> load</span><span style="color:#98C379"> opencli-adapter-hackernews</span></span></code></pre> </div> </div>   <h3>使用 AI Skill 自動生成</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>AI 輔助開發 Adapter</span> <button class="cb-copy" data-code="# 安裝 adapter-author Skill
+opencli skill install opencli-adapter-author
+
+# 讓 AI 分析網站並生成 Adapter
+opencli adapter-author create --url &quot;https://lobste.rs&quot; --output ./lobsters-adapter" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 安裝 adapter-author Skill</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> skill</span><span style="color:#98C379"> install</span><span style="color:#98C379"> opencli-adapter-author</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讓 AI 分析網站並生成 Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapter-author</span><span style="color:#98C379"> create</span><span style="color:#D19A66"> --url</span><span style="color:#98C379"> "https://lobste.rs"</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> ./lobsters-adapter</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>最佳實踐</strong> <p>開發 Adapter 時，建議先用 <code>opencli browser</code> 的通用指令手動探索網站結構，確認 selector 和操作流程後，再撰寫成 Adapter YAML。這樣可以大幅減少試錯時間。</p> </div> </div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>常用平台指令實作</span> </a> <a href="/opencli/ch18-vs-playwright" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

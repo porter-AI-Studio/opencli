@@ -1,0 +1,782 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CI/CD 整合 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="在 GitHub Actions、GitLab CI、Jenkins 等 CI/CD 環境中整合 OpenCLI，使用 CDP 模式實現無頭瀏覽器自動化測試與資料擷取。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <h1>第 11 章：CI/CD 整合</h1> <p>
+將 OpenCLI 整合進 CI/CD pipeline 是讓瀏覽器自動化真正發揮價值的關鍵一步。無論是定期的資料擷取、端到端測試、還是部署後的冒煙測試（smoke test），OpenCLI 都能在持續整合環境中穩定運行。
+</p> <p>
+本章涵蓋三大主流 CI/CD 平台的完整配置方案，並說明各平台之間的關鍵差異，讓你能快速上手而不踩坑。
+</p> <h2>CI 環境的核心限制：必須使用 CDP 模式</h2> <p>
+在本地開發時，OpenCLI 預設透過 Chrome Extension 與瀏覽器溝通。但 CI 環境無法安裝 Extension（沒有使用者介面、無法與 Chrome Web Store 互動），因此 <strong>CI 環境必須改用 CDP 模式</strong>（Chrome DevTools Protocol）。
+</p> <p>
+CDP 模式的運作方式是：先啟動一個支援遠端除錯的 Chrome 或相容瀏覽器服務，再透過 WebSocket 連線讓 OpenCLI 發送指令。這種方式完全不依賴 Extension，因此可以在任何無頭環境中執行。
+</p> <h2>關鍵環境變數</h2> <p>在 CI 環境中，你需要透過環境變數告訴 OpenCLI 如何連線到瀏覽器。以下是完整的環境變數清單：</p> <div class="overflow-x-auto my-6"> <table class="w-full text-sm border-collapse"> <thead> <tr class="bg-gray-100 dark:bg-gray-800"> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">環境變數</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">說明</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">預設值</th> </tr> </thead> <tbody> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_CDP_ENDPOINT</td> <td class="p-3 border border-gray-300 dark:border-gray-600">CDP 連線端點，支援 http:// 與 ws:// 兩種格式</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">http://localhost:9222</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_CDP_TARGET</td> <td class="p-3 border border-gray-300 dark:border-gray-600">多個 target 時，以 URL substring 過濾要連線的 target</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">（不過濾）</td> </tr> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_DAEMON_PORT</td> <td class="p-3 border border-gray-300 dark:border-gray-600">OpenCLI daemon 監聽的本地埠號</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">19825</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_BROWSER_CONNECT_TIMEOUT</td> <td class="p-3 border border-gray-300 dark:border-gray-600">等待瀏覽器連線就緒的最長秒數</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">30</td> </tr> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_BROWSER_COMMAND_TIMEOUT</td> <td class="p-3 border border-gray-300 dark:border-gray-600">單一指令執行的最長秒數，超過則視為失敗</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">60</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono text-blue-600 dark:text-blue-400">OPENCLI_VERBOSE</td> <td class="p-3 border border-gray-300 dark:border-gray-600">設為 1 或 true 時，輸出詳細的除錯 log</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">false</td> </tr> </tbody> </table> </div> <h2>三種瀏覽器方案</h2> <p>在 CI 環境中啟動可供 OpenCLI 連線的瀏覽器，有三種主要方案，各有適用情境：</p> <h3>方案 A：browserless/chromium（推薦）</h3> <p> <a href="https://www.browserless.io/" target="_blank" rel="noopener" class="text-blue-600 dark:text-blue-400 underline">browserless</a> 是專為無頭瀏覽器自動化設計的 Docker 映像，提供完整的 Chrome 環境並內建健康檢查、並行連線管理、Token 認證等功能。這是最推薦的方案，穩定性最高且設定最簡潔。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# GitHub Actions 完整配置範例
+
+name: OpenCLI Automation
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 9 * * 1-5'  # 週一到週五早上 9 點執行
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    services:
+      browserless:
+        image: ghcr.io/browserless/chromium
+        ports:
+          - 3000:3000
+        env:
+          CONCURRENT: 5
+          TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
+        options: >-
+          --health-cmd &quot;curl -f http://localhost:3000/json/version&quot;
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install OpenCLI
+        run: npm install -g @jackwener/opencli
+
+      - name: Verify connection
+        env:
+          OPENCLI_CDP_ENDPOINT: &quot;ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}&quot;
+        run: opencli doctor
+
+      - name: Run automation
+        env:
+          OPENCLI_CDP_ENDPOINT: &quot;ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}&quot;
+          OPENCLI_BROWSER_CONNECT_TIMEOUT: 60
+          OPENCLI_BROWSER_COMMAND_TIMEOUT: 120
+        run: |
+          opencli <adapter> <command> --format json > output.json
+          echo &quot;Automation completed, $(wc -l < output.json) records found&quot;
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencli-results
+          path: output.json
+          retention-days: 30" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># GitHub Actions 完整配置範例</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">OpenCLI Automation</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D19A66">on</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  push</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    branches</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">main</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#E06C75">  schedule</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">cron</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'0 9 * * 1-5'</span><span style="color:#7F848E;font-style:italic">  # 週一到週五早上 9 點執行</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">jobs</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  scrape</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    runs-on</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ubuntu-latest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">    services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      browserless</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/browserless/chromium</span></span>
+<span class="line"><span style="color:#E06C75">        ports</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#98C379">3000:3000</span></span>
+<span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          CONCURRENT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">5</span></span>
+<span class="line"><span style="color:#E06C75">          TOKEN</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">${{ secrets.BROWSERLESS_TOKEN }}</span></span>
+<span class="line"><span style="color:#E06C75">        options</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">>-</span></span>
+<span class="line"><span style="color:#98C379">          --health-cmd "curl -f http://localhost:3000/json/version"</span></span>
+<span class="line"><span style="color:#98C379">          --health-interval 10s</span></span>
+<span class="line"><span style="color:#98C379">          --health-timeout 5s</span></span>
+<span class="line"><span style="color:#98C379">          --health-retries 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Checkout</span></span>
+<span class="line"><span style="color:#E06C75">        uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">actions/checkout@v4</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Install OpenCLI</span></span>
+<span class="line"><span style="color:#E06C75">        run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">npm install -g @jackwener/opencli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Verify connection</span></span>
+<span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}"</span></span>
+<span class="line"><span style="color:#E06C75">        run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">opencli doctor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Run automation</span></span>
+<span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}"</span></span>
+<span class="line"><span style="color:#E06C75">          OPENCLI_BROWSER_CONNECT_TIMEOUT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">60</span></span>
+<span class="line"><span style="color:#E06C75">          OPENCLI_BROWSER_COMMAND_TIMEOUT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">120</span></span>
+<span class="line"><span style="color:#E06C75">        run</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">          opencli &#x3C;adapter> &#x3C;command> --format json > output.json</span></span>
+<span class="line"><span style="color:#98C379">          echo "Automation completed, $(wc -l &#x3C; output.json) records found"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Upload results</span></span>
+<span class="line"><span style="color:#E06C75">        uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">actions/upload-artifact@v4</span></span>
+<span class="line"><span style="color:#E06C75">        with</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">opencli-results</span></span>
+<span class="line"><span style="color:#E06C75">          path</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">output.json</span></span>
+<span class="line"><span style="color:#E06C75">          retention-days</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">30</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 my-6"> <p class="text-blue-800 dark:text-blue-200 font-semibold mb-2">為什麼推薦 browserless？</p> <ul class="text-blue-700 dark:text-blue-300 space-y-1 text-sm list-disc pl-4"> <li>內建 <code>CONCURRENT</code> 控制並行連線數，避免資源耗盡</li> <li>Token 認證防止未授權存取</li> <li>GitHub Actions 原生支援 <code>--health-cmd</code>，自動等待服務就緒再執行後續 step</li> <li>映像已包含所有必要的系統依賴，不需要另外安裝字型或 sandbox 相關套件</li> </ul> </div> <h3>方案 B：原生 Chrome Headless</h3> <p>
+如果不想依賴額外的 Docker service，可以直接在 CI runner 上啟動 Chrome。GitHub Actions 的 <code>ubuntu-latest</code> 已預裝 Google Chrome，可直接使用。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="steps:
+  - name: Start Chrome in headless mode
+    run: |
+      google-chrome \
+        --headless=new \
+        --no-sandbox \
+        --disable-dev-shm-usage \
+        --remote-debugging-port=9222 \
+        --remote-allow-origins=&quot;*&quot; \
+        --user-data-dir=/tmp/chrome-profile \
+        &amp;
+
+      # 等待 Chrome 啟動完成
+      echo &quot;Waiting for Chrome to start...&quot;
+      for i in $(seq 1 10); do
+        if curl -sf http://localhost:9222/json/version > /dev/null; then
+          echo &quot;Chrome is ready&quot;
+          break
+        fi
+        sleep 1
+      done
+
+  - name: Install OpenCLI
+    run: npm install -g @jackwener/opencli
+
+  - name: Run automation
+    env:
+      OPENCLI_CDP_ENDPOINT: &quot;http://localhost:9222&quot;
+      OPENCLI_VERBOSE: &quot;1&quot;
+    run: opencli <adapter> <command> --format json > output.json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#E06C75">steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Start Chrome in headless mode</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">      google-chrome \</span></span>
+<span class="line"><span style="color:#98C379">        --headless=new \</span></span>
+<span class="line"><span style="color:#98C379">        --no-sandbox \</span></span>
+<span class="line"><span style="color:#98C379">        --disable-dev-shm-usage \</span></span>
+<span class="line"><span style="color:#98C379">        --remote-debugging-port=9222 \</span></span>
+<span class="line"><span style="color:#98C379">        --remote-allow-origins="*" \</span></span>
+<span class="line"><span style="color:#98C379">        --user-data-dir=/tmp/chrome-profile \</span></span>
+<span class="line"><span style="color:#98C379">        &#x26;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#98C379">      # 等待 Chrome 啟動完成</span></span>
+<span class="line"><span style="color:#98C379">      echo "Waiting for Chrome to start..."</span></span>
+<span class="line"><span style="color:#98C379">      for i in $(seq 1 10); do</span></span>
+<span class="line"><span style="color:#98C379">        if curl -sf http://localhost:9222/json/version > /dev/null; then</span></span>
+<span class="line"><span style="color:#98C379">          echo "Chrome is ready"</span></span>
+<span class="line"><span style="color:#98C379">          break</span></span>
+<span class="line"><span style="color:#98C379">        fi</span></span>
+<span class="line"><span style="color:#98C379">        sleep 1</span></span>
+<span class="line"><span style="color:#98C379">      done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Install OpenCLI</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">npm install -g @jackwener/opencli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Run automation</span></span>
+<span class="line"><span style="color:#E06C75">    env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"http://localhost:9222"</span></span>
+<span class="line"><span style="color:#E06C75">      OPENCLI_VERBOSE</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"1"</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">opencli &#x3C;adapter> &#x3C;command> --format json > output.json</span></span></code></pre> </div> </div>   <div class="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg p-4 my-6"> <p class="text-amber-800 dark:text-amber-200 font-semibold mb-2">注意：直接啟動 Chrome 的限制</p> <ul class="text-amber-700 dark:text-amber-300 space-y-1 text-sm list-disc pl-4"> <li>需要手動處理 Chrome 的啟動時序（固定 <code>sleep 3</code> 不可靠，建議用 polling curl）</li> <li>不支援並行連線，若需同時執行多個 task 需要啟動多個 Chrome 實例</li> <li>CI runner 重啟後，背景 Chrome 程序不會自動清理</li> </ul> </div> <h3>方案 C：Selenium Grid（並行多瀏覽器）</h3> <p>
+當你需要跨瀏覽器測試或高度並行的任務時，Selenium Grid 提供集中管理多個瀏覽器節點的能力。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="services:
+  selenium-hub:
+    image: selenium/hub:4.18
+    ports:
+      - 4444:4444
+      - 4442:4442
+      - 4443:4443
+
+  chrome-node:
+    image: selenium/node-chrome:4.18
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_NODE_MAX_SESSIONS: 3
+    options: --shm-size=&quot;2g&quot;
+    depends_on:
+      - selenium-hub
+
+steps:
+  - name: Wait for Grid to be ready
+    run: |
+      until curl -sf http://localhost:4444/wd/hub/status | grep -q '&quot;ready&quot;:true'; do
+        echo &quot;Waiting for Selenium Grid...&quot;
+        sleep 2
+      done
+
+  - name: Run OpenCLI via Grid
+    env:
+      OPENCLI_CDP_ENDPOINT: &quot;http://localhost:4444&quot;
+    run: opencli <adapter> <command>" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#E06C75">services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  selenium-hub</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">selenium/hub:4.18</span></span>
+<span class="line"><span style="color:#E06C75">    ports</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">4444:4444</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">4442:4442</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">4443:4443</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  chrome-node</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">selenium/node-chrome:4.18</span></span>
+<span class="line"><span style="color:#E06C75">    environment</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      SE_EVENT_BUS_HOST</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">selenium-hub</span></span>
+<span class="line"><span style="color:#E06C75">      SE_EVENT_BUS_PUBLISH_PORT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">4442</span></span>
+<span class="line"><span style="color:#E06C75">      SE_EVENT_BUS_SUBSCRIBE_PORT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">4443</span></span>
+<span class="line"><span style="color:#E06C75">      SE_NODE_MAX_SESSIONS</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">3</span></span>
+<span class="line"><span style="color:#E06C75">    options</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">--shm-size="2g"</span></span>
+<span class="line"><span style="color:#E06C75">    depends_on</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">selenium-hub</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Wait for Grid to be ready</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">      until curl -sf http://localhost:4444/wd/hub/status | grep -q '"ready":true'; do</span></span>
+<span class="line"><span style="color:#98C379">        echo "Waiting for Selenium Grid..."</span></span>
+<span class="line"><span style="color:#98C379">        sleep 2</span></span>
+<span class="line"><span style="color:#98C379">      done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Run OpenCLI via Grid</span></span>
+<span class="line"><span style="color:#E06C75">    env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"http://localhost:4444"</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">opencli &#x3C;adapter> &#x3C;command></span></span></code></pre> </div> </div>   <h2>Docker Compose 本地開發環境</h2> <p>
+為確保本地開發與 CI 環境一致，建議在專案中加入 <code>docker-compose.yml</code>，讓開發者在本地也能用相同的瀏覽器環境測試：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# docker-compose.yml（放在專案根目錄）
+
+version: '3.8'
+
+services:
+  browserless:
+    image: ghcr.io/browserless/chromium
+    ports:
+      - &quot;3000:3000&quot;
+    environment:
+      CONCURRENT: 5
+      TOKEN: devtoken
+    shm_size: '2gb'
+    restart: unless-stopped
+
+# 使用方式：
+# docker compose up -d
+# OPENCLI_CDP_ENDPOINT=&quot;ws://localhost:3000?token=devtoken&quot; opencli doctor" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># docker-compose.yml（放在專案根目錄）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'3.8'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  browserless</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/browserless/chromium</span></span>
+<span class="line"><span style="color:#E06C75">    ports</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">"3000:3000"</span></span>
+<span class="line"><span style="color:#E06C75">    environment</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      CONCURRENT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">5</span></span>
+<span class="line"><span style="color:#E06C75">      TOKEN</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">devtoken</span></span>
+<span class="line"><span style="color:#E06C75">    shm_size</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'2gb'</span></span>
+<span class="line"><span style="color:#E06C75">    restart</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">unless-stopped</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用方式：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># docker compose up -d</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># OPENCLI_CDP_ENDPOINT="ws://localhost:3000?token=devtoken" opencli doctor</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 本地開發時的快速啟動腳本（scripts/dev-browser.sh）
+
+#!/bin/bash
+set -e
+
+echo &quot;Starting browserless...&quot;
+docker compose up -d browserless
+
+echo &quot;Waiting for browserless to be ready...&quot;
+until curl -sf http://localhost:3000/json/version > /dev/null; do
+  sleep 1
+done
+
+echo &quot;Browserless is ready!&quot;
+echo &quot;&quot;
+echo &quot;Set this environment variable to use OpenCLI:&quot;
+echo &quot;  export OPENCLI_CDP_ENDPOINT='ws://localhost:3000?token=devtoken'&quot;
+echo &quot;&quot;
+echo &quot;Or run directly:&quot;
+echo &quot;  OPENCLI_CDP_ENDPOINT='ws://localhost:3000?token=devtoken' opencli doctor&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 本地開發時的快速啟動腳本（scripts/dev-browser.sh）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#56B6C2">set</span><span style="color:#D19A66"> -e</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Starting browserless..."</span></span>
+<span class="line"><span style="color:#61AFEF">docker</span><span style="color:#98C379"> compose</span><span style="color:#98C379"> up</span><span style="color:#D19A66"> -d</span><span style="color:#98C379"> browserless</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Waiting for browserless to be ready..."</span></span>
+<span class="line"><span style="color:#C678DD">until</span><span style="color:#61AFEF"> curl</span><span style="color:#D19A66"> -sf</span><span style="color:#98C379"> http://localhost:3000/json/version</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#61AFEF">  sleep</span><span style="color:#D19A66"> 1</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Browserless is ready!"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Set this environment variable to use OpenCLI:"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "  export OPENCLI_CDP_ENDPOINT='ws://localhost:3000?token=devtoken'"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Or run directly:"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "  OPENCLI_CDP_ENDPOINT='ws://localhost:3000?token=devtoken' opencli doctor"</span></span></code></pre> </div> </div>   <h2>GitLab CI 配置</h2> <p>
+GitLab CI 的 service 運作機制與 GitHub Actions 有一個關鍵差異：<strong>service 的 alias 會直接作為 hostname 使用</strong>，而不是 localhost。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# .gitlab-ci.yml
+
+stages:
+  - test
+  - scrape
+
+variables:
+  OPENCLI_CDP_ENDPOINT: &quot;ws://browserless:3000?token=ci-token&quot;
+  OPENCLI_BROWSER_CONNECT_TIMEOUT: &quot;60&quot;
+
+.browser_service: &amp;browser_service
+  services:
+    - name: ghcr.io/browserless/chromium
+      alias: browserless
+      variables:
+        TOKEN: &quot;ci-token&quot;
+        CONCURRENT: &quot;5&quot;
+
+opencli_smoke_test:
+  <<: *browser_service
+  stage: test
+  image: node:20
+  before_script:
+    - npm install -g @jackwener/opencli
+    - |
+      echo &quot;Waiting for browserless...&quot;
+      for i in $(seq 1 30); do
+        if curl -sf http://browserless:3000/json/version > /dev/null; then
+          echo &quot;Browserless is ready&quot;
+          break
+        fi
+        sleep 2
+      done
+  script:
+    - opencli doctor
+    - opencli <adapter> <command> --format json > output.json
+  artifacts:
+    paths:
+      - output.json
+    expire_in: 1 week
+  only:
+    - main
+    - merge_requests" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># .gitlab-ci.yml</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">stages</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">test</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">scrape</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">variables</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ws://browserless:3000?token=ci-token"</span></span>
+<span class="line"><span style="color:#E06C75">  OPENCLI_BROWSER_CONNECT_TIMEOUT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"60"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">.browser_service</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">&#x26;</span><span style="color:#E5C07B">browser_service</span></span>
+<span class="line"><span style="color:#E06C75">  services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/browserless/chromium</span></span>
+<span class="line"><span style="color:#E06C75">      alias</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">browserless</span></span>
+<span class="line"><span style="color:#E06C75">      variables</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        TOKEN</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ci-token"</span></span>
+<span class="line"><span style="color:#E06C75">        CONCURRENT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"5"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">opencli_smoke_test</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#D19A66">  &#x3C;&#x3C;</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">*</span><span style="color:#E06C75">browser_service</span></span>
+<span class="line"><span style="color:#E06C75">  stage</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">test</span></span>
+<span class="line"><span style="color:#E06C75">  image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">node:20</span></span>
+<span class="line"><span style="color:#E06C75">  before_script</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">npm install -g @jackwener/opencli</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">      echo "Waiting for browserless..."</span></span>
+<span class="line"><span style="color:#98C379">      for i in $(seq 1 30); do</span></span>
+<span class="line"><span style="color:#98C379">        if curl -sf http://browserless:3000/json/version > /dev/null; then</span></span>
+<span class="line"><span style="color:#98C379">          echo "Browserless is ready"</span></span>
+<span class="line"><span style="color:#98C379">          break</span></span>
+<span class="line"><span style="color:#98C379">        fi</span></span>
+<span class="line"><span style="color:#98C379">        sleep 2</span></span>
+<span class="line"><span style="color:#98C379">      done</span></span>
+<span class="line"><span style="color:#E06C75">  script</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">opencli doctor</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">opencli &#x3C;adapter> &#x3C;command> --format json > output.json</span></span>
+<span class="line"><span style="color:#E06C75">  artifacts</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    paths</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">output.json</span></span>
+<span class="line"><span style="color:#E06C75">    expire_in</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">1 week</span></span>
+<span class="line"><span style="color:#E06C75">  only</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">main</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">merge_requests</span></span></code></pre> </div> </div>   <div class="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4 my-6"> <p class="text-red-800 dark:text-red-200 font-semibold mb-2">GitLab CI 關鍵差異：Hostname 不是 localhost</p> <p class="text-red-700 dark:text-red-300 text-sm">
+在 GitHub Actions 中，service 對應到 <code>localhost</code>。但在 GitLab CI 中，service 對應到其 <code>alias</code> 名稱（例如 <code>browserless</code>）。因此環境變數要設為 <code>ws://browserless:3000</code>，而不是 <code>ws://localhost:3000</code>。這是跨平台遷移時最常見的錯誤。
+</p> </div> <h2>Jenkins Pipeline</h2> <p>
+Jenkins 沒有原生的 service 概念，需要手動管理 Docker 容器的生命週期。使用 <code>post &#123; always &#123;&#125; &#125;</code> 確保容器在 pipeline 結束後一定會被清理。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="// Jenkinsfile
+
+pipeline {
+    agent { label 'linux' }
+
+    environment {
+        BROWSERLESS_TOKEN = credentials('browserless-token')
+        OPENCLI_CDP_ENDPOINT = &quot;ws://localhost:3000?token=${BROWSERLESS_TOKEN}&quot;
+        OPENCLI_BROWSER_CONNECT_TIMEOUT = '60'
+        OPENCLI_BROWSER_COMMAND_TIMEOUT = '120'
+    }
+
+    stages {
+        stage('Start Browser Service') {
+            steps {
+                script {
+                    sh &quot;&quot;&quot;
+                        docker run -d \
+                            --name browserless-${BUILD_NUMBER} \
+                            -p 3000:3000 \
+                            -e TOKEN=${BROWSERLESS_TOKEN} \
+                            -e CONCURRENT=5 \
+                            --shm-size=2g \
+                            ghcr.io/browserless/chromium
+
+                        echo &quot;Waiting for browserless to start...&quot;
+                        for i in $(seq 1 30); do
+                            if curl -sf http://localhost:3000/json/version > /dev/null; then
+                                echo &quot;Browserless is ready&quot;
+                                break
+                            fi
+                            sleep 2
+                        done
+                    &quot;&quot;&quot;
+                }
+            }
+        }
+
+        stage('Install OpenCLI') {
+            steps {
+                sh 'npm install -g @jackwener/opencli'
+                sh 'opencli doctor'
+            }
+        }
+
+        stage('Run Automation') {
+            steps {
+                sh 'opencli <adapter> <command> --format json > output.json'
+                archiveArtifacts artifacts: 'output.json', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            sh &quot;&quot;&quot;
+                docker stop browserless-${BUILD_NUMBER} || true
+                docker rm browserless-${BUILD_NUMBER} || true
+            &quot;&quot;&quot;
+        }
+        failure {
+            sh 'OPENCLI_VERBOSE=1 opencli doctor || true'
+        }
+    }
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="groovy"><code><span class="line"><span style="color:#7F848E;font-style:italic">// Jenkinsfile</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">pipeline {</span></span>
+<span class="line"><span style="color:#ABB2BF">    agent { label </span><span style="color:#98C379">'linux'</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">    environment {</span></span>
+<span class="line"><span style="color:#D19A66">        BROWSERLESS_TOKEN</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> credentials</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browserless-token'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#D19A66">        OPENCLI_CDP_ENDPOINT</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> "ws://localhost:3000?token=</span><span style="color:#C678DD">${</span><span style="color:#98C379">BROWSERLESS_TOKEN</span><span style="color:#C678DD">}</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#D19A66">        OPENCLI_BROWSER_CONNECT_TIMEOUT</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> '60'</span></span>
+<span class="line"><span style="color:#D19A66">        OPENCLI_BROWSER_COMMAND_TIMEOUT</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> '120'</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">    stages {</span></span>
+<span class="line"><span style="color:#61AFEF">        stage</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Start Browser Service'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#ABB2BF">            steps {</span></span>
+<span class="line"><span style="color:#ABB2BF">                script {</span></span>
+<span class="line"><span style="color:#ABB2BF">                    sh </span><span style="color:#98C379">"""</span></span>
+<span class="line"><span style="color:#98C379">                        docker run -d \</span></span>
+<span class="line"><span style="color:#98C379">                            --name browserless-</span><span style="color:#C678DD">${</span><span style="color:#98C379">BUILD_NUMBER</span><span style="color:#C678DD">}</span><span style="color:#98C379"> \</span></span>
+<span class="line"><span style="color:#98C379">                            -p 3000:3000 \</span></span>
+<span class="line"><span style="color:#98C379">                            -e TOKEN=</span><span style="color:#C678DD">${</span><span style="color:#98C379">BROWSERLESS_TOKEN</span><span style="color:#C678DD">}</span><span style="color:#98C379"> \</span></span>
+<span class="line"><span style="color:#98C379">                            -e CONCURRENT=5 \</span></span>
+<span class="line"><span style="color:#98C379">                            --shm-size=2g \</span></span>
+<span class="line"><span style="color:#98C379">                            ghcr.io/browserless/chromium</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#98C379">                        echo "Waiting for browserless to start..."</span></span>
+<span class="line"><span style="color:#98C379">                        for i in $(seq 1 30); do</span></span>
+<span class="line"><span style="color:#98C379">                            if curl -sf http://localhost:3000/json/version > /dev/null; then</span></span>
+<span class="line"><span style="color:#98C379">                                echo "Browserless is ready"</span></span>
+<span class="line"><span style="color:#98C379">                                break</span></span>
+<span class="line"><span style="color:#98C379">                            fi</span></span>
+<span class="line"><span style="color:#98C379">                            sleep 2</span></span>
+<span class="line"><span style="color:#98C379">                        done</span></span>
+<span class="line"><span style="color:#98C379">                    """</span></span>
+<span class="line"><span style="color:#ABB2BF">                }</span></span>
+<span class="line"><span style="color:#ABB2BF">            }</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">        stage</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Install OpenCLI'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#ABB2BF">            steps {</span></span>
+<span class="line"><span style="color:#ABB2BF">                sh </span><span style="color:#98C379">'npm install -g @jackwener/opencli'</span></span>
+<span class="line"><span style="color:#ABB2BF">                sh </span><span style="color:#98C379">'opencli doctor'</span></span>
+<span class="line"><span style="color:#ABB2BF">            }</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">        stage</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Run Automation'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#ABB2BF">            steps {</span></span>
+<span class="line"><span style="color:#ABB2BF">                sh </span><span style="color:#98C379">'opencli &#x3C;adapter> &#x3C;command> --format json > output.json'</span></span>
+<span class="line"><span style="color:#ABB2BF">                archiveArtifacts </span><span style="color:#D19A66">artifacts</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'output.json'</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">fingerprint</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#ABB2BF">            }</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">    post {</span></span>
+<span class="line"><span style="color:#ABB2BF">        always {</span></span>
+<span class="line"><span style="color:#ABB2BF">            sh </span><span style="color:#98C379">"""</span></span>
+<span class="line"><span style="color:#98C379">                docker stop browserless-</span><span style="color:#C678DD">${</span><span style="color:#98C379">BUILD_NUMBER</span><span style="color:#C678DD">}</span><span style="color:#98C379"> || true</span></span>
+<span class="line"><span style="color:#98C379">                docker rm browserless-</span><span style="color:#C678DD">${</span><span style="color:#98C379">BUILD_NUMBER</span><span style="color:#C678DD">}</span><span style="color:#98C379"> || true</span></span>
+<span class="line"><span style="color:#98C379">            """</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"><span style="color:#ABB2BF">        failure {</span></span>
+<span class="line"><span style="color:#ABB2BF">            sh </span><span style="color:#98C379">'OPENCLI_VERBOSE=1 opencli doctor || true'</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <h2>三大平台差異對照</h2> <div class="overflow-x-auto my-6"> <table class="w-full text-sm border-collapse"> <thead> <tr class="bg-gray-100 dark:bg-gray-800"> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">項目</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">GitHub Actions</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">GitLab CI</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">Jenkins</th> </tr> </thead> <tbody> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">Browserless hostname</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">localhost</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">service alias（例如 browserless）</td> <td class="p-3 border border-gray-300 dark:border-gray-600 font-mono">localhost</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">Secret 管理</td> <td class="p-3 border border-gray-300 dark:border-gray-600"><code class="text-xs">secrets.X</code></td> <td class="p-3 border border-gray-300 dark:border-gray-600">CI/CD Variables（Masked）</td> <td class="p-3 border border-gray-300 dark:border-gray-600"><code class="text-xs">credentials()</code></td> </tr> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">Service 健康檢查</td> <td class="p-3 border border-gray-300 dark:border-gray-600">原生支援 <code class="text-xs">--health-cmd</code></td> <td class="p-3 border border-gray-300 dark:border-gray-600">需自行 polling curl</td> <td class="p-3 border border-gray-300 dark:border-gray-600">需自行 polling curl</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">容器生命週期管理</td> <td class="p-3 border border-gray-300 dark:border-gray-600">自動（services 區塊）</td> <td class="p-3 border border-gray-300 dark:border-gray-600">自動（services 區塊）</td> <td class="p-3 border border-gray-300 dark:border-gray-600">手動（docker run / stop）</td> </tr> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">Artifact 保存</td> <td class="p-3 border border-gray-300 dark:border-gray-600"><code class="text-xs">upload-artifact action</code></td> <td class="p-3 border border-gray-300 dark:border-gray-600"><code class="text-xs">artifacts: paths:</code></td> <td class="p-3 border border-gray-300 dark:border-gray-600"><code class="text-xs">archiveArtifacts</code></td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600 font-semibold">並行 job 支援</td> <td class="p-3 border border-gray-300 dark:border-gray-600">matrix strategy</td> <td class="p-3 border border-gray-300 dark:border-gray-600">parallel 關鍵字</td> <td class="p-3 border border-gray-300 dark:border-gray-600">parallel step</td> </tr> </tbody> </table> </div> <h2>常見問題排查</h2> <h3>問題 1：Chrome 啟動太慢導致連線失敗</h3> <p>
+使用固定的 <code>sleep 3</code> 不可靠，因為 CI runner 的效能會波動。建議改用 polling curl 直到服務回應：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 不推薦：固定等待
+sleep 3
+
+# 推薦：polling 直到就緒（最多等 30 秒）
+for i in $(seq 1 15); do
+  if curl -sf http://localhost:9222/json/version > /dev/null 2>&amp;1; then
+    echo &quot;Chrome is ready after ${i} attempts&quot;
+    break
+  fi
+  echo &quot;Attempt ${i}: Chrome not ready yet...&quot;
+  sleep 2
+done" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：固定等待</span></span>
+<span class="line"><span style="color:#61AFEF">sleep</span><span style="color:#D19A66"> 3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：polling 直到就緒（最多等 30 秒）</span></span>
+<span class="line"><span style="color:#C678DD">for</span><span style="color:#E06C75"> i</span><span style="color:#C678DD"> in</span><span style="color:#ABB2BF"> $(</span><span style="color:#61AFEF">seq</span><span style="color:#D19A66"> 1</span><span style="color:#D19A66"> 15</span><span style="color:#ABB2BF">); </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#61AFEF"> curl</span><span style="color:#D19A66"> -sf</span><span style="color:#98C379"> http://localhost:9222/json/version</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> 2>&#x26;1; </span><span style="color:#C678DD">then</span></span>
+<span class="line"><span style="color:#56B6C2">    echo</span><span style="color:#98C379"> "Chrome is ready after ${</span><span style="color:#E06C75">i</span><span style="color:#98C379">} attempts"</span></span>
+<span class="line"><span style="color:#C678DD">    break</span></span>
+<span class="line"><span style="color:#C678DD">  fi</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "Attempt ${</span><span style="color:#E06C75">i</span><span style="color:#98C379">}: Chrome not ready yet..."</span></span>
+<span class="line"><span style="color:#61AFEF">  sleep</span><span style="color:#D19A66"> 2</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span></code></pre> </div> </div>   <h3>問題 2：/dev/shm 空間不足導致 Chrome 崩潰</h3> <p>Chrome 預設使用 <code>/dev/shm</code>（共享記憶體）作為渲染緩衝區。CI 環境的 /dev/shm 通常只有 64MB，複雜頁面容易溢出而導致 Tab 崩潰。有兩種解法：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 解法 1：啟動 Chrome 時關閉 /dev/shm 使用（改用 /tmp）
+google-chrome --disable-dev-shm-usage ...
+
+# 解法 2：在 Docker Compose 或 CI service 中增加 shm 大小
+services:
+  browserless:
+    image: ghcr.io/browserless/chromium
+    shm_size: '2gb'   # 直接在 service 設定
+
+# GitHub Actions service 寫法
+options: --shm-size=&quot;2g&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 解法 1：啟動 Chrome 時關閉 /dev/shm 使用（改用 /tmp）</span></span>
+<span class="line"><span style="color:#98C379">google-chrome --disable-dev-shm-usage ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 解法 2：在 Docker Compose 或 CI service 中增加 shm 大小</span></span>
+<span class="line"><span style="color:#E06C75">services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  browserless</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/browserless/chromium</span></span>
+<span class="line"><span style="color:#E06C75">    shm_size</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'2gb'</span><span style="color:#7F848E;font-style:italic">   # 直接在 service 設定</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># GitHub Actions service 寫法</span></span>
+<span class="line"><span style="color:#E06C75">options</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">--shm-size="2g"</span></span></code></pre> </div> </div>   <h3>問題 3：ERR_CONNECTION_REFUSED（remote debugging 連不上）</h3> <p>
+啟動 Chrome 時，必須加上 <code>--remote-allow-origins="*"</code>，否則 Chrome 會拒絕來自非 localhost 的 CDP 連線請求：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="google-chrome \
+  --headless=new \
+  --no-sandbox \
+  --disable-dev-shm-usage \
+  --remote-debugging-port=9222 \
+  --remote-allow-origins=&quot;*&quot;   # 這行不能省略！" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">google-chrome</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --headless=new</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --no-sandbox</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --disable-dev-shm-usage</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --remote-debugging-port=9222</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --remote-allow-origins=</span><span style="color:#98C379">"*"</span><span style="color:#7F848E;font-style:italic">   # 這行不能省略！</span></span></code></pre> </div> </div>   <h3>問題 4：需要登入的網站無法在 CI 執行</h3> <p>
+對於需要帳密登入的網站，有兩種常見解法。推薦的方法是事先在本地登入並匯出 cookies，再存為 CI Secret：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 步驟 1：本地匯出 cookies（登入後執行）
+opencli browser eval &quot;JSON.stringify(document.cookie)&quot; > cookies.json
+
+# 步驟 2：加密後存入 CI Secret（GitHub Actions）
+# 在 GitHub repo -> Settings -> Secrets -> New secret
+# Name: SITE_COOKIES
+# Value: 貼上 cookies.json 的內容
+
+# 步驟 3：CI 中使用
+steps:
+  - name: Restore cookies
+    env:
+      SITE_COOKIES: ${{ secrets.SITE_COOKIES }}
+    run: |
+      echo &quot;${SITE_COOKIES}&quot; > cookies.json
+      opencli browser eval &quot;
+        const cookies = JSON.parse(require('fs').readFileSync('cookies.json', 'utf8'));
+        document.cookie = cookies;
+      &quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 步驟 1：本地匯出 cookies（登入後執行）</span></span>
+<span class="line"><span style="color:#98C379">opencli browser eval "JSON.stringify(document.cookie)" > cookies.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 步驟 2：加密後存入 CI Secret（GitHub Actions）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在 GitHub repo -> Settings -> Secrets -> New secret</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Name: SITE_COOKIES</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Value: 貼上 cookies.json 的內容</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 步驟 3：CI 中使用</span></span>
+<span class="line"><span style="color:#E06C75">steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Restore cookies</span></span>
+<span class="line"><span style="color:#E06C75">    env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      SITE_COOKIES</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">${{ secrets.SITE_COOKIES }}</span></span>
+<span class="line"><span style="color:#E06C75">    run</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">      echo "${SITE_COOKIES}" > cookies.json</span></span>
+<span class="line"><span style="color:#98C379">      opencli browser eval "</span></span>
+<span class="line"><span style="color:#98C379">        const cookies = JSON.parse(require('fs').readFileSync('cookies.json', 'utf8'));</span></span>
+<span class="line"><span style="color:#98C379">        document.cookie = cookies;</span></span>
+<span class="line"><span style="color:#98C379">      "</span></span></code></pre> </div> </div>   <h3>問題 5：記憶體不足（Out of Memory）</h3> <p>大量並行的瀏覽器操作可能導致 OOM。有三個調整方向：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 方向 1：降低 browserless 的並行數
+environment:
+  CONCURRENT: 2   # 從 5 降到 2
+
+# 方向 2：換用更大規格的 runner（GitHub Actions）
+runs-on: ubuntu-latest-8core   # 8 核心 32GB 記憶體
+
+# 方向 3：為 Chrome 設定記憶體上限
+google-chrome --js-flags=&quot;--max-old-space-size=512&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 方向 1：降低 browserless 的並行數</span></span>
+<span class="line"><span style="color:#E06C75">environment</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  CONCURRENT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">2</span><span style="color:#7F848E;font-style:italic">   # 從 5 降到 2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方向 2：換用更大規格的 runner（GitHub Actions）</span></span>
+<span class="line"><span style="color:#E06C75">runs-on</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ubuntu-latest-8core</span><span style="color:#7F848E;font-style:italic">   # 8 核心 32GB 記憶體</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方向 3：為 Chrome 設定記憶體上限</span></span>
+<span class="line"><span style="color:#98C379">google-chrome --js-flags="--max-old-space-size=512"</span></span></code></pre> </div> </div>   <h2>進階：並行執行與 Matrix 策略</h2> <p>
+當需要對多個目標並行執行時，可以結合 CI 的 matrix 功能與 browserless 的並行連線：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# GitHub Actions Matrix 並行範例
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [site-a, site-b, site-c]
+      max-parallel: 3   # 同時最多跑 3 個 job
+
+    services:
+      browserless:
+        image: ghcr.io/browserless/chromium
+        ports:
+          - 3000:3000
+        env:
+          CONCURRENT: 5
+          TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
+        options: >-
+          --health-cmd &quot;curl -f http://localhost:3000/json/version&quot;
+          --health-interval 10s
+          --health-retries 5
+
+    steps:
+      - name: Install OpenCLI
+        run: npm install -g @jackwener/opencli
+
+      - name: Run for ${{ matrix.target }}
+        env:
+          OPENCLI_CDP_ENDPOINT: &quot;ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}&quot;
+        run: |
+          opencli <adapter> <command> \
+            --target ${{ matrix.target }} \
+            --format json > result-${{ matrix.target }}.json
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ matrix.target }}
+          path: result-${{ matrix.target }}.json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># GitHub Actions Matrix 並行範例</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">jobs</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  scrape</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    runs-on</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ubuntu-latest</span></span>
+<span class="line"><span style="color:#E06C75">    strategy</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      matrix</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        target</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">site-a</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">site-b</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">site-c</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#E06C75">      max-parallel</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">3</span><span style="color:#7F848E;font-style:italic">   # 同時最多跑 3 個 job</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">    services</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">      browserless</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">        image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/browserless/chromium</span></span>
+<span class="line"><span style="color:#E06C75">        ports</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">          - </span><span style="color:#98C379">3000:3000</span></span>
+<span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          CONCURRENT</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">5</span></span>
+<span class="line"><span style="color:#E06C75">          TOKEN</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">${{ secrets.BROWSERLESS_TOKEN }}</span></span>
+<span class="line"><span style="color:#E06C75">        options</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">>-</span></span>
+<span class="line"><span style="color:#98C379">          --health-cmd "curl -f http://localhost:3000/json/version"</span></span>
+<span class="line"><span style="color:#98C379">          --health-interval 10s</span></span>
+<span class="line"><span style="color:#98C379">          --health-retries 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Install OpenCLI</span></span>
+<span class="line"><span style="color:#E06C75">        run</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">npm install -g @jackwener/opencli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Run for ${{ matrix.target }}</span></span>
+<span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          OPENCLI_CDP_ENDPOINT</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"ws://localhost:3000?token=${{ secrets.BROWSERLESS_TOKEN }}"</span></span>
+<span class="line"><span style="color:#E06C75">        run</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">|</span></span>
+<span class="line"><span style="color:#98C379">          opencli &#x3C;adapter> &#x3C;command> \</span></span>
+<span class="line"><span style="color:#98C379">            --target ${{ matrix.target }} \</span></span>
+<span class="line"><span style="color:#98C379">            --format json > result-${{ matrix.target }}.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">Upload result</span></span>
+<span class="line"><span style="color:#E06C75">        uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">actions/upload-artifact@v4</span></span>
+<span class="line"><span style="color:#E06C75">        with</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">          name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">result-${{ matrix.target }}</span></span>
+<span class="line"><span style="color:#E06C75">          path</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">result-${{ matrix.target }}.json</span></span></code></pre> </div> </div>   <h2>安全最佳實踐</h2> <ul class="space-y-3 my-6"> <li class="flex gap-3"> <span class="text-green-600 dark:text-green-400 font-bold mt-0.5">&#10003;</span> <div> <strong>永遠為 browserless 設定 Token</strong>：即使在私有 CI 環境，也應啟用 Token 認證，防止 runner 上其他 job 誤用瀏覽器資源。
+</div> </li> <li class="flex gap-3"> <span class="text-green-600 dark:text-green-400 font-bold mt-0.5">&#10003;</span> <div> <strong>不要在 log 中印出 Secret</strong>：設定 <code>OPENCLI_VERBOSE=1</code> 時，CDP endpoint URL 可能包含 Token，確認 CI 有遮罩敏感字串的機制。
+</div> </li> <li class="flex gap-3"> <span class="text-green-600 dark:text-green-400 font-bold mt-0.5">&#10003;</span> <div> <strong>限制 Artifact 保存時間</strong>：擷取的資料可能包含敏感內容，設定合理的 <code>retention-days</code>（例如 7-30 天）。
+</div> </li> <li class="flex gap-3"> <span class="text-green-600 dark:text-green-400 font-bold mt-0.5">&#10003;</span> <div> <strong>使用最小權限原則</strong>：CI job 只需要讀取特定 Secret，不要把所有 Secret 都注入到每個 job。
+</div> </li> </ul> <h2>小結</h2> <p>
+將 OpenCLI 整合進 CI/CD pipeline 的核心要點：
+</p> <ol class="space-y-2 my-6 list-decimal pl-6"> <li>CI 環境必須使用 CDP 模式，不支援 Extension 模式</li> <li>推薦使用 browserless/chromium Docker 映像，穩定且易於配置</li> <li>GitLab CI 的 service hostname 是 alias 名稱，不是 localhost，這是跨平台遷移最容易搞混的地方</li> <li>健康檢查很重要，不要用固定 sleep，要用 polling curl 等待服務就緒</li> <li><code>/dev/shm</code> 不足是 Chrome 崩潰的常見原因，加上 <code>--disable-dev-shm-usage</code> 或增大 shm_size</li> </ol> <p>
+下一章，我們將聚焦在一個更特殊的使用情境：如何在 Claude Code 的 AI Agent 環境中發揮 OpenCLI 的最大潛力。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span> </a> <a href="/opencli/ch12-claude-code" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

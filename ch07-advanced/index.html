@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>進階操作（eval、wait、network） | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="深入探討 OpenCLI 進階指令：eval 執行 JavaScript、wait 三種等待模式、network 監聽網路請求、screenshot 截圖、extract 擷取頁面，以及組合技實戰流程。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 7 章 · Part 2：瀏覽器自動化</span> <h1>進階操作（eval、wait、network）</h1> <p class="cdesc">
+掌握基本的點擊與填寫之後，真正複雜的自動化任務需要更強大的工具：直接執行 JavaScript 操作 DOM、
+    精確等待非同步事件、攔截網路請求驗證 API 行為。本章深入講解這些進階指令，並以完整的 Chatbot 互動流程
+    示範如何將它們組合成可靠的自動化腳本。
+</p>    <h2 id="eval">eval：在頁面執行 JavaScript</h2> <p> <code>eval</code> 指令讓你在目標頁面的 JavaScript 執行環境中直接執行程式碼，可以讀取 DOM 狀態、
+    操作元素，甚至存取 <code>localStorage</code>。這是當標準指令（click、fill…）無法滿足需求時的終極手段。
+</p> <h3>基本語法</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>eval 基本語法</span> <button class="cb-copy" data-code="opencli browser <session> eval &quot;<javascript>&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">sessio</span><span style="color:#ABB2BF">n> </span><span style="color:#98C379">eval</span><span style="color:#98C379"> "&#x3C;javascript>"</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="call danger"><span class="ci">🚫</span><div><strong>重大限制：eval 只接受單行 JavaScript</strong><p>Multi-line JS 經由 shell 傳給 opencli 時，會觸發 <code>Unexpected token ')'</code> parse error。所有 JS 必須寫成單行——無論邏輯多複雜，都需要壓縮成一行，不能使用換行字元。</p></div></div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>單行 vs 多行：正確與錯誤示範</span> <button class="cb-copy" data-code="# ✅ 單行 - 正確
+opencli browser work eval &quot;document.title&quot;
+opencli browser work eval &quot;document.querySelectorAll('.message.bot').length&quot;
+opencli browser work eval &quot;Array.from(document.querySelectorAll('.item')).map(el => el.textContent).join(',')&quot;
+
+# ❌ 多行 - 會報 Unexpected token ')' 錯誤
+opencli browser work eval &quot;(() => {
+  const els = document.querySelectorAll('.msg');
+  return els.length;
+})()&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 單行 - 正確</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.title"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('.message.bot').length"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "Array.from(document.querySelectorAll('.item')).map(el => el.textContent).join(',')"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 多行 - 會報 Unexpected token ')' 錯誤</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "(() => {</span></span>
+<span class="line"><span style="color:#98C379">  const els = document.querySelectorAll('.msg');</span></span>
+<span class="line"><span style="color:#98C379">  return els.length;</span></span>
+<span class="line"><span style="color:#98C379">})()"</span></span></code></pre> </div> </div>   <h3>常見 eval 用法</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>eval 實用範例集</span> <button class="cb-copy" data-code="# 取得元素數量
+opencli browser work eval &quot;document.querySelectorAll('.message.bot').length&quot;
+
+# 取得頁面標題
+opencli browser work eval &quot;document.title&quot;
+
+# 取得輸入框目前內容
+opencli browser work eval &quot;document.querySelector('#search-input').value&quot;
+
+# 取得頁面所有可見文字
+opencli browser work eval &quot;document.body.innerText&quot;
+
+# 確認元素是否存在（回傳 true / false）
+opencli browser work eval &quot;!!document.querySelector('.success-banner')&quot;
+
+# 觸發點擊（適用於普通 click 指令無法作用的元素）
+opencli browser work eval &quot;document.querySelector('.special-btn').click()&quot;
+
+# 滾動到頁面底部
+opencli browser work eval &quot;window.scrollTo(0, document.body.scrollHeight)&quot;
+
+# 讀取 localStorage 值
+opencli browser work eval &quot;localStorage.getItem('user-token')&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 取得元素數量</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('.message.bot').length"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得頁面標題</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.title"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得輸入框目前內容</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('#search-input').value"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得頁面所有可見文字</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.body.innerText"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 確認元素是否存在（回傳 true / false）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "!!document.querySelector('.success-banner')"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 觸發點擊（適用於普通 click 指令無法作用的元素）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('.special-btn').click()"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 滾動到頁面底部</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "window.scrollTo(0, document.body.scrollHeight)"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取 localStorage 值</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "localStorage.getItem('user-token')"</span></span></code></pre> </div> </div>   <h3>在 TypeScript Helper 中封裝 eval</h3> <p>
+直接在程式碼中呼叫 eval 時，建議封裝成 helper function，自動處理 JSON parse 與型別轉換，
+    讓呼叫端的程式碼更簡潔。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>evalJs helper 函式</span> <button class="cb-copy" data-code="export async function evalJs(js: string) {
+  const r = must(await browser('eval', js));
+  try {
+    return JSON.parse(r.stdout);
+  } catch {
+    return r.stdout.trim();
+  }
+}
+
+// 使用範例：搭配型別轉換
+const count   = Number(await evalJs(`document.querySelectorAll('.message.bot').length`));
+const title   = String(await evalJs(`document.title`));
+const hasError = Boolean(await evalJs(`!!document.querySelector('.error-msg')`));
+const token   = String(await evalJs(`localStorage.getItem('auth-token')`));" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">js</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> r</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'eval'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">js</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stdout</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 使用範例：搭配型別轉換</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> count</span><span style="color:#56B6C2">   =</span><span style="color:#61AFEF"> Number</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.querySelectorAll('.message.bot').length`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> title</span><span style="color:#56B6C2">   =</span><span style="color:#61AFEF"> String</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.title`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> hasError</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> Boolean</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`!!document.querySelector('.error-msg')`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> token</span><span style="color:#56B6C2">   =</span><span style="color:#61AFEF"> String</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`localStorage.getItem('auth-token')`</span><span style="color:#ABB2BF">));</span></span></code></pre> </div> </div>   <div class="call tip"><span class="ci">💡</span><div><strong>Template Literal 是安全的單行寫法</strong><p>在 TypeScript 中使用 template literal（反引號）傳入 JS 字串時，字串本身仍然是單一個值，不會有換行問題。但要注意：字串內容本身不能包含換行，只能是邏輯上的一行 JS 運算式。</p></div></div>    <h2 id="wait">wait：精確等待非同步事件</h2> <p>
+現代 Web 應用大量使用非同步載入。如果在元素還沒出現、API 還沒回應時就執行下一步，
+    自動化腳本必然失敗。<code>wait</code> 指令提供三種等待模式，對應不同的等待需求。
+</p> <h3>模式一：wait selector — 等待 CSS 元素出現</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>wait selector 用法</span> <button class="cb-copy" data-code="# 等待特定 CSS 選擇器對應的元素出現
+opencli browser work wait selector &quot;.reply-message&quot; --timeout 30000
+opencli browser work wait selector &quot;#success-notification&quot; --timeout 10000
+
+# 等待按鈕從 disabled 恢復可點擊
+opencli browser work wait selector &quot;button:not([disabled])&quot; --timeout 15000
+
+# 等待對話框出現
+opencli browser work wait selector &quot;[role='dialog']&quot; --timeout 8000" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待特定 CSS 選擇器對應的元素出現</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".reply-message"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 30000</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "#success-notification"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待按鈕從 disabled 恢復可點擊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "button:not([disabled])"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 15000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待對話框出現</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "[role='dialog']"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 8000</span></span></code></pre> </div> </div>   <h3>模式二：wait text — 等待特定文字出現</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>wait text 用法</span> <button class="cb-copy" data-code="# 等待成功訊息
+opencli browser work wait text &quot;登入成功&quot; --timeout 10000
+
+# 等待長時間處理完成
+opencli browser work wait text &quot;處理完成&quot; --timeout 60000
+
+# 等待錯誤訊息（用於驗證錯誤處理）
+opencli browser work wait text &quot;帳號或密碼錯誤&quot; --timeout 5000
+
+# 等待特定狀態文字
+opencli browser work wait text &quot;404 Not Found&quot; --timeout 5000" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待成功訊息</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "登入成功"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待長時間處理完成</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "處理完成"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 60000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待錯誤訊息（用於驗證錯誤處理）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "帳號或密碼錯誤"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 5000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待特定狀態文字</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "404 Not Found"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 5000</span></span></code></pre> </div> </div>   <h3>模式三：wait xhr — 等待 API 請求完成</h3> <p> <code>wait xhr</code> 監聽瀏覽器的 XMLHttpRequest 與 Fetch 網路請求，
+    等待 URL 中包含指定字串的請求完成。這是處理 Streaming 回應、非同步 API 呼叫最可靠的方式。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>wait xhr 用法</span> <button class="cb-copy" data-code="# 等待包含 /api/chat 路徑的 XHR 請求完成
+opencli browser work wait xhr &quot;/api/chat&quot; --timeout 30000
+
+# 等待訊息 API
+opencli browser work wait xhr &quot;/api/messages&quot; --timeout 15000
+
+# 等待上傳完成
+opencli browser work wait xhr &quot;/upload&quot; --timeout 120000" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待包含 /api/chat 路徑的 XHR 請求完成</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> xhr</span><span style="color:#98C379"> "/api/chat"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 30000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待訊息 API</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> xhr</span><span style="color:#98C379"> "/api/messages"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 15000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待上傳完成</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> xhr</span><span style="color:#98C379"> "/upload"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 120000</span></span></code></pre> </div> </div>   <h3>三種等待模式比較</h3> <div class="table-wrap"> <table> <thead> <tr> <th>等待類型</th> <th>用途</th> <th>最適合的場景</th> </tr> </thead> <tbody> <tr> <td><code>wait selector</code></td> <td>CSS 元素出現</td> <td>新元素動態載入後需要操作</td> </tr> <tr> <td><code>wait text</code></td> <td>特定文字出現</td> <td>確認操作成功 / 偵測錯誤訊息</td> </tr> <tr> <td><code>wait xhr</code></td> <td>API 請求完成</td> <td>Streaming 回應、非同步資料載入</td> </tr> </tbody> </table> </div> <h3>手動 Polling：當 wait 指令不夠用時</h3> <p>
+某些情境下（例如等待 Streaming Chatbot 的回覆穩定下來），
+    內建的 <code>wait</code> 指令無法判斷「回覆是否真的結束」。
+    這時可以用 <code>eval</code> 搭配手動 polling 邏輯來實作更細膩的等待策略。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>等待 Streaming Chatbot 回覆完成</span> <button class="cb-copy" data-code="/**
+ * 等待 streaming chatbot 回覆完成。
+ * 偵測策略：bot 訊息數量增加後，頁面文字長度連續 4 秒不再變化，視為回覆完成。
+ */
+async function waitReplyComplete(startCount: number, timeoutMs = 90_000): Promise<string> {
+  const t0 = Date.now();
+  let lastLen = -1;
+  let stableSince = Date.now();
+  let seen = false;
+
+  while (Date.now() - t0 < timeoutMs) {
+    const count = Number(await evalJs(
+      `document.querySelectorAll('.message.bot').length`
+    ));
+    if (count > startCount) seen = true;
+
+    const text = String(await evalJs(`document.body.innerText`));
+
+    if (text.length === lastLen &amp;&amp; seen &amp;&amp; Date.now() - stableSince >= 4000) {
+      return text;  // 穩定超過 4 秒，視為完成
+    }
+    if (text.length !== lastLen) {
+      lastLen = text.length;
+      stableSince = Date.now();  // 重設穩定計時
+    }
+
+    await new Promise(r => setTimeout(r, 1000));
+  }
+
+  throw new Error(`reply timed out after ${timeoutMs}ms`);
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">/**</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> * 等待 streaming chatbot 回覆完成。</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> * 偵測策略：bot 訊息數量增加後，頁面文字長度連續 4 秒不再變化，視為回覆完成。</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"> */</span></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> waitReplyComplete</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">startCount</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">number</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">timeoutMs</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> 90_000</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">Promise</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">> {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> t0</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">  let</span><span style="color:#E06C75"> lastLen</span><span style="color:#56B6C2"> =</span><span style="color:#56B6C2"> -</span><span style="color:#D19A66">1</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">  let</span><span style="color:#E06C75"> stableSince</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">  let</span><span style="color:#E06C75"> seen</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> false</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  while</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">-</span><span style="color:#E06C75"> t0</span><span style="color:#56B6C2"> &#x3C;</span><span style="color:#E06C75"> timeoutMs</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> count</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> Number</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#98C379">      `document.querySelectorAll('.message.bot').length`</span></span>
+<span class="line"><span style="color:#ABB2BF">    ));</span></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">count</span><span style="color:#56B6C2"> ></span><span style="color:#E06C75"> startCount</span><span style="color:#ABB2BF">) </span><span style="color:#E06C75">seen</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> true</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> text</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> String</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.body.innerText`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">text</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#56B6C2"> ===</span><span style="color:#E06C75"> lastLen</span><span style="color:#56B6C2"> &#x26;&#x26;</span><span style="color:#E06C75"> seen</span><span style="color:#56B6C2"> &#x26;&#x26;</span><span style="color:#E5C07B"> Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">-</span><span style="color:#E06C75"> stableSince</span><span style="color:#56B6C2"> >=</span><span style="color:#D19A66"> 4000</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#E06C75"> text</span><span style="color:#ABB2BF">;  </span><span style="color:#7F848E;font-style:italic">// 穩定超過 4 秒，視為完成</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">text</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#56B6C2"> !==</span><span style="color:#E06C75"> lastLen</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#E06C75">      lastLen</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> text</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E06C75">      stableSince</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">();  </span><span style="color:#7F848E;font-style:italic">// 重設穩定計時</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#C678DD"> new</span><span style="color:#E5C07B"> Promise</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">r</span><span style="color:#C678DD"> =></span><span style="color:#61AFEF"> setTimeout</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">r</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">1000</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  throw</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> Error</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`reply timed out after </span><span style="color:#C678DD">${</span><span style="color:#E06C75">timeoutMs</span><span style="color:#C678DD">}</span><span style="color:#98C379">ms`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call info"><strong>為什麼不直接用 wait xhr？</strong><br>Streaming API 的 XHR 請求雖然在第一個 chunk 送達時就算「完成」，但 bot 還在持續輸出文字。<code>waitReplyComplete</code> 透過觀察 DOM 文字長度的穩定性，才能真正確認輸出結束。</div>    <h2 id="network">network：監聽網路請求</h2> <p> <code>network</code> 指令讀取瀏覽器在目前 session 中記錄的網路請求，
+    輸出 JSON 格式的請求清單。這讓你可以驗證 API 呼叫是否正確發出、
+    檢查 request/response 內容，或確認 HTTP status code。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>network 基本用法</span> <button class="cb-copy" data-code="# 列出所有網路請求
+opencli browser work network" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出所有網路請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span></span></code></pre> </div> </div>   <p>輸出的 JSON 陣列，每筆記錄包含以下欄位：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>network 輸出結構範例</span> <button class="cb-copy" data-code="[
+  {
+    &quot;url&quot;: &quot;https://app.example.com/api/chat&quot;,
+    &quot;method&quot;: &quot;POST&quot;,
+    &quot;status&quot;: 200,
+    &quot;requestHeaders&quot;: { &quot;Content-Type&quot;: &quot;application/json&quot; },
+    &quot;responseHeaders&quot;: { &quot;Content-Type&quot;: &quot;application/json&quot; },
+    &quot;requestBody&quot;: &quot;{\&quot;message\&quot;:\&quot;Hello\&quot;}&quot;,
+    &quot;responseBody&quot;: &quot;{\&quot;reply\&quot;:\&quot;Hi there!\&quot;}&quot;
+  }
+]" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#ABB2BF">[</span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#E06C75">    "url"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"https://app.example.com/api/chat"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "method"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"POST"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "status"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">200</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "requestHeaders"</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">"Content-Type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"application/json"</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">    "responseHeaders"</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">"Content-Type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"application/json"</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">    "requestBody"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"{</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">message</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">:</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">Hello</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">}"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    "responseBody"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"{</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">reply</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">:</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">Hi there!</span><span style="color:#56B6C2">\"</span><span style="color:#98C379">}"</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">]</span></span></code></pre> </div> </div>   <h3>過濾特定請求</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>搭配 jq 過濾網路記錄</span> <button class="cb-copy" data-code="# 只看 API 請求
+opencli browser work network | jq '[.[] | select(.url | contains(&quot;/api/&quot;))]'
+
+# 只看 POST 請求
+opencli browser work network | jq '[.[] | select(.method == &quot;POST&quot;)]'
+
+# 找特定狀態碼
+opencli browser work network | jq '[.[] | select(.status >= 400)]'
+
+# 只取 URL 列表
+opencli browser work network | jq '[.[].url]'" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 只看 API 請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.url | contains("/api/"))]'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只看 POST 請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.method == "POST")]'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 找特定狀態碼</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.status >= 400)]'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只取 URL 列表</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[].url]'</span></span></code></pre> </div> </div>   <h3>在測試中驗證 API 行為</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試中讀取並驗證網路請求</span> <button class="cb-copy" data-code="// 執行使用者動作
+await fill('textarea', '測試問題');
+await keys('Enter');
+
+// 等待 API 呼叫完成
+await browser('wait', 'xhr', '/api/chat', '--timeout', '30000');
+
+// 取得網路記錄並解析
+const networkResult = must(await browser('network'));
+const requests: NetworkEntry[] = JSON.parse(networkResult.stdout);
+
+// 找到 chat API 請求
+const chatReq = requests.find(r => r.url.includes('/api/chat'));
+expect(chatReq).toBeDefined();
+expect(chatReq?.method).toBe('POST');
+expect(chatReq?.status).toBe(200);
+
+// 驗證 request body 內容
+const body = JSON.parse(chatReq?.requestBody ?? '{}');
+expect(body.message).toBe('測試問題');" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// 執行使用者動作</span></span>
+<span class="line"><span style="color:#C678DD">await</span><span style="color:#61AFEF"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'textarea'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'測試問題'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">await</span><span style="color:#61AFEF"> keys</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Enter'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 等待 API 呼叫完成</span></span>
+<span class="line"><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'xhr'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'/api/chat'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'30000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 取得網路記錄並解析</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> networkResult</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'network'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> requests</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">NetworkEntry</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">networkResult</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 找到 chat API 請求</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> chatReq</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> requests</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">find</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">r</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">url</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">includes</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'/api/chat'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">chatReq</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBeDefined</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">chatReq</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">method</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'POST'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">chatReq</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">status</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBe</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">200</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 驗證 request body 內容</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> body</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">chatReq</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">requestBody</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> '{}'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">body</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">message</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBe</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'測試問題'</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>   <div class="call warning"><span class="ci">⚠️</span><div><strong>network 的時機陷阱</strong><p>network 指令讀取的是「到目前為止」的請求記錄。如果你在觸發動作之前就執行 network，可能看不到預期的請求。正確流程是：先觸發操作 → wait xhr 等待完成 → 再執行 network 讀取結果。</p></div></div>    <h2 id="screenshot">screenshot：截圖記錄</h2> <p>
+截圖是自動化測試中最重要的 debug 工具。在每個關鍵步驟截圖，失敗時能立刻看到瀏覽器的實際狀態，
+    大幅縮短排錯時間。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>screenshot 用法</span> <button class="cb-copy" data-code="# 截取目前視窗狀態
+opencli browser work screenshot output.png
+
+# 截取到指定路徑（目錄需事先存在）
+opencli browser work screenshot artifacts/step1.png
+
+# 全頁截圖
+opencli browser work screenshot --full-page artifacts/full.png" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 截取目前視窗狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> output.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 截取到指定路徑（目錄需事先存在）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> artifacts/step1.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 全頁截圖</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --full-page</span><span style="color:#98C379"> artifacts/full.png</span></span></code></pre> </div> </div>   <h3>測試中的截圖最佳實踐</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>測試 helper：截圖 + 失敗自動截圖</span> <button class="cb-copy" data-code="import { afterEach } from 'vitest';
+
+// 快速截圖 helper
+async function snap(name: string) {
+  await browser('screenshot', `artifacts/${name}-${Date.now()}.png`);
+}
+
+// 測試失敗時自動截圖，保留現場
+afterEach(async (ctx) => {
+  if (ctx.task.result?.state === 'fail') {
+    await snap(`FAILED-${ctx.task.name.replace(/\s+/g, '_')}`);
+  }
+});
+
+// 在測試步驟中手動截圖
+test('使用者登入流程', async () => {
+  await browser('open', 'http://localhost:3000/login');
+  await snap('01-login-page');
+
+  await fill('#email', 'user@example.com');
+  await fill('#password', 'secret');
+  await snap('02-filled-form');
+
+  await click('button[type=&quot;submit&quot;]');
+  await browser('wait', 'text', '登入成功', '--timeout', '10000');
+  await snap('03-after-login');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">afterEach</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 快速截圖 helper</span></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">name</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'screenshot'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">`artifacts/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">name</span><span style="color:#C678DD">}</span><span style="color:#98C379">-</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">()</span><span style="color:#C678DD">}</span><span style="color:#98C379">.png`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 測試失敗時自動截圖，保留現場</span></span>
+<span class="line"><span style="color:#61AFEF">afterEach</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">ctx</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">result</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">state</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'fail'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`FAILED-</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">name</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/\s</span><span style="color:#D19A66">+</span><span style="color:#E06C75">/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'_'</span><span style="color:#ABB2BF">)</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 在測試步驟中手動截圖</span></span>
+<span class="line"><span style="color:#61AFEF">test</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'使用者登入流程'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'open'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'http://localhost:3000/login'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'01-login-page'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'#email'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'user@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'#password'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'secret'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'02-filled-form'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> click</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button[type="submit"]'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'text'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'登入成功'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'03-after-login'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>      <h2 id="extract">extract：擷取頁面為 Markdown</h2> <p> <code>extract</code> 指令將目前頁面的主要內容轉換為 Markdown 格式輸出，
+    過濾掉導覽列、廣告等雜訊，保留核心文章或資料結構。
+    特別適合搭配 AI 工具做進一步分析。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>extract 用法</span> <button class="cb-copy" data-code="# 擷取頁面主要內容（輸出 Markdown）
+opencli browser work extract
+
+# 直接管道給 AI 分析
+opencli browser work extract | claude &quot;請摘要這篇文章的三個重點&quot;
+
+# 儲存到檔案
+opencli browser work extract > page-content.md" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 擷取頁面主要內容（輸出 Markdown）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 直接管道給 AI 分析</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "請摘要這篇文章的三個重點"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 儲存到檔案</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">page-content.md</span></span></code></pre> </div> </div>   <div class="call tip"><span class="ci">💡</span><div><strong>extract vs eval("document.body.innerText")</strong><p><code>extract</code> 會智慧過濾頁面結構，輸出乾淨的 Markdown；<code>eval("document.body.innerText")</code> 則回傳原始純文字，包含所有導覽、頁尾等雜訊。需要給人或 AI 閱讀的內容用 extract；需要精確擷取特定元素值時用 eval。</p></div></div>    <h2 id="combo">組合技：Chatbot 完整互動流程</h2> <p>
+把本章所有指令組合起來，以下是一個完整的 Chatbot 互動自動化腳本，
+    涵蓋頁面開啟、狀態確認、填寫送出、等待回應、截圖記錄、擷取結果的完整流程。
+</p> <h3>Shell Script 版本</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Chatbot 完整互動流程（Bash）</span> <button class="cb-copy" data-code="#!/bin/bash
+SESSION=&quot;chat&quot;
+
+# 1. 開啟聊天頁面
+opencli browser $SESSION open http://localhost:8090
+
+# 2. 等待輸入框出現，確認頁面已就緒
+opencli browser $SESSION wait selector &quot;textarea&quot; --timeout 10000
+
+# 3. 截圖記錄初始狀態
+opencli browser $SESSION screenshot artifacts/01-initial.png
+
+# 4. 記錄目前的 bot 訊息數量（作為 baseline）
+BEFORE=$(opencli browser $SESSION eval &quot;document.querySelectorAll('.message.bot').length&quot;)
+echo &quot;Bot messages before: $BEFORE&quot;
+
+# 5. 填寫問題並送出
+opencli browser $SESSION fill &quot;textarea&quot; &quot;你好，請介紹一下你自己&quot;
+opencli browser $SESSION keys &quot;Enter&quot;
+
+# 6. 等待 XHR API 請求完成
+opencli browser $SESSION wait xhr &quot;/api/chat&quot; --timeout 30000
+
+# 7. 截圖記錄回覆狀態
+opencli browser $SESSION screenshot artifacts/02-after-reply.png
+
+# 8. 擷取最新一則 bot 回覆的文字
+REPLY=$(opencli browser $SESSION eval &quot;document.querySelector('.message.bot:last-child').innerText&quot;)
+echo &quot;Bot reply: $REPLY&quot;
+
+# 9. 驗證網路請求狀態
+opencli browser $SESSION network | jq '[.[] | select(.url | contains(&quot;/api/chat&quot;))] | .[0].status'" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#E06C75">SESSION</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"chat"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 1. 開啟聊天頁面</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> open</span><span style="color:#98C379"> http://localhost:8090</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 2. 等待輸入框出現，確認頁面已就緒</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "textarea"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 3. 截圖記錄初始狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> artifacts/01-initial.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 4. 記錄目前的 bot 訊息數量（作為 baseline）</span></span>
+<span class="line"><span style="color:#E06C75">BEFORE</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('.message.bot').length"</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Bot messages before: </span><span style="color:#E06C75">$BEFORE</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 5. 填寫問題並送出</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "textarea"</span><span style="color:#98C379"> "你好，請介紹一下你自己"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> "Enter"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 6. 等待 XHR API 請求完成</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> xhr</span><span style="color:#98C379"> "/api/chat"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 30000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 7. 截圖記錄回覆狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> artifacts/02-after-reply.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 8. 擷取最新一則 bot 回覆的文字</span></span>
+<span class="line"><span style="color:#E06C75">REPLY</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelector('.message.bot:last-child').innerText"</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Bot reply: </span><span style="color:#E06C75">$REPLY</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 9. 驗證網路請求狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#E06C75"> $SESSION</span><span style="color:#98C379"> network</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.url | contains("/api/chat"))] | .[0].status'</span></span></code></pre> </div> </div>   <h3>TypeScript / Vitest 版本</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Chatbot 完整互動流程（TypeScript）</span> <button class="cb-copy" data-code="import { test, expect, afterEach } from 'vitest';
+import { browser, must, fill, keys } from './helpers';
+
+async function snap(name: string) {
+  await browser('screenshot', `artifacts/${name}-${Date.now()}.png`);
+}
+
+async function evalJs(js: string) {
+  const r = must(await browser('eval', js));
+  try { return JSON.parse(r.stdout); } catch { return r.stdout.trim(); }
+}
+
+afterEach(async (ctx) => {
+  if (ctx.task.result?.state === 'fail') {
+    await snap(`FAILED-${ctx.task.name.replace(/\s+/g, '_')}`);
+  }
+});
+
+test('chatbot 能正確回覆問題', async () => {
+  // 1. 開啟頁面並等待就緒
+  await browser('open', 'http://localhost:8090');
+  await browser('wait', 'selector', 'textarea', '--timeout', '10000');
+  await snap('01-initial');
+
+  // 2. 記錄初始 bot 訊息數
+  const before = Number(await evalJs(`document.querySelectorAll('.message.bot').length`));
+
+  // 3. 填寫並送出問題
+  await fill('textarea', '你好，請介紹一下你自己');
+  await keys('Enter');
+
+  // 4. 等待 API 完成
+  await browser('wait', 'xhr', '/api/chat', '--timeout', '30000');
+  await snap('02-reply');
+
+  // 5. 確認新增了一則 bot 回覆
+  const after = Number(await evalJs(`document.querySelectorAll('.message.bot').length`));
+  expect(after).toBeGreaterThan(before);
+
+  // 6. 取得回覆內容並驗證非空
+  const reply = String(await evalJs(`document.querySelector('.message.bot:last-child').innerText`));
+  expect(reply.length).toBeGreaterThan(0);
+
+  // 7. 驗證 API 請求狀態碼為 200
+  const netResult = must(await browser('network'));
+  const requests = JSON.parse(netResult.stdout);
+  const chatReq = requests.find((r: any) => r.url.includes('/api/chat'));
+  expect(chatReq?.status).toBe(200);
+}, 60_000);" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">test</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">expect</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">afterEach</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">browser</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">must</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">fill</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">keys</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> './helpers'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">name</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'screenshot'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">`artifacts/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">name</span><span style="color:#C678DD">}</span><span style="color:#98C379">-</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">Date</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">now</span><span style="color:#ABB2BF">()</span><span style="color:#C678DD">}</span><span style="color:#98C379">.png`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">js</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> r</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'eval'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">js</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> { </span><span style="color:#C678DD">return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">r</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">); } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> { </span><span style="color:#C678DD">return</span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stdout</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">(); }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">afterEach</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">ctx</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">result</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">state</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'fail'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`FAILED-</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">ctx</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">task</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">name</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/\s</span><span style="color:#D19A66">+</span><span style="color:#E06C75">/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'_'</span><span style="color:#ABB2BF">)</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">test</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'chatbot 能正確回覆問題'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 1. 開啟頁面並等待就緒</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'open'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'http://localhost:8090'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'selector'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'textarea'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'10000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'01-initial'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 2. 記錄初始 bot 訊息數</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> before</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> Number</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.querySelectorAll('.message.bot').length`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 3. 填寫並送出問題</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'textarea'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'你好，請介紹一下你自己'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> keys</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Enter'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 4. 等待 API 完成</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'wait'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'xhr'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'/api/chat'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'--timeout'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'30000'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> snap</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'02-reply'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 5. 確認新增了一則 bot 回覆</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> after</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> Number</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.querySelectorAll('.message.bot').length`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">after</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBeGreaterThan</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">before</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 6. 取得回覆內容並驗證非空</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> reply</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> String</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> evalJs</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`document.querySelector('.message.bot:last-child').innerText`</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">reply</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBeGreaterThan</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 7. 驗證 API 請求狀態碼為 200</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> netResult</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> must</span><span style="color:#ABB2BF">(</span><span style="color:#C678DD">await</span><span style="color:#61AFEF"> browser</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'network'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> requests</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">netResult</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stdout</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> chatReq</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> requests</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">find</span><span style="color:#ABB2BF">((</span><span style="color:#E06C75;font-style:italic">r</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">any</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">=></span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">url</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">includes</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'/api/chat'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">chatReq</span><span style="color:#ABB2BF">?.</span><span style="color:#E06C75">status</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toBe</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">200</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}, </span><span style="color:#D19A66">60_000</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>      <h2 id="troubleshooting">疑難排解</h2> <div class="table-wrap"> <table> <thead> <tr> <th>症狀</th> <th>可能原因</th> <th>解法</th> </tr> </thead> <tbody> <tr> <td><code>Unexpected token ')'</code> in eval</td> <td>JS 字串包含換行（多行）</td> <td>將 JS 改寫成單行運算式</td> </tr> <tr> <td>wait selector timeout</td> <td>選擇器不正確，或元素從未出現</td> <td>先用 <code>state</code> 指令或截圖確認選擇器；考慮用 <code>wait text</code> 替代</td> </tr> <tr> <td>network 回傳空陣列 <code>[]</code></td> <td>在觸發動作前就執行了 network</td> <td>先觸發動作 → <code>wait xhr</code> → 再執行 network</td> </tr> <tr> <td>screenshot 畫面全黑</td> <td>頁面尚未載入完成</td> <td>在截圖前加 <code>wait selector</code> 確認頁面主要元素已出現</td> </tr> <tr> <td>eval 回傳 <code>null</code> 或 <code>undefined</code></td> <td>querySelector 找不到元素</td> <td>先用 <code>!!document.querySelector(...)</code> 確認元素存在</td> </tr> <tr> <td>wait xhr 比預期早結束</td> <td>Streaming API 第一個 chunk 即算完成</td> <td>改用手動 polling（<code>waitReplyComplete</code>）等文字穩定</td> </tr> </tbody> </table> </div> <div class="call tip"><span class="ci">💡</span><div><strong>Debug 三步驟</strong><p>遇到自動化腳本失敗時，建議按此順序排查：1. 查看截圖（artifacts/ 目錄）確認瀏覽器實際狀態；2. 執行 <code>state</code> 指令取得目前 DOM 結構；3. 用 eval 逐步確認元素是否存在與值是否正確。</p></div></div>    <h2 id="summary">本章小結</h2> <p>本章涵蓋了 OpenCLI 進階操作的核心指令：</p> <ul> <li><strong>eval</strong>：執行 JavaScript 讀取 DOM 狀態，記住必須單行</li> <li><strong>wait selector / text / xhr</strong>：三種等待模式對應不同的非同步場景</li> <li><strong>network</strong>：讀取並驗證 API 請求記錄，搭配 jq 過濾更靈活</li> <li><strong>screenshot</strong>：關鍵步驟截圖，失敗自動截圖，是最有效的 debug 工具</li> <li><strong>extract</strong>：將頁面內容轉為 Markdown，適合搭配 AI 分析</li> </ul> <p>
+這些指令的真正威力在於組合使用：用 eval 讀取狀態、用 wait 精確等待、用 network 驗證 API、
+    用 screenshot 留下記錄，構成一個完整且可靠的自動化測試循環。
+</p> <div class="call info"><strong>下一章預告</strong><br>掌握了單一腳本的進階操作後，下一章將進入正式的測試架構：如何用 <strong>Vitest + OpenCLI</strong> 建立可維護、可 CI 整合的 E2E 測試套件，包含 helper 封裝、測試組織、artifacts 管理，以及在 GitHub Actions 中執行的完整設定。</div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>元素定位策略</span> </a> <a href="/opencli/ch08-e2e-setup" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

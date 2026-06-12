@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>在 Claude Code 中使用 OpenCLI | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="將 OpenCLI 整合進 Claude Code AI 工作流程，讓 Claude 能直接操作瀏覽器、搜尋平台資料、執行 Web 研究，並透過 Skills 封裝常用自動化流程。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 12 章 · Part 4：AI 整合</span> <h1>在 Claude Code 中使用 OpenCLI</h1> <p>
+Claude Code 是 Anthropic 推出的 AI 編程助理 CLI，能在終端機對話中完成程式碼生成、重構、除錯等任務。OpenCLI 則讓使用者可以用指令行操控瀏覽器、抓取平台資料、自動化 Web 互動。
+</p> <p>
+這兩個工具的結合，開啟了一種全新的工作模式：<strong>AI 不只是幫你寫程式碼，而是直接替你執行任務</strong>。
+</p> <h2>為什麼 Claude Code + OpenCLI 是絕配</h2> <p>
+單獨使用 Claude Code 時，AI 的能力邊界很清晰：它能生成程式碼、解釋概念、分析你貼入的文字資料，但它無法主動去「看」任何網頁，也無法幫你真正操作任何平台。你必須自己複製、貼上、截圖，再把資訊餵給 Claude。
+</p> <p>
+加入 OpenCLI 之後，這個邊界消失了。Claude 可以透過 shell 指令直接呼叫 OpenCLI，取得即時的網頁資料，甚至操控瀏覽器完成互動操作，再把結果帶回對話繼續分析。
+</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table class="w-full text-sm border-collapse"> <thead> <tr class="bg-gray-100 dark:bg-gray-800"> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">場景</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">沒有 OpenCLI</th> <th class="text-left p-3 border border-gray-300 dark:border-gray-600 font-semibold">有 OpenCLI</th> </tr> </thead> <tbody> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600">研究新技術</td> <td class="p-3 border border-gray-300 dark:border-gray-600">手動搜尋、複製貼上給 Claude</td> <td class="p-3 border border-gray-300 dark:border-gray-600">Claude 直接搜尋 GitHub、Reddit、Twitter 並彙整</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600">操作 Web UI</td> <td class="p-3 border border-gray-300 dark:border-gray-600">Claude 只能告訴你「點哪裡」</td> <td class="p-3 border border-gray-300 dark:border-gray-600">Claude 直接驅動瀏覽器完成操作</td> </tr> <tr> <td class="p-3 border border-gray-300 dark:border-gray-600">監控社群趨勢</td> <td class="p-3 border border-gray-300 dark:border-gray-600">訓練資料截止日後的資訊無從取得</td> <td class="p-3 border border-gray-300 dark:border-gray-600">即時抓取並分析最新討論</td> </tr> <tr class="bg-gray-50 dark:bg-gray-900"> <td class="p-3 border border-gray-300 dark:border-gray-600">定期報告</td> <td class="p-3 border border-gray-300 dark:border-gray-600">需要人工每次準備資料</td> <td class="p-3 border border-gray-300 dark:border-gray-600">Claude 自動收集資料並生成報告</td> </tr> </tbody> </table> </div> <div class="call info"> <p><strong>前置條件</strong>：本章範例假設你已安裝 Claude Code（<code>npm install -g @anthropic-ai/claude-code</code>）與 OpenCLI（<code>npm install -g @jackwener/opencli</code>），且 OpenCLI 已完成基本設定（瀏覽器連線或 adapter 配置）。</p> </div> <h2>基礎整合：在 Claude Code session 中呼叫 OpenCLI</h2> <p>
+最直接的使用方式，是在 Claude Code 對話中直接輸入 <code>opencli</code> 指令。Claude Code 允許 AI 執行 shell 指令（取得你的授權後），並將輸出帶回對話脈絡繼續處理。
+</p> <p>
+你不需要任何額外設定，只要開始對話就行。例如，你可以這樣說：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>在 Claude Code 中直接使用 OpenCLI</span> <button class="cb-copy" data-code="# 讓 Claude 幫你每週推薦值得學習的 TypeScript 專案
+opencli github trending --language typescript --format json \
+  | claude &quot;從這些熱門 TypeScript repo 中，推薦 3 個最值得學習的，
+    說明理由（技術棧、學習難度、實用性），並附上快速開始的建議。
+    以繁體中文條列回答。&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 讓 Claude 幫你每週推薦值得學習的 TypeScript 專案</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "從這些熱門 TypeScript repo 中，推薦 3 個最值得學習的，</span></span>
+<span class="line"><span style="color:#98C379">    說明理由（技術棧、學習難度、實用性），並附上快速開始的建議。</span></span>
+<span class="line"><span style="color:#98C379">    以繁體中文條列回答。"</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>分析 Twitter 當前趨勢</span> <button class="cb-copy" data-code="# 分析當前技術趨勢中的 AI 相關話題
+opencli twitter trends --format json \
+  | claude &quot;分析這些熱門話題，哪些與 AI 或軟體開發相關？
+    對於技術人員來說，哪 3 個話題最值得關注？請說明原因。&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 分析當前技術趨勢中的 AI 相關話題</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trends</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "分析這些熱門話題，哪些與 AI 或軟體開發相關？</span></span>
+<span class="line"><span style="color:#98C379">    對於技術人員來說，哪 3 個話題最值得關注？請說明原因。"</span></span></code></pre> </div> </div>   <p>
+Claude 收到 OpenCLI 的 JSON 輸出後，能直接在對話中解析並給出有用的分析，整個流程不需要你手動複製任何資料。
+</p> <h3>管線（pipe）模式</h3> <p>
+你也可以在終端機直接用 pipe 把 OpenCLI 的輸出傳給 <code>claude</code>。這適合一次性的快速查詢，不需要開啟完整的對話 session：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Pipe 模式：單行指令直接分析</span> <button class="cb-copy" data-code="# 將結果管線給 Claude 進行分析
+opencli github search repos &quot;Dify&quot; --stars &quot;>100&quot; --format json --limit 10 \
+  | claude &quot;分析這些 repo 的 star 增長趨勢，找出最近 30 天活躍度最高的 3 個&quot;
+
+opencli twitter search &quot;Dify AI&quot; --limit 30 --format json \
+  | claude &quot;摘要這些推文的主要討論話題，以及社群對 Dify 的整體評價&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 將結果管線給 Claude 進行分析</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> search</span><span style="color:#98C379"> repos</span><span style="color:#98C379"> "Dify"</span><span style="color:#D19A66"> --stars</span><span style="color:#98C379"> ">100"</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "分析這些 repo 的 star 增長趨勢，找出最近 30 天活躍度最高的 3 個"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Dify AI"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "摘要這些推文的主要討論話題，以及社群對 Dify 的整體評價"</span></span></code></pre> </div> </div>   <div class="call tip"> <p><strong>使用時機建議</strong>：簡單查詢用 pipe 模式快速取得結果；需要多輪互動、追問或迭代分析時，進入 Claude Code 完整 session 效果更好。</p> </div> <h2>將 OpenCLI 設定為 Claude Code 工具</h2> <p>
+若你希望 Claude 在對話中能更主動地使用 OpenCLI（而不是每次都需要你說「去搜尋一下」），需要做兩件事：在 <code>CLAUDE.md</code> 中宣告可用工具，以及在 <code>settings.json</code> 中設定執行權限。
+</p> <h3>在 CLAUDE.md 宣告可用的 opencli 指令</h3> <p> <code>CLAUDE.md</code> 是 Claude Code 在每個 session 開始時都會讀取的說明文件，相當於告訴 Claude「你在這個專案中能用哪些工具、有哪些規則」。把 OpenCLI 可用的指令列在這裡，Claude 就會在需要時主動提議或執行：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>CLAUDE.md — 宣告 OpenCLI 工具</span> <button class="cb-copy" data-code="## 可用工具（OpenCLI）
+
+以下工具已安裝並可直接在 shell 中執行，使用前請先確認 session 名稱。
+
+- `opencli browser <session> state` — 讀取當前瀏覽器頁面狀態（DOM 摘要）
+- `opencli browser <session> find <selector>` — 尋找頁面元素
+- `opencli browser <session> click <ref>` — 點擊元素（使用 find 回傳的 ref）
+- `opencli browser <session> type <ref> <text>` — 在輸入框輸入文字
+- `opencli browser <session> nav <url>` — 導覽到指定 URL
+- `opencli browser <session> screenshot` — 截圖目前頁面
+- `opencli github trending [--language <lang>]` — 取得 GitHub 熱門 repo
+- `opencli github search repos <query> [--stars <filter>]` — 搜尋 GitHub repo
+- `opencli twitter search <query> [--limit <n>]` — 搜尋推文
+- `opencli twitter trends` — 取得目前熱門話題
+- `opencli reddit search <query> [--subreddit <r>]` — 搜尋 Reddit 貼文
+
+### 輸出格式
+加上 --format json 可輸出結構化 JSON，方便程式解析。
+加上 --limit <n> 控制回傳筆數，避免塞爆 context。" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#E06C75">## 可用工具（OpenCLI）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">以下工具已安裝並可直接在 shell 中執行，使用前請先確認 session 名稱。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> state</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 讀取當前瀏覽器頁面狀態（DOM 摘要）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> find &#x3C;selector></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 尋找頁面元素</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> click &#x3C;ref></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 點擊元素（使用 find 回傳的 ref）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> type &#x3C;ref> &#x3C;text></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 在輸入框輸入文字</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> nav &#x3C;url></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 導覽到指定 URL</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> screenshot</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 截圖目前頁面</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli github trending [--language &#x3C;lang>]</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 取得 GitHub 熱門 repo</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli github search repos &#x3C;query> [--stars &#x3C;filter>]</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋 GitHub repo</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli twitter search &#x3C;query> [--limit &#x3C;n>]</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋推文</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli twitter trends</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 取得目前熱門話題</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli reddit search &#x3C;query> [--subreddit &#x3C;r>]</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋 Reddit 貼文</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">### 輸出格式</span></span>
+<span class="line"><span style="color:#ABB2BF">加上 --format json 可輸出結構化 JSON，方便程式解析。</span></span>
+<span class="line"><span style="color:#ABB2BF">加上 --limit &#x3C;n> 控制回傳筆數，避免塞爆 context。</span></span></code></pre> </div> </div>   <h3>在 settings.json 設定執行權限</h3> <p>
+Claude Code 預設在執行 shell 指令時會詢問確認。若你希望特定的 <code>opencli</code> 唯讀指令能自動執行（不需每次按 Enter 確認），可以在 <code>.claude/settings.json</code> 中加入允許規則：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>.claude/settings.json — 允許自動執行 opencli</span> <button class="cb-copy" data-code="// .claude/settings.json（專案層級）
+{
+  &quot;permissions&quot;: {
+    &quot;allow&quot;: [
+      &quot;Bash(opencli:*)&quot;,
+      &quot;Bash(opencli browser *:*)&quot;,
+      &quot;Bash(opencli github *:*)&quot;,
+      &quot;Bash(opencli twitter *:*)&quot;,
+      &quot;Bash(opencli reddit *:*)&quot;
+    ]
+  }
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#7F848E;font-style:italic">// .claude/settings.json（專案層級）</span></span>
+<span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "permissions"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    "allow"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli browser *:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli github *:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli twitter *:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli reddit *:*)"</span></span>
+<span class="line"><span style="color:#ABB2BF">    ]</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call warn"> <p><strong>注意</strong>：只將唯讀操作（搜尋、取得趨勢、讀取頁面狀態）加入 allow list。寫入型操作（發文、按讚、填表單送出）應保持需要人工確認，避免 Claude 誤觸你不想執行的動作。</p> </div> <h2>實戰場景一：AI 驅動的 Web 研究</h2> <p>
+這是最常見也最實用的整合場景。當你需要了解某個技術、產品或趨勢時，不再需要自己開瀏覽器逐一搜尋——直接告訴 Claude，讓它幫你同時搜尋多個平台並彙整報告。
+</p> <p>
+以研究 Dify 這個 AI 平台為例，你在 Claude Code 中只需說：「幫我研究 Dify，搜尋 GitHub、Twitter、Reddit 的最新討論」，Claude 會依序執行以下操作：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>合併多平台資料並產生研究報告</span> <button class="cb-copy" data-code="# 合併多來源資料，產生完整報告
+{
+  echo &quot;=== GitHub ===&quot;
+  opencli github search repos &quot;Dify&quot; --stars &quot;>100&quot; --format json --limit 5
+  echo &quot;=== Twitter ===&quot;
+  opencli twitter search &quot;Dify AI&quot; --limit 20 --format json
+  echo &quot;=== Reddit ===&quot;
+  opencli reddit search &quot;Dify&quot; --subreddit r/LocalLLaMA --limit 10 --format json
+} | claude &quot;請整合以上三個平台的資料，寫一份繁體中文研究報告，包含：
+1. GitHub 上的開源生態現況
+2. Twitter 社群討論熱度與主要聲音
+3. Reddit 技術社群的實際使用心得
+4. 綜合評估：Dify 的成熟度與值得關注的方向&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 合併多來源資料，產生完整報告</span></span>
+<span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "=== GitHub ==="</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> search</span><span style="color:#98C379"> repos</span><span style="color:#98C379"> "Dify"</span><span style="color:#D19A66"> --stars</span><span style="color:#98C379"> ">100"</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "=== Twitter ==="</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Dify AI"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "=== Reddit ==="</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Dify"</span><span style="color:#D19A66"> --subreddit</span><span style="color:#98C379"> r/LocalLLaMA</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span>
+<span class="line"><span style="color:#ABB2BF">} | </span><span style="color:#61AFEF">claude</span><span style="color:#98C379"> "請整合以上三個平台的資料，寫一份繁體中文研究報告，包含：</span></span>
+<span class="line"><span style="color:#98C379">1. GitHub 上的開源生態現況</span></span>
+<span class="line"><span style="color:#98C379">2. Twitter 社群討論熱度與主要聲音</span></span>
+<span class="line"><span style="color:#98C379">3. Reddit 技術社群的實際使用心得</span></span>
+<span class="line"><span style="color:#98C379">4. 綜合評估：Dify 的成熟度與值得關注的方向"</span></span></code></pre> </div> </div>   <p>
+Claude 收到這些來自不同平台的 JSON 資料後，會整合成一份有條理的報告，包含各平台的側重點差異——GitHub 反映開發者生態、Twitter 反映輿論聲量、Reddit 反映實際使用者的深度評價。
+</p> <div class="call tip"> <p><strong>提示</strong>：在 prompt 中明確指定輸出語言和格式（例如「以繁體中文，條列式說明」），能讓 Claude 的回答更符合你的使用需求，減少二次整理的時間。</p> </div> <h2>實戰場景二：AI 驅動的瀏覽器操作</h2> <p>
+OpenCLI 的瀏覽器指令讓 Claude 能「看到」頁面並做出決策。關鍵在於 <code>state</code> 指令——它會回傳頁面上所有可互動元素的結構化清單，Claude 可以用這份清單來決定下一步要點哪個元素、要在哪個輸入框填入資料。
+</p> <h3>Claude 如何理解頁面</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>讀取頁面狀態的工作原理</span> <button class="cb-copy" data-code="# Claude 讀取頁面狀態的互動範例
+# 在 Claude Code 中，你可以直接說：
+# &quot;幫我讀取 https://example.com 的頁面結構&quot;
+
+# Claude 會自動執行：
+opencli browser main nav &quot;https://example.com&quot;
+opencli browser main state
+
+# state 指令回傳類似這樣的結構化輸出：
+# {
+#   &quot;url&quot;: &quot;https://example.com&quot;,
+#   &quot;title&quot;: &quot;Example Domain&quot;,
+#   &quot;elements&quot;: [
+#     { &quot;ref&quot;: &quot;e1&quot;, &quot;tag&quot;: &quot;h1&quot;, &quot;text&quot;: &quot;Example Domain&quot; },
+#     { &quot;ref&quot;: &quot;e2&quot;, &quot;tag&quot;: &quot;p&quot;, &quot;text&quot;: &quot;This domain is for use...&quot; },
+#     { &quot;ref&quot;: &quot;e3&quot;, &quot;tag&quot;: &quot;a&quot;, &quot;text&quot;: &quot;More information...&quot;, &quot;href&quot;: &quot;https://iana.org/...&quot; }
+#   ]
+# }" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Claude 讀取頁面狀態的互動範例</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在 Claude Code 中，你可以直接說：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># "幫我讀取 https://example.com 的頁面結構"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Claude 會自動執行：</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> nav</span><span style="color:#98C379"> "https://example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># state 指令回傳類似這樣的結構化輸出：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "url": "https://example.com",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "title": "Example Domain",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "elements": [</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#     { "ref": "e1", "tag": "h1", "text": "Example Domain" },</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#     { "ref": "e2", "tag": "p", "text": "This domain is for use..." },</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#     { "ref": "e3", "tag": "a", "text": "More information...", "href": "https://iana.org/..." }</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   ]</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># }</span></span></code></pre> </div> </div>   <p> <code>state</code> 指令的輸出中，每個元素都有一個唯一的 <code>ref</code> 編號。Claude 會根據元素的標籤、文字、屬性來判斷這是什麼元素，然後用 <code>ref</code> 來精確指定後續操作的目標。
+</p> <h3>完整互動流程：登入並截圖</h3> <p>以下是 Claude 驅動瀏覽器完成登入操作的完整步驟。每一步都先讀取當前頁面狀態，再根據狀態決定下一個動作：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Claude 驅動的完整登入流程</span> <button class="cb-copy" data-code="# 完整互動流程：Claude 驅動登入並截圖
+
+# Step 1：Claude 導覽到登入頁
+opencli browser work nav &quot;https://app.example.com/login&quot;
+
+# Step 2：讀取頁面找到輸入框
+opencli browser work state
+
+# Step 3：Claude 根據 state 輸出，找到 email 欄位的 ref
+opencli browser work find &quot;input[type=email]&quot;
+# 回傳：{ &quot;ref&quot;: &quot;e5&quot;, &quot;tag&quot;: &quot;input&quot;, &quot;type&quot;: &quot;email&quot; }
+
+# Step 4：填入帳號密碼
+opencli browser work type e5 &quot;user@example.com&quot;
+opencli browser work find &quot;input[type=password]&quot;
+# 回傳：{ &quot;ref&quot;: &quot;e6&quot;, &quot;tag&quot;: &quot;input&quot;, &quot;type&quot;: &quot;password&quot; }
+opencli browser work type e6 &quot;mysecretpassword&quot;
+
+# Step 5：點擊登入按鈕
+opencli browser work find &quot;button[type=submit]&quot;
+# 回傳：{ &quot;ref&quot;: &quot;e7&quot;, &quot;tag&quot;: &quot;button&quot;, &quot;text&quot;: &quot;登入&quot; }
+opencli browser work click e7
+
+# Step 6：等待跳轉後截圖確認
+opencli browser work screenshot" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 完整互動流程：Claude 驅動登入並截圖</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 1：Claude 導覽到登入頁</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> nav</span><span style="color:#98C379"> "https://app.example.com/login"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 2：讀取頁面找到輸入框</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 3：Claude 根據 state 輸出，找到 email 欄位的 ref</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#98C379"> "input[type=email]"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 回傳：{ "ref": "e5", "tag": "input", "type": "email" }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 4：填入帳號密碼</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> e5</span><span style="color:#98C379"> "user@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#98C379"> "input[type=password]"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 回傳：{ "ref": "e6", "tag": "input", "type": "password" }</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> e6</span><span style="color:#98C379"> "mysecretpassword"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 5：點擊登入按鈕</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> find</span><span style="color:#98C379"> "button[type=submit]"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 回傳：{ "ref": "e7", "tag": "button", "text": "登入" }</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> e7</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 6：等待跳轉後截圖確認</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span></span></code></pre> </div> </div>   <p>
+整個流程中，Claude 的角色是「根據頁面狀態做出決策的 agent」。它不是盲目地執行固定腳本，而是每一步都先讀取當前狀態，再決定下一個動作。這讓它能適應頁面結構的細微變化，比傳統的 Selenium 腳本更有彈性。
+</p> <div class="call info"> <p><strong>session 名稱</strong>：上面範例使用 <code>work</code> 作為 session 名稱，你可以在 Claude Code 對話開始時告訴 Claude 要使用哪個 session，或是在 CLAUDE.md 中定義各 session 的用途與使用限制。</p> </div> <h2>透過 Skills 封裝常用流程</h2> <p>
+如果某個 OpenCLI 操作序列是你經常執行的，可以把它封裝成 Claude Code Skill——一個描述「遇到這個指令時要做什麼」的 Markdown 文件。一旦封裝好，只需輸入 <code>/skill-name 關鍵字</code>，Claude 就會自動走完整個流程。
+</p> <h3>撰寫 Skill 檔案</h3> <p>
+Skill 檔案放在 <code>.claude/skills/</code> 目錄下，以 <code>.md</code> 副檔名儲存。內容包含指令描述、參數說明，以及 Claude 應該依序執行的步驟：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>.claude/skills/twitter-report.md</span> <button class="cb-copy" data-code="# .claude/skills/twitter-report.md
+# 這個 skill 讓你輸入 /twitter-report <關鍵字> 就能自動產生分析報告
+
+## 描述
+搜尋 Twitter 上關於指定關鍵字的討論，彙整成結構化報告。
+
+## 用法
+/twitter-report <關鍵字> [--limit <n>]
+
+## 步驟
+
+1. 使用 opencli 搜尋推文：
+```bash
+opencli twitter search &quot;$ARGS&quot; --limit 30 --format json
+```
+
+2. 分析結果，依以下格式輸出報告：
+   - **摘要**：3 句話說明主要討論方向
+   - **正面觀點**：列出 3 條具代表性的正面推文（附作者）
+   - **負面觀點**：列出 3 條批評或質疑（附作者）
+   - **關鍵意見領袖**：列出討論中出現的重要帳號
+   - **結論**：一段綜合評估
+
+3. 最後詢問使用者是否要進一步搜尋相關話題。" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#E06C75"># .claude/skills/twitter-report.md</span></span>
+<span class="line"><span style="color:#E06C75"># 這個 skill 讓你輸入 /twitter-report &#x3C;關鍵字> 就能自動產生分析報告</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 描述</span></span>
+<span class="line"><span style="color:#ABB2BF">搜尋 Twitter 上關於指定關鍵字的討論，彙整成結構化報告。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 用法</span></span>
+<span class="line"><span style="color:#ABB2BF">/twitter-report &#x3C;關鍵字> [--limit &#x3C;n>]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 步驟</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">1.</span><span style="color:#ABB2BF"> 使用 opencli 搜尋推文：</span></span>
+<span class="line"><span style="color:#ABB2BF">```bash</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$ARGS</span><span style="color:#98C379">"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span>
+<span class="line"><span style="color:#ABB2BF">```</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">2.</span><span style="color:#ABB2BF"> 分析結果，依以下格式輸出報告：</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#D19A66"> **摘要**</span><span style="color:#ABB2BF">：3 句話說明主要討論方向</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#D19A66"> **正面觀點**</span><span style="color:#ABB2BF">：列出 3 條具代表性的正面推文（附作者）</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#D19A66"> **負面觀點**</span><span style="color:#ABB2BF">：列出 3 條批評或質疑（附作者）</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#D19A66"> **關鍵意見領袖**</span><span style="color:#ABB2BF">：列出討論中出現的重要帳號</span></span>
+<span class="line"><span style="color:#E5C07B">   -</span><span style="color:#D19A66"> **結論**</span><span style="color:#ABB2BF">：一段綜合評估</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">3.</span><span style="color:#ABB2BF"> 最後詢問使用者是否要進一步搜尋相關話題。</span></span></code></pre> </div> </div>   <h3>在 CLAUDE.md 中引入 Skill</h3> <p>
+在 <code>CLAUDE.md</code> 中列出所有可用的 Skill，讓 Claude 知道遇到對應指令時該做什麼：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>CLAUDE.md — 引入 Skills 與工具定義</span> <button class="cb-copy" data-code="# CLAUDE.md（專案根目錄）
+
+# 通用規則
+@.claude/rules/core.md
+
+## 可用 Skills
+- `/twitter-report` — 搜尋並分析 Twitter 討論，見 .claude/skills/twitter-report.md
+- `/github-scan` — 掃描 GitHub 熱門 repo 並推薦，見 .claude/skills/github-scan.md
+- `/web-research` — 跨平台研究報告，見 .claude/skills/web-research.md
+
+## 可用工具（OpenCLI）
+- `opencli browser <session> <command>` — 控制瀏覽器
+- `opencli twitter search <query>` — 搜尋推文
+- `opencli twitter trends` — 取得熱門話題
+- `opencli github trending` — 取得 GitHub 熱門
+- `opencli github search repos <query>` — 搜尋 GitHub repo
+- `opencli reddit search <query>` — 搜尋 Reddit 貼文" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="markdown"><code><span class="line"><span style="color:#E06C75"># CLAUDE.md（專案根目錄）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75"># 通用規則</span></span>
+<span class="line"><span style="color:#ABB2BF">@.claude/rules/core.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 可用 Skills</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">/twitter-report</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋並分析 Twitter 討論，見 .claude/skills/twitter-report.md</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">/github-scan</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 掃描 GitHub 熱門 repo 並推薦，見 .claude/skills/github-scan.md</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">/web-research</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 跨平台研究報告，見 .claude/skills/web-research.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 可用工具（OpenCLI）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli browser &#x3C;session> &#x3C;command></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 控制瀏覽器</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli twitter search &#x3C;query></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋推文</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli twitter trends</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 取得熱門話題</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli github trending</span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 取得 GitHub 熱門</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli github search repos &#x3C;query></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋 GitHub repo</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#E5C07B"> `</span><span style="color:#98C379">opencli reddit search &#x3C;query></span><span style="color:#E5C07B">`</span><span style="color:#ABB2BF"> — 搜尋 Reddit 貼文</span></span></code></pre> </div> </div>   <p>
+設定完成後，你在 Claude Code 中輸入 <code>/twitter-report Dify</code>，Claude 就會自動執行對應的 opencli 搜尋指令、分析結果並輸出格式化報告，整個過程不需要你重複說明步驟。
+</p> <div class="call tip"> <p><strong>Skill 設計原則</strong>：每個 Skill 聚焦單一任務，步驟描述越具體越好。避免在一個 Skill 裡放太多不相關的邏輯，否則 Claude 容易漏掉某些步驟。</p> </div> <h2>注意事項與最佳實踐</h2> <h3>1. 寫入與互動操作必須先確認</h3> <p>
+搜尋、瀏覽、截圖這類唯讀操作讓 Claude 自動執行是安全的。但任何會改變資料或狀態的操作——發推文、按讚、填表單、點擊購買按鈕——都應該讓 Claude 先描述「它打算做什麼」，由你確認後再執行：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>區分唯讀操作與寫入操作</span> <button class="cb-copy" data-code="# 高風險操作：需要人工確認後才能執行
+
+# 發推文（寫入操作）—— 絕對不要讓 Claude 自動執行
+# opencli twitter post &quot;剛讀了一篇很棒的文章 #AI&quot;
+# 除非使用者明確確認，否則只能「建議」這個指令，不直接執行
+
+# 按讚 / 追蹤 / 轉推（互動操作）
+# opencli twitter like <tweet_id>
+# opencli twitter follow <username>
+
+# 填表單並送出
+# opencli browser main click submit-btn  # 如果是購買或申請表單，務必先截圖確認
+
+# 安全做法：先截圖，讓使用者確認後再執行
+opencli browser main screenshot
+# &quot;這是目前的表單狀態，確認要送出嗎？&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 高風險操作：需要人工確認後才能執行</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 發推文（寫入操作）—— 絕對不要讓 Claude 自動執行</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># opencli twitter post "剛讀了一篇很棒的文章 #AI"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 除非使用者明確確認，否則只能「建議」這個指令，不直接執行</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 按讚 / 追蹤 / 轉推（互動操作）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># opencli twitter like &#x3C;tweet_id></span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># opencli twitter follow &#x3C;username></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 填表單並送出</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># opencli browser main click submit-btn  # 如果是購買或申請表單，務必先截圖確認</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 安全做法：先截圖，讓使用者確認後再執行</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> screenshot</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># "這是目前的表單狀態，確認要送出嗎？"</span></span></code></pre> </div> </div>   <h3>2. 善用 --format json 提升解析品質</h3> <p>
+Claude 解析結構化 JSON 的準確率遠高於純文字輸出。任何需要 Claude 進一步分析的 opencli 指令，都應加上 <code>--format json</code>：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>推薦的輸出格式設定</span> <button class="cb-copy" data-code="# 不推薦：純文字輸出，Claude 難以解析
+opencli github trending
+
+# 推薦：JSON 輸出，結構清晰
+opencli github trending --format json
+
+# 搭配 limit 控制資料量
+opencli twitter search &quot;AI agent&quot; --format json --limit 20
+
+# 多欄位過濾（若 adapter 支援）
+opencli github search repos &quot;langchain&quot; \
+  --stars &quot;>500&quot; \
+  --language python \
+  --format json \
+  --limit 10" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：純文字輸出，Claude 難以解析</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：JSON 輸出，結構清晰</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 搭配 limit 控制資料量</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI agent"</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 多欄位過濾（若 adapter 支援）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> search</span><span style="color:#98C379"> repos</span><span style="color:#98C379"> "langchain"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --stars</span><span style="color:#98C379"> ">500"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --language</span><span style="color:#98C379"> python</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#D19A66">  --limit</span><span style="color:#D19A66"> 10</span></span></code></pre> </div> </div>   <h3>3. 用 --limit 控制 context 用量</h3> <p>
+Claude 的 context 視窗是有限的。如果一次抓取幾百筆資料塞進對話，不僅浪費 token，也可能讓 Claude 無法有效處理後半段的資料。建議依任務需求設定合理的 <code>--limit</code>：
+</p> <ul> <li>趨勢分析、概覽性任務：<code>--limit 20</code> 到 <code>--limit 30</code> 通常已足夠</li> <li>需要廣度的研究：可分批執行，每批 <code>--limit 50</code>，讓 Claude 逐批摘要後再合併</li> <li>即時監控：<code>--limit 10</code> 快速取得最新動態，適合頻繁執行的場景</li> </ul> <h3>4. 敏感 session 要謹慎授權</h3> <p>
+已登入帳號的瀏覽器 session 擁有你的身份憑證，授權給 Claude 自動操作時需格外謹慎。建議用命名規範區分公開與敏感 session，並在 <code>settings.json</code> 只允許自動執行公開 session 的操作：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>區分敏感與公開 session 的授權設定</span> <button class="cb-copy" data-code="// .claude/settings.json — 區分敏感與公開 session 的授權設定
+
+// session 命名慣例：
+// &quot;main&quot; / &quot;public&quot;：未登入的公開瀏覽
+// &quot;work&quot; / &quot;logged-in&quot;：已登入帳號的操作
+
+{
+  &quot;permissions&quot;: {
+    &quot;allow&quot;: [
+      &quot;Bash(opencli browser main *:*)&quot;,
+      &quot;Bash(opencli github *:*)&quot;,
+      &quot;Bash(opencli twitter search *:*)&quot;
+      // 注意：不加 &quot;Bash(opencli browser work *:*)&quot;
+      // work session 含登入憑證，所有操作保持逐次確認
+    ]
+  }
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#7F848E;font-style:italic">// .claude/settings.json — 區分敏感與公開 session 的授權設定</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// session 命名慣例：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// "main" / "public"：未登入的公開瀏覽</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// "work" / "logged-in"：已登入帳號的操作</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "permissions"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">    "allow"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli browser main *:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli github *:*)"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">      "Bash(opencli twitter search *:*)"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">      // 注意：不加 "Bash(opencli browser work *:*)"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">      // work session 含登入憑證，所有操作保持逐次確認</span></span>
+<span class="line"><span style="color:#ABB2BF">    ]</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <h2>小結</h2> <p>
+Claude Code 與 OpenCLI 的整合，代表著 AI 助理從「提供建議」進化到「直接執行」的重要一步。透過本章介紹的幾個關鍵設定：
+</p> <ol> <li>在 <code>CLAUDE.md</code> 中宣告可用的 OpenCLI 工具，讓 Claude 知道有這些能力</li> <li>在 <code>settings.json</code> 中設定唯讀操作的自動執行權限，減少不必要的確認中斷</li> <li>用 <code>--format json</code> 和 <code>--limit</code> 確保輸出品質與 context 效率</li> <li>把常用流程封裝成 Skill，讓重複任務一個指令就能完成</li> <li>寫入與互動操作保持人工確認，避免 AI 誤觸敏感動作</li> </ol> <p>
+掌握這些原則，你就能打造出一個真正能替你「做事」的 AI 工作流程，而不只是一個回答問題的助理。
+</p> <p>
+下一章，我們將深入介紹 Skills 系統的完整架構——如何設計、安裝、管理，以及進階的參數傳遞與條件分支技巧。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>CI/CD 整合</span> </a> <a href="/opencli/ch13-skills" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>Skills 安裝與管理</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

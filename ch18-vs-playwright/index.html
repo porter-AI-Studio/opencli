@@ -1,0 +1,644 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OpenCLI vs Playwright | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="深度比較 OpenCLI 與 Playwright 的設計理念、使用場景、程式碼模式與遷移策略，幫助選擇最適合的自動化工具。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 18 章 · Part 6：比較與實戰</span> <h1>OpenCLI vs Playwright</h1> <p class="cdesc">
+兩個工具都能操控瀏覽器，但設計哲學截然不同。本章深度比較它們的定位、
+    程式碼模式、效能差異與遷移策略，幫助你在對的場景選擇對的工具。
+</p>  <h2>18.1 兩個工具的定位</h2> <p>
+理解這兩個工具最快的方式，是看它們如何表達「同一個需求」：
+</p> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;"> <div style="border: 2px solid var(--accent); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.75rem 0; color: var(--accent);">OpenCLI 的表達方式</h4> <code style="font-size: 1rem; color: var(--fg);">opencli twitter trending</code> <p style="margin: 0.75rem 0 0 0; font-size: 0.88rem; color: var(--fg2);">
+我要「Twitter 的趨勢」— 語義清晰，意圖即指令。
+</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.75rem 0;">Playwright 的表達方式</h4> <code style="font-size: 0.85rem; color: var(--fg);">page.goto(...)<br>page.waitForSelector(...)<br>page.$$eval(...)</code> <p style="margin: 0.75rem 0 0 0; font-size: 0.88rem; color: var(--fg2);">
+導航到 URL → 等那個元素 → 點這個按鈕 → 擷取文字。
+</p> </div> </div> <p> <strong>OpenCLI</strong> 是以平台語義為中心的 CLI 工具。它的 Adapter 層封裝了每個平台的知識——
+    Twitter 怎麼取趨勢、GitHub 怎麼搜尋 Repo、Bilibili 怎麼繞過反爬機制——這些細節都在 Adapter 裡，
+    使用者只需要知道「我想要什麼」。
+</p> <p> <strong>Playwright</strong> 是底層瀏覽器自動化框架。它提供完整的 DOM 操作、網路攔截、截圖等能力，
+    但所有平台邏輯都要自行實作。這帶來了極大的靈活度，同時也意味著更高的開發成本與維護負擔。
+</p>  <h2>18.2 核心設計哲學比較</h2> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>維度</th> <th>OpenCLI</th> <th>Playwright</th> </tr> </thead> <tbody> <tr> <td><strong>抽象層次</strong></td> <td>語義指令（<code>trending</code>、<code>search</code>）</td> <td>DOM 操作（selector、click、waitFor）</td> </tr> <tr> <td><strong>平台支援</strong></td> <td>內建 80+ Adapter，開箱即用</td> <td>無內建平台知識，需全部自行實作</td> </tr> <tr> <td><strong>學習曲線</strong></td> <td>CLI 即用，10 分鐘上手</td> <td>需學 API + CSS 選擇器 + 非同步控制</td> </tr> <tr> <td><strong>維護成本</strong></td> <td>平台改版由 Adapter 社群維護</td> <td>平台改版需自行更新所有 selector</td> </tr> <tr> <td><strong>靈活度</strong></td> <td>受限於 Adapter 提供的指令集</td> <td>完全自由，可操作任意頁面行為</td> </tr> <tr> <td><strong>適合場景</strong></td> <td>資料擷取、平台互動、AI Agent 工具</td> <td>E2E 測試、自訂 UI 流程、截圖 / PDF</td> </tr> <tr> <td><strong>除錯難度</strong></td> <td>結構化錯誤訊息，明確指向問題</td> <td>需自行追蹤 DOM 狀態與時序問題</td> </tr> </tbody> </table> </div>  <h2>18.3 同一任務的程式碼對比</h2> <p>
+紙上比較不如程式碼直觀。以下三個真實案例，讓你親眼看見兩種方式的差距。
+</p> <h3>案例一：取得 Twitter 熱門話題</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — 1 行</span> <button class="cb-copy" data-code="# 1 行指令，取得 Twitter 熱門話題 Top 10
+opencli twitter trending --limit 10" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 1 行指令，取得 Twitter 熱門話題 Top 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright — 約 25 行</span> <button class="cb-copy" data-code="import { chromium } from 'playwright';
+
+async function getTwitterTrending(): Promise<string[]> {
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  });
+  const page = await context.newPage();
+
+  // 需要先登入，否則 Twitter 會導向登入頁
+  await page.goto('https://twitter.com/explore/tabs/trending');
+  await page.waitForSelector('[data-testid=&quot;trend&quot;]', { timeout: 10000 });
+
+  const trends = await page.$$eval('[data-testid=&quot;trend&quot;]', items =>
+    items.map(el => {
+      const name = el.querySelector('[dir=&quot;ltr&quot;] > span')?.textContent?.trim() ?? '';
+      const count = el.querySelector('[dir=&quot;ltr&quot;]:last-child')?.textContent?.trim() ?? '';
+      return { name, count };
+    })
+  );
+
+  await browser.close();
+  // 過濾空值並取前 10 筆
+  return trends
+    .filter(t => t.name.length > 0)
+    .slice(0, 10)
+    .map(t => t.name);
+}
+
+getTwitterTrending().then(console.log).catch(console.error);" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">chromium</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'playwright'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> getTwitterTrending</span><span style="color:#ABB2BF">(): </span><span style="color:#E5C07B">Promise</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[]> {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> browser</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> chromium</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">launch</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">headless</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> context</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newContext</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">    userAgent</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> page</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> context</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newPage</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 需要先登入，否則 Twitter 會導向登入頁</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'https://twitter.com/explore/tabs/trending'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[data-testid="trend"]'</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">10000</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> trends</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">$$eval</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[data-testid="trend"]'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">items</span><span style="color:#C678DD"> =></span></span>
+<span class="line"><span style="color:#E5C07B">    items</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">el</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> name</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[dir="ltr"] > span'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> count</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[dir="ltr"]:last-child'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">count</span><span style="color:#ABB2BF"> };</span></span>
+<span class="line"><span style="color:#ABB2BF">    })</span></span>
+<span class="line"><span style="color:#ABB2BF">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 過濾空值並取前 10 筆</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E06C75"> trends</span></span>
+<span class="line"><span style="color:#ABB2BF">    .</span><span style="color:#61AFEF">filter</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">t</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> t</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">name</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#56B6C2"> ></span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">    .</span><span style="color:#61AFEF">slice</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">10</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">    .</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">t</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> t</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">getTwitterTrending</span><span style="color:#ABB2BF">().</span><span style="color:#61AFEF">then</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">log</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">catch</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>   </div> </div> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>為什麼 Playwright 版本更複雜？</strong> <p>
+Twitter 需要登入才能看趨勢、selector 隨版本改變（<code>data-testid</code> 名稱常變動）、
+        User-Agent 偽裝避免被識別為 Bot。這些知識都已封裝在 OpenCLI 的 Twitter Adapter 中。
+</p> </div> </div> <h3>案例二：搜尋 GitHub 熱門 Repo</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — 1 行帶參數</span> <button class="cb-copy" data-code="# 1 行帶參數，搜尋 GitHub 熱門 TypeScript 專案
+opencli github trending --language typescript --since weekly --limit 20" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 1 行帶參數，搜尋 GitHub 熱門 TypeScript 專案</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span><span style="color:#D19A66"> --since</span><span style="color:#98C379"> weekly</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright — 約 35 行</span> <button class="cb-copy" data-code="import { chromium } from 'playwright';
+
+interface GitHubRepo {
+  name: string;
+  description: string;
+  stars: string;
+  language: string;
+  starsThisWeek: string;
+}
+
+async function getGitHubTrending(language: string, since: string): Promise<GitHubRepo[]> {
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
+
+  const url = `https://github.com/trending/${language}?since=${since}`;
+  await page.goto(url);
+
+  // 等待動態載入完成（GitHub 使用 Turbo/SPA 架構）
+  await page.waitForSelector('article.Box-row', { timeout: 15000 });
+
+  const repos = await page.$$eval('article.Box-row', (items: Element[]) =>
+    items.map(el => ({
+      name: el.querySelector('h2 a')?.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+      description: el.querySelector('p.col-9')?.textContent?.trim() ?? '',
+      stars: el.querySelector('a[href$=&quot;/stargazers&quot;]')?.textContent?.trim() ?? '0',
+      language: el.querySelector('[itemprop=&quot;programmingLanguage&quot;]')?.textContent?.trim() ?? '',
+      starsThisWeek: el.querySelector('.float-sm-right')?.textContent?.trim() ?? ''
+    }))
+  );
+
+  await browser.close();
+  // 過濾掉名稱為空的條目（廣告或其他非 Repo 元素）
+  return repos.filter(r => r.name.length > 0).slice(0, 20);
+}
+
+getGitHubTrending('typescript', 'weekly')
+  .then(repos => console.log(JSON.stringify(repos, null, 2)))
+  .catch(console.error);" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">chromium</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'playwright'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">interface</span><span style="color:#E5C07B"> GitHubRepo</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E06C75">  name</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E06C75">  stars</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E06C75">  language</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E06C75">  starsThisWeek</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> getGitHubTrending</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">language</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">since</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">Promise</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">GitHubRepo</span><span style="color:#ABB2BF">[]> {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> browser</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> chromium</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">launch</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">headless</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> page</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newPage</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> url</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> `https://github.com/trending/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">language</span><span style="color:#C678DD">}</span><span style="color:#98C379">?since=</span><span style="color:#C678DD">${</span><span style="color:#E06C75">since</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 等待動態載入完成（GitHub 使用 Turbo/SPA 架構）</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'article.Box-row'</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">15000</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> repos</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">$$eval</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'article.Box-row'</span><span style="color:#ABB2BF">, (</span><span style="color:#E06C75;font-style:italic">items</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Element</span><span style="color:#ABB2BF">[]) </span><span style="color:#C678DD">=></span></span>
+<span class="line"><span style="color:#E5C07B">    items</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">el</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> ({</span></span>
+<span class="line"><span style="color:#E06C75">      name</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'h2 a'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/\s</span><span style="color:#D19A66">+</span><span style="color:#E06C75">/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">' '</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      description</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'p.col-9'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      stars</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'a[href$="/stargazers"]'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> '0'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      language</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[itemprop="programmingLanguage"]'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      starsThisWeek</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.float-sm-right'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span></span>
+<span class="line"><span style="color:#ABB2BF">    }))</span></span>
+<span class="line"><span style="color:#ABB2BF">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 過濾掉名稱為空的條目（廣告或其他非 Repo 元素）</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E5C07B"> repos</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">filter</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">r</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> r</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">name</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#56B6C2"> ></span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">slice</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">20</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">getGitHubTrending</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'typescript'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'weekly'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">then</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">repos</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">repos</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">null</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">)))</span></span>
+<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">catch</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>   </div> </div> <h3>案例三：Bilibili 影片評論擷取</h3> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;"> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI — 2 行</span> <button class="cb-copy" data-code="# 搜尋影片
+opencli bilibili search &quot;TypeScript 教學&quot; --limit 5
+
+# 取得第一支影片的評論（bvid 從上一步結果取得）
+opencli bilibili comments BV1xx411c79H --limit 50" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "TypeScript 教學"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得第一支影片的評論（bvid 從上一步結果取得）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> comments</span><span style="color:#98C379"> BV1xx411c79H</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 50</span></span></code></pre> </div> </div>   </div> <div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright — 約 50 行（含反爬處理）</span> <button class="cb-copy" data-code="import { chromium } from 'playwright';
+
+// Bilibili 有反爬機制：需要 Cookie、User-Agent 偽裝、隨機延遲
+async function getBilibiliComments(bvid: string): Promise<object[]> {
+  const browser = await chromium.launch({
+    headless: false, // Bilibili 偵測 headless，需設為 false
+    args: ['--disable-blink-features=AutomationControlled']
+  });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+    // 需要預先匯入登入後的 Cookie 檔案
+    storageState: './bilibili-storage.json'
+  });
+  const page = await context.newPage();
+
+  // 隱藏 webdriver 特徵
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+  });
+
+  await page.goto(`https://www.bilibili.com/video/${bvid}`);
+
+  // 等待頁面完全載入（Bilibili 是重度 SPA）
+  await page.waitForLoadState('networkidle', { timeout: 20000 });
+  await page.waitForSelector('.comment-list', { timeout: 15000 });
+
+  // 需要滾動觸發懶載入
+  for (let i = 0; i < 5; i++) {
+    await page.evaluate(() => window.scrollBy(0, 600));
+    await page.waitForTimeout(800); // 必須等待，否則內容不載入
+  }
+
+  const comments = await page.$$eval('.comment-item', items =>
+    items.map(el => ({
+      user: el.querySelector('.user-name')?.textContent?.trim() ?? '',
+      content: el.querySelector('.comment-content')?.textContent?.trim() ?? '',
+      likes: el.querySelector('.like-count')?.textContent?.trim() ?? '0',
+      time: el.querySelector('.comment-time')?.textContent?.trim() ?? ''
+    }))
+  );
+
+  await browser.close();
+  return comments.slice(0, 50);
+}
+
+getBilibiliComments('BV1xx411c79H')
+  .then(data => console.log(JSON.stringify(data, null, 2)))
+  .catch(console.error);" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">chromium</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'playwright'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// Bilibili 有反爬機制：需要 Cookie、User-Agent 偽裝、隨機延遲</span></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> getBilibiliComments</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">bvid</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">Promise</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">object</span><span style="color:#ABB2BF">[]> {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> browser</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> chromium</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">launch</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">    headless</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">false</span><span style="color:#ABB2BF">, </span><span style="color:#7F848E;font-style:italic">// Bilibili 偵測 headless，需設為 false</span></span>
+<span class="line"><span style="color:#E06C75">    args</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'--disable-blink-features=AutomationControlled'</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> context</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newContext</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">    userAgent</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 需要預先匯入登入後的 Cookie 檔案</span></span>
+<span class="line"><span style="color:#E06C75">    storageState</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'./bilibili-storage.json'</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> page</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> context</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newPage</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 隱藏 webdriver 特徵</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">addInitScript</span><span style="color:#ABB2BF">(() </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E5C07B">    Object</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">defineProperty</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">navigator</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'webdriver'</span><span style="color:#ABB2BF">, { </span><span style="color:#61AFEF">get</span><span style="color:#ABB2BF">: () </span><span style="color:#C678DD">=></span><span style="color:#D19A66"> undefined</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`https://www.bilibili.com/video/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">bvid</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 等待頁面完全載入（Bilibili 是重度 SPA）</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForLoadState</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'networkidle'</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">20000</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.comment-list'</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">15000</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 需要滾動觸發懶載入</span></span>
+<span class="line"><span style="color:#C678DD">  for</span><span style="color:#ABB2BF"> (</span><span style="color:#C678DD">let</span><span style="color:#E06C75"> i</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">i</span><span style="color:#56B6C2"> &#x3C;</span><span style="color:#D19A66"> 5</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">i</span><span style="color:#56B6C2">++</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">evaluate</span><span style="color:#ABB2BF">(() </span><span style="color:#C678DD">=></span><span style="color:#E5C07B"> window</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">scrollBy</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">600</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForTimeout</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">800</span><span style="color:#ABB2BF">); </span><span style="color:#7F848E;font-style:italic">// 必須等待，否則內容不載入</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> comments</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">$$eval</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.comment-item'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">items</span><span style="color:#C678DD"> =></span></span>
+<span class="line"><span style="color:#E5C07B">    items</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">el</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> ({</span></span>
+<span class="line"><span style="color:#E06C75">      user</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.user-name'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      content</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.comment-content'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      likes</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.like-count'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> '0'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      time</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">el</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'.comment-time'</span><span style="color:#ABB2BF">)?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">??</span><span style="color:#98C379"> ''</span></span>
+<span class="line"><span style="color:#ABB2BF">    }))</span></span>
+<span class="line"><span style="color:#ABB2BF">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E5C07B"> comments</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">slice</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">50</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">getBilibiliComments</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'BV1xx411c79H'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">then</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">data</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">data</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">null</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">)))</span></span>
+<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">catch</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>   </div> </div> <div class="call warn"> <span class="ci">⚠️</span> <div> <strong>Bilibili 的反爬機制</strong> <p>
+Bilibili 會偵測 <code>navigator.webdriver</code>、禁止 headless 模式、要求有效 Cookie，
+        以及對頻繁請求觸發驗證碼。OpenCLI 的 Bilibili Adapter 已內建這些處理邏輯，
+        Playwright 版本若未完整實作，輕則資料缺失，重則帳號被封。
+</p> </div> </div>  <h2>18.4 各自的優勢場景</h2> <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;"> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h3 style="margin: 0 0 1rem 0; color: var(--accent);">OpenCLI 更適合</h3> <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.9;"> <li>快速資料擷取 prototype（分鐘內完成）</li> <li>CI/CD 中的平台操作（發佈、監控、通知）</li> <li>非技術人員的自動化需求（CLI 友善）</li> <li>跨平台資料聚合腳本（Twitter + GitHub + HN）</li> <li>AI Agent 工具調用（語義清晰，token 消耗少）</li> <li>需要定期執行的排程任務</li> <li>Shell Script / Python 的輕量整合</li> </ul> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h3 style="margin: 0 0 1rem 0;">Playwright 更適合</h3> <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.9;"> <li>E2E 測試（登入流程、表單提交、視覺回歸）</li> <li>尚無 Adapter 的私有 / 內部系統</li> <li>需要精確控制每一步互動的場景</li> <li>複雜 SPA 動態行為（Vue / React / Angular 應用）</li> <li>截圖 / PDF 產生（<code>page.screenshot()</code>）</li> <li>網路請求攔截與 Mock（測試環境）</li> <li>需要多標籤頁協作的複雜流程</li> </ul> </div> </div>  <h2>18.5 搭配使用策略</h2> <p>
+OpenCLI 與 Playwright 並非競爭關係，而是互補的工具組合。
+    最佳實踐是：<strong>有 Adapter 的平台用 OpenCLI，其餘場景用 Playwright</strong>，
+    必要時在 Custom Adapter 內部呼叫 Playwright 作為底層引擎。
+</p> <h3>在 Custom Adapter 中整合 Playwright</h3> <p>
+當你需要為複雜的私有系統建立 Custom Adapter，又需要精細控制互動流程時，
+    可以在 Adapter 的 TypeScript 實作裡直接使用 Playwright：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>internal-erp/index.ts — Adapter 內整合 Playwright</span> <button class="cb-copy" data-code="import { defineAdapter } from '@opencli/adapter-sdk';
+import { chromium, Browser, BrowserContext } from 'playwright';
+
+let browser: Browser | null = null;
+let context: BrowserContext | null = null;
+
+export default defineAdapter({
+  name: 'internal-erp',
+  version: '1.0.0',
+  description: '內部 ERP 系統 Adapter（使用 Playwright 底層）',
+  baseUrl: 'https://erp.internal.company.com',
+
+  // Adapter 初始化：啟動 Playwright
+  async setup() {
+    browser = await chromium.launch({ headless: true });
+    context = await browser.newContext({
+      storageState: process.env.ERP_SESSION_PATH
+    });
+  },
+
+  // Adapter 清理：關閉瀏覽器
+  async teardown() {
+    await context?.close();
+    await browser?.close();
+  },
+
+  commands: {
+    'get-inventory': {
+      description: '取得庫存清單（複雜 SPA，需要 Playwright 精確控制）',
+      args: {
+        category: { type: 'string', required: true },
+        warehouse: { type: 'string', default: 'all' }
+      },
+      async execute({ args }) {
+        if (!context) throw new Error('Playwright context not initialized');
+        const page = await context.newPage();
+
+        try {
+          await page.goto(`/inventory?cat=${args.category}`);
+          // 等待 Vue/React 元件掛載完成
+          await page.waitForFunction(() =>
+            document.querySelector('[data-loaded=&quot;true&quot;]') !== null
+          );
+
+          // 使用 Playwright 填寫篩選表單
+          if (args.warehouse !== 'all') {
+            await page.selectOption('#warehouse-filter', args.warehouse);
+            await page.waitForResponse(res => res.url().includes('/api/inventory'));
+          }
+
+          // 擷取表格資料
+          const data = await page.$$eval('table.inventory tbody tr', rows =>
+            rows.map(row => {
+              const cells = Array.from(row.querySelectorAll('td'));
+              return {
+                sku: cells[0]?.textContent?.trim(),
+                name: cells[1]?.textContent?.trim(),
+                quantity: parseInt(cells[2]?.textContent ?? '0'),
+                location: cells[3]?.textContent?.trim()
+              };
+            })
+          );
+
+          return data;
+        } finally {
+          await page.close();
+        }
+      }
+    }
+  }
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">defineAdapter</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> '@opencli/adapter-sdk'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">chromium</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">Browser</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">BrowserContext</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'playwright'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">let</span><span style="color:#E06C75"> browser</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Browser</span><span style="color:#ABB2BF"> | </span><span style="color:#E5C07B">null</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> null</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">let</span><span style="color:#E06C75"> context</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">BrowserContext</span><span style="color:#ABB2BF"> | </span><span style="color:#E5C07B">null</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> null</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> default</span><span style="color:#61AFEF"> defineAdapter</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">  name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'internal-erp'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'1.0.0'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'內部 ERP 系統 Adapter（使用 Playwright 底層）'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  baseUrl</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'https://erp.internal.company.com'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // Adapter 初始化：啟動 Playwright</span></span>
+<span class="line"><span style="color:#C678DD">  async</span><span style="color:#61AFEF"> setup</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#E06C75">    browser</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> chromium</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">launch</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">headless</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#E06C75">    context</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newContext</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">      storageState</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">process</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">env</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">ERP_SESSION_PATH</span></span>
+<span class="line"><span style="color:#ABB2BF">    });</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // Adapter 清理：關閉瀏覽器</span></span>
+<span class="line"><span style="color:#C678DD">  async</span><span style="color:#61AFEF"> teardown</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> context</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  commands</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#98C379">    'get-inventory'</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'取得庫存清單（複雜 SPA，需要 Playwright 精確控制）'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      args</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        category</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">required</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">        warehouse</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">default</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'all'</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#C678DD">      async</span><span style="color:#61AFEF"> execute</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75;font-style:italic">args</span><span style="color:#ABB2BF"> }) {</span></span>
+<span class="line"><span style="color:#C678DD">        if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E06C75">context</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">throw</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> Error</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'Playwright context not initialized'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">        const</span><span style="color:#E5C07B"> page</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> context</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newPage</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">        try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">          await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`/inventory?cat=</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">category</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">          // 等待 Vue/React 元件掛載完成</span></span>
+<span class="line"><span style="color:#C678DD">          await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForFunction</span><span style="color:#ABB2BF">(() </span><span style="color:#C678DD">=></span></span>
+<span class="line"><span style="color:#E5C07B">            document</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'[data-loaded="true"]'</span><span style="color:#ABB2BF">) </span><span style="color:#56B6C2">!==</span><span style="color:#D19A66"> null</span></span>
+<span class="line"><span style="color:#ABB2BF">          );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">          // 使用 Playwright 填寫篩選表單</span></span>
+<span class="line"><span style="color:#C678DD">          if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">warehouse</span><span style="color:#56B6C2"> !==</span><span style="color:#98C379"> 'all'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">            await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">selectOption</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'#warehouse-filter'</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">args</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">warehouse</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">            await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForResponse</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">res</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> res</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">url</span><span style="color:#ABB2BF">().</span><span style="color:#61AFEF">includes</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'/api/inventory'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#ABB2BF">          }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">          // 擷取表格資料</span></span>
+<span class="line"><span style="color:#C678DD">          const</span><span style="color:#E5C07B"> data</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">$$eval</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'table.inventory tbody tr'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">rows</span><span style="color:#C678DD"> =></span></span>
+<span class="line"><span style="color:#E5C07B">            rows</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">row</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">              const</span><span style="color:#E5C07B"> cells</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Array</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">from</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">row</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">querySelectorAll</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'td'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">              return</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E06C75">                sku</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">cells</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">]?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">(),</span></span>
+<span class="line"><span style="color:#E06C75">                name</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">cells</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">1</span><span style="color:#ABB2BF">]?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">(),</span></span>
+<span class="line"><span style="color:#E06C75">                quantity</span><span style="color:#ABB2BF">: </span><span style="color:#61AFEF">parseInt</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">cells</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">]?.</span><span style="color:#E06C75">textContent</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> '0'</span><span style="color:#ABB2BF">),</span></span>
+<span class="line"><span style="color:#E06C75">                location</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">cells</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">3</span><span style="color:#ABB2BF">]?.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">()</span></span>
+<span class="line"><span style="color:#ABB2BF">              };</span></span>
+<span class="line"><span style="color:#ABB2BF">            })</span></span>
+<span class="line"><span style="color:#ABB2BF">          );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">          return</span><span style="color:#E06C75"> data</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">        } </span><span style="color:#C678DD">finally</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">          await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>這個模式的優勢</strong> <p>
+封裝完成後，使用者只需執行 <code>opencli internal-erp get-inventory --category electronics</code>，
+        不需要了解任何 Playwright 細節。AI Agent 也能透過語義指令調用這個複雜操作。
+</p> </div> </div> <h3>混合 Pipeline：OpenCLI 搜尋 + Playwright 深度爬取</h3> <p>
+對於需要兩階段處理的任務，可以用 OpenCLI 快速取得入口資料，
+    再用 Playwright 針對每個目標執行深度操作：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>hybrid-pipeline.sh</span> <button class="cb-copy" data-code="#!/usr/bin/env bash
+# hybrid-pipeline.sh
+# 用 OpenCLI 搜尋 GitHub → Playwright 深度爬取每個 Repo 的詳細 Contributors
+
+set -euo pipefail
+
+# Step 1：用 OpenCLI 快速取得熱門 Repo 清單（語義明確、1 行）
+REPOS=$(opencli github trending --language rust --since monthly --limit 10 --json)
+
+# Step 2：擷取 Repo slug 列表
+SLUGS=$(echo &quot;$REPOS&quot; | jq -r '.[].full_name')
+
+# Step 3：對每個 Repo 用 Playwright 深度爬取 Contributors 頁（OpenCLI 無此指令）
+echo &quot;$SLUGS&quot; | while read -r slug; do
+  npx ts-node scrape-contributors.ts &quot;$slug&quot; >> contributors.jsonl
+  echo &quot;Done: $slug&quot;
+done
+
+echo &quot;Pipeline complete. Results in contributors.jsonl&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># hybrid-pipeline.sh</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用 OpenCLI 搜尋 GitHub → Playwright 深度爬取每個 Repo 的詳細 Contributors</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">set</span><span style="color:#D19A66"> -euo</span><span style="color:#98C379"> pipefail</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 1：用 OpenCLI 快速取得熱門 Repo 清單（語義明確、1 行）</span></span>
+<span class="line"><span style="color:#E06C75">REPOS</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> rust</span><span style="color:#D19A66"> --since</span><span style="color:#98C379"> monthly</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --json</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 2：擷取 Repo slug 列表</span></span>
+<span class="line"><span style="color:#E06C75">SLUGS</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$REPOS</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[].full_name'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 3：對每個 Repo 用 Playwright 深度爬取 Contributors 頁（OpenCLI 無此指令）</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$SLUGS</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> | </span><span style="color:#C678DD">while</span><span style="color:#56B6C2"> read</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> slug</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#61AFEF">  npx</span><span style="color:#98C379"> ts-node</span><span style="color:#98C379"> scrape-contributors.ts</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$slug</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">contributors.jsonl</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "Done: </span><span style="color:#E06C75">$slug</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Pipeline complete. Results in contributors.jsonl"</span></span></code></pre> </div> </div>    <h2>18.6 效能與資源比較</h2> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>指標</th> <th>OpenCLI</th> <th>Playwright</th> <th>說明</th> </tr> </thead> <tbody> <tr> <td><strong>冷啟動時間</strong></td> <td>~50–200 ms</td> <td>~1–3 秒</td> <td>Playwright 需要啟動完整 Chromium 程序</td> </tr> <tr> <td><strong>記憶體佔用</strong></td> <td>~30–80 MB</td> <td>~150–400 MB</td> <td>Chromium 本身記憶體消耗較大</td> </tr> <tr> <td><strong>並行能力</strong></td> <td>Shell 層級 <code>xargs -P</code></td> <td>Playwright <code>BrowserContext</code> 並行</td> <td>Playwright 並行更細緻，可共用一個 Browser</td> </tr> <tr> <td><strong>CI 環境友善度</strong></td> <td>高（輕量，無需額外依賴）</td> <td>中（需安裝 Chromium 瀏覽器依賴）</td> <td>OpenCLI 連線至 Adapter 管理的 browser</td> </tr> <tr> <td><strong>適合的批量規模</strong></td> <td>小到中批量（1–1,000 筆）</td> <td>中到大批量（1,000+ 筆）</td> <td>大規模爬取建議 Playwright + 分散式架構</td> </tr> <tr> <td><strong>連線重用</strong></td> <td>自動重用持久 Session</td> <td>需手動管理 Context 生命週期</td> <td>OpenCLI browser 模式保持連線，指令間快速切換</td> </tr> </tbody> </table> </div> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>關於冷啟動的補充</strong> <p>
+OpenCLI 的低啟動時間來自「持久瀏覽器 Session」設計：
+<code>opencli browser start</code> 啟動後，後續每個指令都附著到同一個 browser 程序，
+        省去反覆啟動 Chromium 的開銷。Playwright 若採用相同的 persistent context 模式，
+        啟動成本也可以大幅降低。
+</p> </div> </div>  <h2>18.7 從 Playwright 遷移到 OpenCLI</h2> <h3>識別可遷移的腳本</h3> <p>
+遷移的第一步是盤點現有 Playwright 腳本，找出哪些操作的平台已有 OpenCLI Adapter：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>查詢可用的 Adapter 列表</span> <button class="cb-copy" data-code="# 列出所有內建 Adapter
+opencli adapters list
+
+# 檢查特定平台是否有 Adapter
+opencli adapters list | grep -i twitter
+opencli adapters list | grep -i github
+opencli adapters list | grep -i youtube" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出所有內建 Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 檢查特定平台是否有 Adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">grep</span><span style="color:#D19A66"> -i</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">grep</span><span style="color:#D19A66"> -i</span><span style="color:#98C379"> github</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">grep</span><span style="color:#D19A66"> -i</span><span style="color:#98C379"> youtube</span></span></code></pre> </div> </div>   <h3>遷移優先順序</h3> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>優先順序</th> <th>類型</th> <th>行動</th> </tr> </thead> <tbody> <tr> <td>第一優先</td> <td>有現成 Adapter 的公開平台</td> <td>直接替換成 OpenCLI 指令</td> </tr> <tr> <td>第二優先</td> <td>操作邏輯單純的內部系統</td> <td>撰寫 Custom Adapter，再用 OpenCLI</td> </tr> <tr> <td>第三優先</td> <td>資料擷取部分（非測試邏輯）</td> <td>用 OpenCLI 替換擷取，保留 Playwright 驗證</td> </tr> <tr> <td>保留 Playwright</td> <td>E2E 測試套件、視覺回歸、截圖</td> <td>不遷移，這是 Playwright 的強項</td> </tr> </tbody> </table> </div> <h3>遷移前後程式碼對比</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>遷移前：純 Playwright 腳本</span> <button class="cb-copy" data-code="// 遷移前：純 Playwright 腳本（每日監控 GitHub 星數）
+import { chromium } from 'playwright';
+
+async function checkStars(repos: string[]) {
+  const browser = await chromium.launch({ headless: true });
+  const results = [];
+
+  for (const repo of repos) {
+    const page = await browser.newPage();
+    await page.goto(`https://github.com/${repo}`);
+    await page.waitForSelector('#repo-stars-counter-star');
+    const stars = await page.$eval(
+      '#repo-stars-counter-star',
+      el => el.textContent?.trim()
+    );
+    results.push({ repo, stars });
+    await page.close();
+  }
+
+  await browser.close();
+  return results;
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// 遷移前：純 Playwright 腳本（每日監控 GitHub 星數）</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">chromium</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'playwright'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> checkStars</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">repos</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[]) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> browser</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> chromium</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">launch</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">headless</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> results</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> [];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  for</span><span style="color:#ABB2BF"> (</span><span style="color:#C678DD">const</span><span style="color:#E5C07B"> repo</span><span style="color:#C678DD"> of</span><span style="color:#E06C75"> repos</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> page</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">newPage</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`https://github.com/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">waitForSelector</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'#repo-stars-counter-star'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> stars</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">$eval</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#98C379">      '#repo-stars-counter-star'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">      el</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> el</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">textContent</span><span style="color:#ABB2BF">?.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">()</span></span>
+<span class="line"><span style="color:#ABB2BF">    );</span></span>
+<span class="line"><span style="color:#E5C07B">    results</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">push</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">repo</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stars</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">    await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> browser</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">close</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E06C75"> results</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>遷移後：改用 OpenCLI（程式碼量減少 ~80%）</span> <button class="cb-copy" data-code="// 遷移後：改用 OpenCLI（程式碼量減少 ~80%）
+import { execSync } from 'child_process';
+
+function checkStars(repos: string[]) {
+  return repos.map(repo => {
+    const result = execSync(
+      `opencli github repo ${repo} --fields stars --json`,
+      { encoding: 'utf-8' }
+    );
+    const data = JSON.parse(result);
+    return { repo, stars: data.stargazers_count };
+  });
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// 遷移後：改用 OpenCLI（程式碼量減少 ~80%）</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">execSync</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'child_process'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> checkStars</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">repos</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[]) {</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E5C07B"> repos</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">repo</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> result</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> execSync</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#98C379">      `opencli github repo </span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379"> --fields stars --json`</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">      { </span><span style="color:#E06C75">encoding</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'utf-8'</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">    );</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> data</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">result</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">repo</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stars</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">data</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stargazers_count</span><span style="color:#ABB2BF"> };</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>漸進式遷移建議</strong> <p>
+不需要一次全部遷移。建議先在新腳本中使用 OpenCLI，舊腳本維持原樣繼續運作。
+        等到 OpenCLI 版本穩定且確認產出一致後，再逐步退役 Playwright 版本。
+</p> </div> </div>  <h2>18.8 決策流程圖</h2> <p>
+面對新的自動化需求時，用以下決策樹快速判斷該使用哪個工具：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>工具選擇決策樹</span> <button class="cb-copy" data-code="需要自動化瀏覽器操作？
+│
+├─ 是已知平台（Twitter / GitHub / YouTube / Bilibili / HN 等）？
+│  ├─ 是 → opencli <platform> <command>  ✅ OpenCLI 首選
+│  └─ 否 → 繼續往下判斷
+│
+├─ 是 E2E 測試 / UI 驗證（表單提交、登入流程、視覺回歸）？
+│  └─ 是 → Playwright + 測試框架（Vitest / Jest）  ✅
+│
+├─ 需要 AI Agent / LLM Tool Use 調用？
+│  └─ 是 → 優先 OpenCLI（語義指令，token 消耗少）  ✅
+│
+├─ 是尚無 Adapter 的私有 / 內部系統？
+│  ├─ 操作邏輯複雜 → Playwright  ✅
+│  └─ 操作邏輯單純 → 先寫 Custom Adapter，再用 OpenCLI  ✅
+│
+├─ 需要截圖 / PDF 產生？
+│  └─ 是 → Playwright（page.screenshot / page.pdf）  ✅
+│
+└─ 大規模爬取（百頁以上）？
+   ├─ 有 Adapter → OpenCLI + shell loop / xargs 並行  ✅
+   └─ 無 Adapter → Playwright parallel contexts  ✅" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span>需要自動化瀏覽器操作？</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 是已知平台（Twitter / GitHub / YouTube / Bilibili / HN 等）？</span></span>
+<span class="line"><span>│  ├─ 是 → opencli &#x3C;platform> &#x3C;command>  ✅ OpenCLI 首選</span></span>
+<span class="line"><span>│  └─ 否 → 繼續往下判斷</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 是 E2E 測試 / UI 驗證（表單提交、登入流程、視覺回歸）？</span></span>
+<span class="line"><span>│  └─ 是 → Playwright + 測試框架（Vitest / Jest）  ✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 需要 AI Agent / LLM Tool Use 調用？</span></span>
+<span class="line"><span>│  └─ 是 → 優先 OpenCLI（語義指令，token 消耗少）  ✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 是尚無 Adapter 的私有 / 內部系統？</span></span>
+<span class="line"><span>│  ├─ 操作邏輯複雜 → Playwright  ✅</span></span>
+<span class="line"><span>│  └─ 操作邏輯單純 → 先寫 Custom Adapter，再用 OpenCLI  ✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├─ 需要截圖 / PDF 產生？</span></span>
+<span class="line"><span>│  └─ 是 → Playwright（page.screenshot / page.pdf）  ✅</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>└─ 大規模爬取（百頁以上）？</span></span>
+<span class="line"><span>   ├─ 有 Adapter → OpenCLI + shell loop / xargs 並行  ✅</span></span>
+<span class="line"><span>   └─ 無 Adapter → Playwright parallel contexts  ✅</span></span></code></pre> </div> </div>   <p>
+如果還是拿不定主意，有一個簡單的經驗法則：
+<strong>先嘗試用 <code>opencli adapters list</code> 查找對應的 Adapter</strong>；
+    找到了就用 OpenCLI，找不到再考慮 Playwright 或撰寫 Custom Adapter。
+</p>  <h2>18.9 本章小結</h2> <p>
+OpenCLI 與 Playwright 解決的是同一個底層問題（瀏覽器自動化），但在不同的抽象層次上工作：
+</p> <ul> <li>OpenCLI 封裝了平台知識，適合「我要資料」的語義需求，是 AI Agent 和快速自動化的首選。</li> <li>Playwright 提供底層控制，適合「我要精確操作」的測試與自訂場景。</li> <li>兩者可以在 Custom Adapter 的架構下結合使用——Playwright 作為引擎，OpenCLI 作為語義介面。</li> <li>遷移策略：有 Adapter 的平台優先換用 OpenCLI，E2E 測試套件保留 Playwright。</li> </ul> <div class="call tip"> <span class="ci">💡</span> <div> <strong>下一章預告</strong> <p>
+第 19 章「OpenCLI vs Playwright CLI」深入比較微軟的 @playwright/cli 工具，
+        看看同樣是給 AI Agent 設計的 CLI 工具，兩者的定位有何不同。
+</p> </div> </div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>自製 Custom Adapter</span> </a> <a href="/opencli/ch19-vs-playwright-cli" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

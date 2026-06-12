@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>快速上手：第一個自動化 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="跟著本章的五個實戰練習，從最簡單的 Twitter 趨勢查詢，到 Google 搜尋、YouTube 影片抓取、網頁截圖，快速建立 OpenCLI 的操作直覺。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 3 章 · Part 1：入門</span> <h1>快速上手：第一個自動化</h1> <p class="cdesc">五個實戰練習，30 分鐘建立 OpenCLI 操作直覺。</p> <div class="call tip"> <span class="ci">💡</span> <div> <strong>前置確認</strong> <p>開始前請確認：<code>opencli doctor</code> 所有項目皆為 ✅，且 Chrome 瀏覽器已開啟。</p> </div> </div> <h2>練習一：你的第一個指令</h2> <p>讓我們從最簡單的開始——查看 Twitter/X 的熱門趨勢：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>第一個 OpenCLI 指令</span> <button class="cb-copy" data-code="opencli twitter trends" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trends</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <p>你應該會看到類似這樣的輸出：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>輸出範例</span> <button class="cb-copy" data-code="[
+  { &quot;rank&quot;: 1, &quot;name&quot;: &quot;#AI&quot;, &quot;tweetCount&quot;: &quot;125K&quot; },
+  { &quot;rank&quot;: 2, &quot;name&quot;: &quot;Claude&quot;, &quot;tweetCount&quot;: &quot;89K&quot; },
+  { &quot;rank&quot;: 3, &quot;name&quot;: &quot;#TypeScript&quot;, &quot;tweetCount&quot;: &quot;67K&quot; }
+]" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#ABB2BF">[</span></span>
+<span class="line"><span style="color:#ABB2BF">  { </span><span style="color:#E06C75">"rank"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">1</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"#AI"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"tweetCount"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"125K"</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">  { </span><span style="color:#E06C75">"rank"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Claude"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"tweetCount"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"89K"</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">  { </span><span style="color:#E06C75">"rank"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">3</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"#TypeScript"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"tweetCount"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"67K"</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">]</span></span></code></pre> </div> </div>   <p>
+這就是 OpenCLI 的魔法：一行指令，結構化的 JSON 輸出，不需要任何程式碼，也不需要帳號密碼。
+    OpenCLI 直接使用你瀏覽器已登入的 Twitter 帳號獲取資料。
+</p> <h2>練習二：認識 Session 概念</h2> <p>
+Session 是 OpenCLI 管理瀏覽器分頁的方式。每個 Session 對應到瀏覽器中的一個分頁，
+    你可以同時管理多個 Session，讓不同的自動化任務並行運作。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Session 基本操作</span> <button class="cb-copy" data-code="# 開啟一個命名 Session（建立新分頁）
+opencli browser work open https://www.google.com
+
+# 查看目前所有 Session
+opencli browser list
+
+# 在指定 Session 中操作
+opencli browser work navigate &quot;https://news.ycombinator.com&quot;
+
+# 關閉 Session
+opencli browser work close" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 開啟一個命名 Session（建立新分頁）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://www.google.com</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看目前所有 Session</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在指定 Session 中操作</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> "https://news.ycombinator.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 關閉 Session</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> close</span></span></code></pre> </div> </div>   <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>Session 命名慣例</strong> <p>Session 名稱可以是任意字串。建議用能反映任務的名稱，如 <code>twitter</code>、<code>github</code>、<code>research</code>，方便在多工時識別。</p> </div> </div> <h2>練習三：Google 搜尋自動化</h2> <p>讓我們做一個稍微複雜一點的任務——自動化 Google 搜尋並擷取結果：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Google 搜尋自動化</span> <button class="cb-copy" data-code="# 開啟 Google
+opencli browser search open https://www.google.com
+
+# 取得頁面狀態（顯示可互動元素）
+opencli browser search state
+
+# 在搜尋框輸入關鍵字（[1] 是第一個輸入欄位）
+opencli browser search type &quot;[1]&quot; &quot;OpenCLI browser automation&quot;
+
+# 按下 Enter 搜尋
+opencli browser search keys Enter
+
+# 等待結果載入
+opencli browser search wait --text &quot;搜尋結果&quot;
+
+# 擷取搜尋結果標題
+opencli browser search extract --selector &quot;h3&quot; --limit 10" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 開啟 Google</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://www.google.com</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得頁面狀態（顯示可互動元素）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在搜尋框輸入關鍵字（[1] 是第一個輸入欄位）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "OpenCLI browser automation"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 按下 Enter 搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> Enter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待結果載入</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> wait</span><span style="color:#D19A66"> --text</span><span style="color:#98C379"> "搜尋結果"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 擷取搜尋結果標題</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> search</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "h3"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span></code></pre> </div> </div>   <h3>理解 state 指令與 N-ref 系統</h3> <p> <code>state</code> 指令是 OpenCLI 的核心功能之一。它會掃描當前頁面，
+    為所有可互動元素（按鈕、輸入框、連結等）標上 <code>[N]</code> 編號，稱為 N-ref。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>state 指令輸出示意</span> <button class="cb-copy" data-code="[1] <input> id=APjFqb  (搜尋框)
+[2] <button>           Google 搜尋
+[3] <a> href=/...      OpenCLI GitHub
+[4] <a> href=/...      OpenCLI 官方文件" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#ABB2BF">[1] &#x3C;input> </span><span style="color:#E06C75">id</span><span style="color:#56B6C2">=</span><span style="color:#98C379">APjFqb</span><span style="color:#61AFEF">  (搜尋框</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">[2] &#x3C;button>           Google 搜尋</span></span>
+<span class="line"><span style="color:#ABB2BF">[3] &#x3C;a> </span><span style="color:#E06C75">href</span><span style="color:#56B6C2">=</span><span style="color:#98C379">/...</span><span style="color:#61AFEF">      OpenCLI</span><span style="color:#98C379"> GitHub</span></span>
+<span class="line"><span style="color:#ABB2BF">[4] &#x3C;a> </span><span style="color:#E06C75">href</span><span style="color:#56B6C2">=</span><span style="color:#98C379">/...</span><span style="color:#61AFEF">      OpenCLI</span><span style="color:#98C379"> 官方文件</span></span></code></pre> </div> </div>   <p>取得 N-ref 之後，你可以用 <code>[N]</code> 語法直接操作元素，不需要記住複雜的 CSS selector。</p> <h2>練習四：YouTube 影片探索</h2> <p>OpenCLI 的 YouTube 適配器讓你能直接查詢影片：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>YouTube 影片搜尋</span> <button class="cb-copy" data-code="# 搜尋影片
+opencli youtube search &quot;AI coding tutorial&quot; --limit 5
+
+# 取得頻道最新影片
+opencli youtube channel videos &quot;@Fireship&quot; --limit 10
+
+# 取得影片詳細資訊
+opencli youtube video info &quot;dQw4w9WgXcQ&quot;
+
+# 取得影片評論
+opencli youtube video comments &quot;dQw4w9WgXcQ&quot; --limit 20" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI coding tutorial"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得頻道最新影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> channel</span><span style="color:#98C379"> videos</span><span style="color:#98C379"> "@Fireship"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得影片詳細資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> video</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "dQw4w9WgXcQ"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得影片評論</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> video</span><span style="color:#98C379"> comments</span><span style="color:#98C379"> "dQw4w9WgXcQ"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span></code></pre> </div> </div>   <p>Bilibili（B 站）也有專屬適配器：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Bilibili 影片操作</span> <button class="cb-copy" data-code="# 搜尋 B 站影片
+opencli bilibili search &quot;程式教學&quot; --limit 10
+
+# 取得排行榜
+opencli bilibili ranking --category technology" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋 B 站影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "程式教學"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得排行榜</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> ranking</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> technology</span></span></code></pre> </div> </div>   <h2>練習五：截圖與資料擷取</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>截圖操作</span> <button class="cb-copy" data-code="# 截取當前頁面截圖
+opencli browser work screenshot --output screenshot.png
+
+# 截取完整頁面（包含捲動區域）
+opencli browser work screenshot --full-page --output full-page.png
+
+# 截取特定元素
+opencli browser work screenshot --selector &quot;.product-card&quot; --output card.png" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 截取當前頁面截圖</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> screenshot.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 截取完整頁面（包含捲動區域）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --full-page</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> full-page.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 截取特定元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".product-card"</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> card.png</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>資料擷取</span> <button class="cb-copy" data-code="# 擷取頁面所有連結
+opencli browser work extract --selector &quot;a&quot; --fields &quot;text,href&quot;
+
+# 擷取表格資料
+opencli browser work extract --selector &quot;table tr&quot; --format json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 擷取頁面所有連結</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "a"</span><span style="color:#D19A66"> --fields</span><span style="color:#98C379"> "text,href"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 擷取表格資料</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "table tr"</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span></code></pre> </div> </div>   <h2>組合使用：每日資訊彙整</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>每日資訊彙整腳本（daily-brief.sh）</span> <button class="cb-copy" data-code="#!/bin/bash
+echo &quot;=== 今日資訊彙整 ===&quot;
+
+echo &quot;--- Twitter 熱門話題 ---&quot;
+opencli twitter trends | head -5
+
+echo &quot;--- GitHub 今日熱門 ---&quot;
+opencli github trending --language javascript --limit 5
+
+echo &quot;--- Hacker News 頭條 ---&quot;
+opencli browser hn open https://news.ycombinator.com
+opencli browser hn extract --selector &quot;.storylink&quot; --limit 10
+
+# 截圖備存
+opencli browser hn screenshot --output &quot;daily-hn-$(date +%Y%m%d).png&quot;
+echo &quot;=== 彙整完成 ===&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 今日資訊彙整 ==="</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "--- Twitter 熱門話題 ---"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trends</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">head</span><span style="color:#D19A66"> -5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "--- GitHub 今日熱門 ---"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> javascript</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "--- Hacker News 頭條 ---"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://news.ycombinator.com</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> ".storylink"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 截圖備存</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> hn</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> "daily-hn-$(</span><span style="color:#61AFEF">date</span><span style="color:#98C379"> +%Y%m%d).png"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 彙整完成 ==="</span></span></code></pre> </div> </div>   <h2>常見新手問題</h2> <h3>Q：執行指令後沒有反應？</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="opencli daemon status
+opencli doctor" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> status</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> doctor</span></span></code></pre> </div> </div>   <h3>Q：找不到 N-ref 對應的元素？</h3> <p>N-ref 是執行 <code>state</code> 時產生的快照，頁面更新後需要重新執行 <code>state</code> 取得新的 N-ref。</p> <h3>Q：type 指令輸入後沒有效果？</h3> <p>試試改用 <code>fill</code> 指令，它會先清除輸入框再填入內容：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# fill 會清除現有內容後輸入
+opencli browser work fill &quot;[1]&quot; &quot;新的內容&quot;
+
+# type 會在現有內容後追加
+opencli browser work type &quot;[1]&quot; &quot;追加的內容&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># fill 會清除現有內容後輸入</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> fill</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "新的內容"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># type 會在現有內容後追加</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "追加的內容"</span></span></code></pre> </div> </div>   <h2>挑戰練習：Reddit 資訊擷取</h2> <p>試著完成以下任務：</p> <ol> <li>使用 OpenCLI 開啟 Reddit 的 <code>r/programming</code> 頁面</li> <li>擷取前 10 篇文章的標題和連結</li> <li>對第一篇文章截圖</li> <li>將結果輸出成 JSON 格式</li> </ol> <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; padding: 1rem;"> <summary style="cursor: pointer; font-weight: bold;">查看解答</summary> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Reddit 練習解答</span> <button class="cb-copy" data-code="opencli browser reddit open &quot;https://www.reddit.com/r/programming&quot;
+opencli browser reddit wait --selector &quot;h3&quot;
+opencli browser reddit extract --selector &quot;h3&quot; --fields &quot;text&quot; --limit 10
+opencli browser reddit screenshot --selector &quot;[1]&quot; --output first-post.png
+opencli reddit feed r/programming --limit 10 --format json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> open</span><span style="color:#98C379"> "https://www.reddit.com/r/programming"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> wait</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "h3"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "h3"</span><span style="color:#D19A66"> --fields</span><span style="color:#98C379"> "text"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> screenshot</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "[1]"</span><span style="color:#D19A66"> --output</span><span style="color:#98C379"> first-post.png</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> feed</span><span style="color:#98C379"> r/programming</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span></code></pre> </div> </div>   </details> <div class="call tip"> <span class="ci">🎉</span> <div> <strong>恭喜完成快速上手！</strong> <p>你已經掌握了 OpenCLI 的核心操作模式：Session 管理、state/N-ref 定位、元素操作、資料擷取和截圖。接下來的章節將深入介紹每個功能的細節，帶你解鎖更強大的自動化能力。</p> </div> </div>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>安裝與環境設定</span> </a> <a href="/opencli/ch04-browser-connect" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

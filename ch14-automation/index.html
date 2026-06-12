@@ -1,0 +1,1059 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>自動化任務實戰 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="4 個真實場景展示 OpenCLI 的自動化威力：每日新聞彙整、GitHub Release 監控、競品分析儀表板，以及作為 Claude API Tool 的完整整合範例。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 14 章 · Part 4：AI 整合</span> <h1>自動化任務實戰</h1> <p class="cdesc">
+學完指令語法、連線設定、Skills 管理之後，是時候把所有技能整合起來，解決真實世界的問題了。本章透過 4 個完整可執行的場景，展示 OpenCLI 在自動化工作流中的威力——從最簡單的 cron 排程腳本，到作為 AI Agent 的 Tool 使用。
+</p> <div class="call info"> <p><strong>本章前提</strong>：以下範例假設 OpenCLI 已安裝並設定完成（<code>opencli doctor</code> 通過），且已依需求安裝對應平台的 Adapter（GitHub、HackerNews、Reddit 等）。各場景均附有完整程式碼，可直接複製使用。</p> </div>  <h2>場景一：每日技術新聞彙整機器人</h2> <p>
+每天早上自動從 GitHub Trending、HackerNews、Reddit r/programming 及 ProductHunt 抓取最新資訊，合併輸出為一份 Markdown 報告，方便訂閱或推送到 Slack。這是最常見的 OpenCLI 入門自動化需求，整個腳本不超過 50 行。
+</p> <h3>核心腳本</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>daily-digest.sh</span> <button class="cb-copy" data-code="#!/bin/bash
+# daily-digest.sh — 每日技術新聞彙整機器人
+# 用法：bash daily-digest.sh
+# 依賴：opencli、jq
+
+set -euo pipefail
+
+DATE=$(date +%Y-%m-%d)
+OUTPUT=&quot;digest-${DATE}.md&quot;
+
+echo &quot;▶ 開始生成 ${DATE} 的技術摘要...&quot;
+echo &quot;# 每日技術摘要 ${DATE}&quot; > &quot;$OUTPUT&quot;
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+
+# ── GitHub 熱門（TypeScript）──────────────────────────
+echo &quot;## GitHub 熱門（TypeScript）&quot; >> &quot;$OUTPUT&quot;
+opencli github trending --language typescript --limit 5 --format json 2>/dev/null | \
+  jq -r '.[] | &quot;- [(.name)]((.url)) ⭐(.stars) — (.description // &quot;（無簡介）&quot;)&quot;' >> &quot;$OUTPUT&quot; \
+  || echo &quot;- （GitHub Trending 擷取失敗，請稍後重試）&quot; >> &quot;$OUTPUT&quot;
+
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+
+# ── HackerNews 頭條 ───────────────────────────────────
+echo &quot;## HackerNews 頭條&quot; >> &quot;$OUTPUT&quot;
+opencli hackernews top --limit 10 --format json 2>/dev/null | \
+  jq -r '.[] | &quot;- [(.title)]((.url // &quot;#&quot;)) ((.points) pts, (.comments) comments)&quot;' >> &quot;$OUTPUT&quot; \
+  || echo &quot;- （HackerNews 擷取失敗）&quot; >> &quot;$OUTPUT&quot;
+
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+
+# ── Reddit r/programming 熱門 ─────────────────────────
+echo &quot;## Reddit r/programming&quot; >> &quot;$OUTPUT&quot;
+opencli reddit feed r/programming --sort hot --limit 5 --format json 2>/dev/null | \
+  jq -r '.[] | &quot;- [(.title)]((.url)) — (.score) upvotes&quot;' >> &quot;$OUTPUT&quot; \
+  || echo &quot;- （Reddit 擷取失敗）&quot; >> &quot;$OUTPUT&quot;
+
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+
+# ── ProductHunt 今日精選 ──────────────────────────────
+echo &quot;## ProductHunt 今日精選&quot; >> &quot;$OUTPUT&quot;
+opencli producthunt posts --limit 5 --format json 2>/dev/null | \
+  jq -r '.[] | &quot;- [(.name)]((.url)) — (.tagline)&quot;' >> &quot;$OUTPUT&quot; \
+  || echo &quot;- （ProductHunt 擷取失敗）&quot; >> &quot;$OUTPUT&quot;
+
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+echo &quot;---&quot; >> &quot;$OUTPUT&quot;
+echo &quot;_Generated at $(date '+%Y-%m-%d %H:%M:%S %Z') by daily-digest.sh_&quot; >> &quot;$OUTPUT&quot;
+
+echo &quot;✓ 報告已生成：$OUTPUT&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># daily-digest.sh — 每日技術新聞彙整機器人</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用法：bash daily-digest.sh</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 依賴：opencli、jq</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">set</span><span style="color:#D19A66"> -euo</span><span style="color:#98C379"> pipefail</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">DATE</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">date</span><span style="color:#98C379"> +%Y-%m-%d</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">OUTPUT</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"digest-${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">}.md"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "▶ 開始生成 ${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">} 的技術摘要..."</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "# 每日技術摘要 ${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">}"</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── GitHub 熱門（TypeScript）──────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "## GitHub 熱門（TypeScript）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> | </span><span style="color:#56B6C2">\</span></span>
+<span class="line"><span style="color:#61AFEF">  jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[] | "- [(.name)]((.url)) ⭐(.stars) — (.description // "（無簡介）")"'</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "- （GitHub Trending 擷取失敗，請稍後重試）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── HackerNews 頭條 ───────────────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "## HackerNews 頭條"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> | </span><span style="color:#56B6C2">\</span></span>
+<span class="line"><span style="color:#61AFEF">  jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[] | "- [(.title)]((.url // "#")) ((.points) pts, (.comments) comments)"'</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "- （HackerNews 擷取失敗）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── Reddit r/programming 熱門 ─────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "## Reddit r/programming"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> feed</span><span style="color:#98C379"> r/programming</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> hot</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> | </span><span style="color:#56B6C2">\</span></span>
+<span class="line"><span style="color:#61AFEF">  jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[] | "- [(.title)]((.url)) — (.score) upvotes"'</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "- （Reddit 擷取失敗）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── ProductHunt 今日精選 ──────────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "## ProductHunt 今日精選"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> producthunt</span><span style="color:#98C379"> posts</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> | </span><span style="color:#56B6C2">\</span></span>
+<span class="line"><span style="color:#61AFEF">  jq</span><span style="color:#D19A66"> -r</span><span style="color:#98C379"> '.[] | "- [(.name)]((.url)) — (.tagline)"'</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "- （ProductHunt 擷取失敗）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "---"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "_Generated at $(</span><span style="color:#61AFEF">date</span><span style="color:#98C379"> '+%Y-%m-%d %H:%M:%S %Z') by daily-digest.sh_"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "✓ 報告已生成：</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <div class="call tip"> <p><strong>腳本設計重點</strong></p> <ul> <li>每個平台用 <code>|| echo "..."</code> 做備用，單一平台失敗不會中斷整個腳本</li> <li><code>set -euo pipefail</code> 確保非預期錯誤時立即退出，避免產生殘缺報告</li> <li>輸出檔名帶上日期（<code>digest-2026-06-11.md</code>），自動歸檔不衝突</li> <li>結尾加時間戳記，方便後續排查是否按時執行</li> </ul> </div> <h3>設定 cron 排程</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>crontab / systemd timer</span> <button class="cb-copy" data-code="# 加入 crontab（每週一到週五早上 8:00 執行）
+# 執行：crontab -e
+
+0 8 * * 1-5 /path/to/daily-digest.sh >> /var/log/daily-digest.log 2>&amp;1
+
+# ── 或用 systemd timer（Linux 推薦方式）──────────────────
+# /etc/systemd/system/daily-digest.timer
+[Unit]
+Description=Daily Tech Digest
+
+[Timer]
+OnCalendar=Mon-Fri 08:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 加入 crontab（每週一到週五早上 8:00 執行）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 執行：crontab -e</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">0</span><span style="color:#D19A66"> 8</span><span style="color:#E5C07B"> *</span><span style="color:#E5C07B"> *</span><span style="color:#98C379"> 1-5</span><span style="color:#98C379"> /path/to/daily-digest.sh</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">/var/log/daily-digest.log</span><span style="color:#ABB2BF"> 2>&#x26;1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 或用 systemd timer（Linux 推薦方式）──────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># /etc/systemd/system/daily-digest.timer</span></span>
+<span class="line"><span style="color:#ABB2BF">[Unit]</span></span>
+<span class="line"><span style="color:#E06C75">Description</span><span style="color:#56B6C2">=</span><span style="color:#98C379">Daily</span><span style="color:#61AFEF"> Tech</span><span style="color:#98C379"> Digest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">[Timer]</span></span>
+<span class="line"><span style="color:#E06C75">OnCalendar</span><span style="color:#56B6C2">=</span><span style="color:#98C379">Mon-Fri</span><span style="color:#61AFEF"> 08:00:00</span></span>
+<span class="line"><span style="color:#E06C75">Persistent</span><span style="color:#56B6C2">=</span><span style="color:#98C379">true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">[Install]</span></span>
+<span class="line"><span style="color:#E06C75">WantedBy</span><span style="color:#56B6C2">=</span><span style="color:#98C379">timers.target</span></span></code></pre> </div> </div>   <p>
+如果你在 Linux 伺服器上部署，推薦改用 <strong>systemd timer</strong> 而非 crontab——它提供更好的日誌整合（<code>journalctl -u daily-digest</code>）和失敗重試機制。macOS 則可使用 launchd plist 達到相同效果。
+</p>  <h2>場景二：GitHub Release 版本監控通知</h2> <p>
+監控你關心的開源專案，一旦有新版本發布就立即通知 Slack。相比定期手動查看，這個腳本讓你第一時間掌握 TypeScript 編譯器更新、框架 breaking change 等重要訊息。
+</p> <h3>設定檔：watched-repos.json</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>watched-repos.json</span> <button class="cb-copy" data-code="{
+  &quot;repos&quot;: [
+    &quot;microsoft/TypeScript&quot;,
+    &quot;vitejs/vite&quot;,
+    &quot;anthropics/anthropic-sdk-python&quot;,
+    &quot;astro-build/astro&quot;
+  ],
+  &quot;notifyWebhook&quot;: &quot;https://hooks.slack.com/services/YOUR/WEBHOOK/URL&quot;
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "repos"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">    "microsoft/TypeScript"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "vitejs/vite"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "anthropics/anthropic-sdk-python"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "astro-build/astro"</span></span>
+<span class="line"><span style="color:#ABB2BF">  ],</span></span>
+<span class="line"><span style="color:#E06C75">  "notifyWebhook"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"https://hooks.slack.com/services/YOUR/WEBHOOK/URL"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <h3>監控腳本（TypeScript）</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>release-monitor.ts</span> <button class="cb-copy" data-code="#!/usr/bin/env ts-node
+// release-monitor.ts — GitHub Release 版本監控
+// 依賴：opencli、@types/node
+// 用法：ts-node release-monitor.ts
+
+import { execSync } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as https from 'https';
+
+const CONFIG_FILE = './watched-repos.json';
+const STATE_FILE  = './release-state.json';
+
+interface Config {
+  repos: string[];
+  notifyWebhook?: string;
+}
+
+interface RepoState {
+  [repo: string]: string;   // repo -> 最後記錄的 tag
+}
+
+// ── 讀取設定 ─────────────────────────────────────────
+const config: Config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+const state: RepoState = fs.existsSync(STATE_FILE)
+  ? JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'))
+  : {};
+
+// ── 用 opencli 查詢最新 release ───────────────────────
+function getLatestRelease(repo: string): { tag: string; url: string; body: string } | null {
+  try {
+    const output = execSync(
+      `opencli github repo releases ${repo} --limit 1 --format json`,
+      { timeout: 15000 }
+    ).toString().trim();
+    const releases = JSON.parse(output);
+    if (!releases.length) return null;
+    return {
+      tag:  releases[0].tag_name,
+      url:  releases[0].html_url,
+      body: (releases[0].body ?? '').slice(0, 200),
+    };
+  } catch (err) {
+    console.error(`[WARN] ${repo} 查詢失敗：${(err as Error).message}`);
+    return null;
+  }
+}
+
+// ── 發送 Slack 通知 ───────────────────────────────────
+function notifySlack(webhook: string, message: string): void {
+  const body = JSON.stringify({ text: message });
+  const url  = new URL(webhook);
+  const req  = https.request({
+    hostname: url.hostname,
+    path:     url.pathname,
+    method:   'POST',
+    headers:  { 'Content-Type': 'application/json', 'Content-Length': body.length },
+  });
+  req.write(body);
+  req.end();
+}
+
+// ── 主流程 ────────────────────────────────────────────
+const updates: string[] = [];
+
+for (const repo of config.repos) {
+  const release = getLatestRelease(repo);
+  if (!release) continue;
+
+  const prev = state[repo];
+
+  if (prev !== release.tag) {
+    const msg = `🚀 *${repo}* 有新版本：${release.tag}\n${release.url}\n> ${release.body}`;
+    console.log(`[NEW] ${repo}: ${prev ?? '(首次記錄)'} → ${release.tag}`);
+    updates.push(msg);
+    state[repo] = release.tag;   // 更新記錄
+  } else {
+    console.log(`[OK]  ${repo}: 仍在 ${release.tag}，無更新`);
+  }
+}
+
+// ── 寫回狀態 ─────────────────────────────────────────
+fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+
+// ── 發送通知 ─────────────────────────────────────────
+if (updates.length &amp;&amp; config.notifyWebhook) {
+  const summary = `📦 共發現 ${updates.length} 個新版本\n\n` + updates.join('\n\n');
+  notifySlack(config.notifyWebhook, summary);
+  console.log(`✓ Slack 通知已送出（${updates.length} 筆更新）`);
+} else if (!updates.length) {
+  console.log('✓ 所有 repo 均無新版本');
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env ts-node</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// release-monitor.ts — GitHub Release 版本監控</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 依賴：opencli、@types/node</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// 用法：ts-node release-monitor.ts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">execSync</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'child_process'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> fs</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> 'fs'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> path</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> 'path'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> https</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> 'https'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> CONFIG_FILE</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> './watched-repos.json'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> STATE_FILE</span><span style="color:#56B6C2">  =</span><span style="color:#98C379"> './release-state.json'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">interface</span><span style="color:#E5C07B"> Config</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E06C75">  repos</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[];</span></span>
+<span class="line"><span style="color:#E06C75">  notifyWebhook</span><span style="color:#C678DD">?</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">interface</span><span style="color:#E5C07B"> RepoState</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#ABB2BF">  [</span><span style="color:#E06C75;font-style:italic">repo</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">]: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;   </span><span style="color:#7F848E;font-style:italic">// repo -> 最後記錄的 tag</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 讀取設定 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> config</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Config</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fs</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">readFileSync</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">CONFIG_FILE</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'utf-8'</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> state</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">RepoState</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> fs</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">existsSync</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">STATE_FILE</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#C678DD">  ?</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fs</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">readFileSync</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">STATE_FILE</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'utf-8'</span><span style="color:#ABB2BF">))</span></span>
+<span class="line"><span style="color:#C678DD">  :</span><span style="color:#ABB2BF"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 用 opencli 查詢最新 release ───────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> getLatestRelease</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">repo</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): { </span><span style="color:#E06C75">tag</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">url</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">body</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> } | </span><span style="color:#E5C07B">null</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> output</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> execSync</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#98C379">      `opencli github repo releases </span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379"> --limit 1 --format json`</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">      { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">15000</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">    ).</span><span style="color:#61AFEF">toString</span><span style="color:#ABB2BF">().</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> releases</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">output</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E5C07B">releases</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">return</span><span style="color:#D19A66"> null</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E06C75">      tag</span><span style="color:#ABB2BF">:  </span><span style="color:#E06C75">releases</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">].</span><span style="color:#E06C75">tag_name</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      url</span><span style="color:#ABB2BF">:  </span><span style="color:#E06C75">releases</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">].</span><span style="color:#E06C75">html_url</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      body</span><span style="color:#ABB2BF">: (</span><span style="color:#E06C75">releases</span><span style="color:#ABB2BF">[</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">].</span><span style="color:#E06C75">body</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">slice</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66">0</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">200</span><span style="color:#ABB2BF">),</span></span>
+<span class="line"><span style="color:#ABB2BF">    };</span></span>
+<span class="line"><span style="color:#ABB2BF">  } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">err</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">error</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[WARN] </span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379"> 查詢失敗：</span><span style="color:#C678DD">${</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">err</span><span style="color:#C678DD"> as</span><span style="color:#E5C07B"> Error</span><span style="color:#ABB2BF">).</span><span style="color:#E06C75">message</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#D19A66"> null</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 發送 Slack 通知 ───────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> notifySlack</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">webhook</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">message</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">void</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> body</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">text</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">message</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> url</span><span style="color:#56B6C2">  =</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> URL</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">webhook</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> req</span><span style="color:#56B6C2">  =</span><span style="color:#E5C07B"> https</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">request</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">    hostname</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">url</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">hostname</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    path</span><span style="color:#ABB2BF">:     </span><span style="color:#E5C07B">url</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">pathname</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    method</span><span style="color:#ABB2BF">:   </span><span style="color:#98C379">'POST'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    headers</span><span style="color:#ABB2BF">:  { </span><span style="color:#98C379">'Content-Type'</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'application/json'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'Content-Length'</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">body</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#E5C07B">  req</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">write</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">body</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">  req</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">end</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 主流程 ────────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> updates</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF"> [];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">for</span><span style="color:#ABB2BF"> (</span><span style="color:#C678DD">const</span><span style="color:#E5C07B"> repo</span><span style="color:#C678DD"> of</span><span style="color:#E5C07B"> config</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">repos</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> release</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> getLatestRelease</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">repo</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E06C75">release</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">continue</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> prev</span><span style="color:#56B6C2"> =</span><span style="color:#E06C75"> state</span><span style="color:#ABB2BF">[</span><span style="color:#E06C75">repo</span><span style="color:#ABB2BF">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">prev</span><span style="color:#56B6C2"> !==</span><span style="color:#E5C07B"> release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">tag</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> msg</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> `🚀 *</span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379">* 有新版本：</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">tag</span><span style="color:#C678DD">}</span><span style="color:#56B6C2">\n</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">url</span><span style="color:#C678DD">}</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">> </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">body</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[NEW] </span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379">: </span><span style="color:#C678DD">${</span><span style="color:#E06C75">prev</span><span style="color:#56B6C2"> ??</span><span style="color:#98C379"> '(首次記錄)'</span><span style="color:#C678DD">}</span><span style="color:#98C379"> → </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">tag</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">    updates</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">push</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">msg</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E06C75">    state</span><span style="color:#ABB2BF">[</span><span style="color:#E06C75">repo</span><span style="color:#ABB2BF">] </span><span style="color:#56B6C2">=</span><span style="color:#E5C07B"> release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">tag</span><span style="color:#ABB2BF">;   </span><span style="color:#7F848E;font-style:italic">// 更新記錄</span></span>
+<span class="line"><span style="color:#ABB2BF">  } </span><span style="color:#C678DD">else</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[OK]  </span><span style="color:#C678DD">${</span><span style="color:#E06C75">repo</span><span style="color:#C678DD">}</span><span style="color:#98C379">: 仍在 </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">release</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">tag</span><span style="color:#C678DD">}</span><span style="color:#98C379">，無更新`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 寫回狀態 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#E5C07B">fs</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">writeFileSync</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">STATE_FILE</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">state</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">null</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 發送通知 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">updates</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#56B6C2"> &#x26;&#x26;</span><span style="color:#E5C07B"> config</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">notifyWebhook</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> summary</span><span style="color:#56B6C2"> =</span><span style="color:#98C379"> `📦 共發現 </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">updates</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#C678DD">}</span><span style="color:#98C379"> 個新版本</span><span style="color:#56B6C2">\n\n</span><span style="color:#98C379">`</span><span style="color:#56B6C2"> +</span><span style="color:#E5C07B"> updates</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">join</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'</span><span style="color:#56B6C2">\n\n</span><span style="color:#98C379">'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">  notifySlack</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">config</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">notifyWebhook</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">summary</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">  console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`✓ Slack 通知已送出（</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">updates</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#C678DD">}</span><span style="color:#98C379"> 筆更新）`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">} </span><span style="color:#C678DD">else</span><span style="color:#C678DD"> if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E5C07B">updates</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#E5C07B">  console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'✓ 所有 repo 均無新版本'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="call warn"> <p><strong>狀態檔管理注意事項</strong>：<code>release-state.json</code> 記錄了每個 repo 最後一次看到的版本號。如果你在多台機器執行，需要把狀態檔放在共用儲存（如 S3、Redis）上，避免重複通知。本範例為單機版，適合個人或小團隊使用。</p> </div> <h3>排程執行</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>crontab — 每 6 小時檢查一次</span> <button class="cb-copy" data-code="# 每 6 小時執行一次版本監控
+0 */6 * * * cd /path/to/monitor &amp;&amp; ts-node release-monitor.ts >> release.log 2>&amp;1" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 每 6 小時執行一次版本監控</span></span>
+<span class="line"><span style="color:#61AFEF">0</span><span style="color:#E5C07B"> *</span><span style="color:#98C379">/6</span><span style="color:#E5C07B"> *</span><span style="color:#E5C07B"> *</span><span style="color:#E5C07B"> *</span><span style="color:#98C379"> cd</span><span style="color:#98C379"> /path/to/monitor</span><span style="color:#ABB2BF"> &#x26;&#x26; </span><span style="color:#61AFEF">ts-node</span><span style="color:#98C379"> release-monitor.ts</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">release.log</span><span style="color:#ABB2BF"> 2>&#x26;1</span></span></code></pre> </div> </div>   <p>
+首次執行時，腳本會建立 <code>release-state.json</code> 並記錄當前版本，<strong>不會</strong>發送通知（避免把所有歷史版本一次噴出）。從第二次執行起，才會比對差異並通知。
+</p>  <h2>場景三：競品監控儀表板</h2> <p>
+定期抓取競品在 Twitter 的討論聲量、GitHub Star 數、HackerNews 出現次數，計算加權聲量分數，輸出 Markdown 對比報告。本場景的重點是<strong>並行抓取</strong>——用 Bash 的 background job（<code>&amp;</code>）讓多個平台同時跑，顯著縮短執行時間。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>competitor-monitor.sh</span> <button class="cb-copy" data-code="#!/bin/bash
+# competitor-monitor.sh — 競品聲量監控
+# 用法：bash competitor-monitor.sh
+# 依賴：opencli、jq、bc
+
+set -euo pipefail
+
+COMPETITORS=(&quot;ProductA&quot; &quot;ProductB&quot; &quot;ProductC&quot;)
+DATE=$(date +%Y-%m-%d)
+OUTPUT=&quot;competitor-report-${DATE}.md&quot;
+JSON_DIR=&quot;./tmp-competitor-${DATE}&quot;
+
+mkdir -p &quot;$JSON_DIR&quot;
+
+echo &quot;# 競品監控報告 ${DATE}&quot; > &quot;$OUTPUT&quot;
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+
+# ── 並行抓取各平台資料 ──────────────────────────────────
+echo &quot;▶ 並行抓取資料中...&quot;
+
+for COMP in &quot;${COMPETITORS[@]}&quot;; do
+  (
+    # Twitter 討論聲量
+    opencli twitter search &quot;${COMP}&quot; --since 7d --limit 100 --format json \
+      > &quot;${JSON_DIR}/twitter_${COMP}.json&quot; 2>/dev/null \
+      || echo &quot;[]&quot; > &quot;${JSON_DIR}/twitter_${COMP}.json&quot;
+
+    # GitHub star 數
+    opencli github search repos &quot;${COMP}&quot; --sort stars --limit 3 --format json \
+      > &quot;${JSON_DIR}/github_${COMP}.json&quot; 2>/dev/null \
+      || echo &quot;[]&quot; > &quot;${JSON_DIR}/github_${COMP}.json&quot;
+
+    # HackerNews 提及次數
+    opencli hackernews search &quot;${COMP}&quot; --since 7d --format json \
+      > &quot;${JSON_DIR}/hn_${COMP}.json&quot; 2>/dev/null \
+      || echo &quot;[]&quot; > &quot;${JSON_DIR}/hn_${COMP}.json&quot;
+
+    echo &quot;  ✓ ${COMP} 資料已取得&quot;
+  ) &amp;
+done
+
+wait   # 等待所有背景 job 完成
+echo &quot;▶ 資料擷取完成，開始計算聲量分數...&quot;
+
+# ── 計算聲量分數並輸出對比表格 ─────────────────────────
+echo &quot;## 聲量對比（過去 7 天）&quot; >> &quot;$OUTPUT&quot;
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+echo &quot;| 競品 | Twitter 討論 | GitHub Stars（Top）| HackerNews 提及 | 總分 |&quot; >> &quot;$OUTPUT&quot;
+echo &quot;|------|-------------|-------------------|----------------|------|&quot; >> &quot;$OUTPUT&quot;
+
+for COMP in &quot;${COMPETITORS[@]}&quot;; do
+  TWITTER_COUNT=$(jq 'length' &quot;${JSON_DIR}/twitter_${COMP}.json&quot; 2>/dev/null || echo 0)
+  GH_STARS=$(jq '[.[].stargazers_count] | max // 0' &quot;${JSON_DIR}/github_${COMP}.json&quot; 2>/dev/null || echo 0)
+  HN_COUNT=$(jq 'length' &quot;${JSON_DIR}/hn_${COMP}.json&quot; 2>/dev/null || echo 0)
+
+  # 簡易聲量評分（可依需求調整權重）
+  SCORE=$(echo &quot;scale=0; ($TWITTER_COUNT * 1) + ($GH_STARS / 100) + ($HN_COUNT * 3)&quot; | bc)
+
+  echo &quot;| $COMP | $TWITTER_COUNT 則 | ⭐ $GH_STARS | $HN_COUNT 篇 | **$SCORE** |&quot; >> &quot;$OUTPUT&quot;
+done
+
+echo &quot;&quot; >> &quot;$OUTPUT&quot;
+echo &quot;---&quot; >> &quot;$OUTPUT&quot;
+echo &quot;_聲量分數 = Twitter×1 + GitHub Stars÷100 + HN×3_&quot; >> &quot;$OUTPUT&quot;
+
+# ── 清理暫存 ─────────────────────────────────────────
+rm -rf &quot;$JSON_DIR&quot;
+
+echo &quot;✓ 報告已生成：$OUTPUT&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># competitor-monitor.sh — 競品聲量監控</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 用法：bash competitor-monitor.sh</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 依賴：opencli、jq、bc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">set</span><span style="color:#D19A66"> -euo</span><span style="color:#98C379"> pipefail</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">COMPETITORS</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">"ProductA"</span><span style="color:#98C379"> "ProductB"</span><span style="color:#98C379"> "ProductC"</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">DATE</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">date</span><span style="color:#98C379"> +%Y-%m-%d</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">OUTPUT</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"competitor-report-${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">}.md"</span></span>
+<span class="line"><span style="color:#E06C75">JSON_DIR</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"./tmp-competitor-${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">mkdir</span><span style="color:#D19A66"> -p</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$JSON_DIR</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "# 競品監控報告 ${</span><span style="color:#E06C75">DATE</span><span style="color:#98C379">}"</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 並行抓取各平台資料 ──────────────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "▶ 並行抓取資料中..."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">for</span><span style="color:#E06C75"> COMP</span><span style="color:#C678DD"> in</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">COMPETITORS</span><span style="color:#98C379">[</span><span style="color:#ABB2BF">@</span><span style="color:#98C379">]}"</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#ABB2BF">  (</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    # Twitter 討論聲量</span></span>
+<span class="line"><span style="color:#61AFEF">    opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}"</span><span style="color:#D19A66"> --since</span><span style="color:#98C379"> 7d</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 100</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/twitter_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/twitter_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    # GitHub star 數</span></span>
+<span class="line"><span style="color:#61AFEF">    opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> search</span><span style="color:#98C379"> repos</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}"</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> stars</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 3</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/github_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/github_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    # HackerNews 提及次數</span></span>
+<span class="line"><span style="color:#61AFEF">    opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}"</span><span style="color:#D19A66"> --since</span><span style="color:#98C379"> 7d</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/hn_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">      || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">"${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/hn_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">    echo</span><span style="color:#98C379"> "  ✓ ${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">} 資料已取得"</span></span>
+<span class="line"><span style="color:#ABB2BF">  ) &#x26;</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">wait</span><span style="color:#7F848E;font-style:italic">   # 等待所有背景 job 完成</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "▶ 資料擷取完成，開始計算聲量分數..."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 計算聲量分數並輸出對比表格 ─────────────────────────</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "## 聲量對比（過去 7 天）"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "| 競品 | Twitter 討論 | GitHub Stars（Top）| HackerNews 提及 | 總分 |"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "|------|-------------|-------------------|----------------|------|"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">for</span><span style="color:#E06C75"> COMP</span><span style="color:#C678DD"> in</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">COMPETITORS</span><span style="color:#98C379">[</span><span style="color:#ABB2BF">@</span><span style="color:#98C379">]}"</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#E06C75">  TWITTER_COUNT</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> 'length'</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/twitter_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> || </span><span style="color:#56B6C2">echo</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">  GH_STARS</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[].stargazers_count] | max // 0'</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/github_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> || </span><span style="color:#56B6C2">echo</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">  HN_COUNT</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> 'length'</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">JSON_DIR</span><span style="color:#98C379">}/hn_${</span><span style="color:#E06C75">COMP</span><span style="color:#98C379">}.json"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> || </span><span style="color:#56B6C2">echo</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  # 簡易聲量評分（可依需求調整權重）</span></span>
+<span class="line"><span style="color:#E06C75">  SCORE</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "scale=0; (</span><span style="color:#E06C75">$TWITTER_COUNT</span><span style="color:#98C379"> * 1) + (</span><span style="color:#E06C75">$GH_STARS</span><span style="color:#98C379"> / 100) + (</span><span style="color:#E06C75">$HN_COUNT</span><span style="color:#98C379"> * 3)"</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">bc</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "| </span><span style="color:#E06C75">$COMP</span><span style="color:#98C379"> | </span><span style="color:#E06C75">$TWITTER_COUNT</span><span style="color:#98C379"> 則 | ⭐ </span><span style="color:#E06C75">$GH_STARS</span><span style="color:#98C379"> | </span><span style="color:#E06C75">$HN_COUNT</span><span style="color:#98C379"> 篇 | **</span><span style="color:#E06C75">$SCORE</span><span style="color:#98C379">** |"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> ""</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "---"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "_聲量分數 = Twitter×1 + GitHub Stars÷100 + HN×3_"</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 清理暫存 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#61AFEF">rm</span><span style="color:#D19A66"> -rf</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$JSON_DIR</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "✓ 報告已生成：</span><span style="color:#E06C75">$OUTPUT</span><span style="color:#98C379">"</span></span></code></pre> </div> </div>   <p>以下是這份腳本產出的報告範例：</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>競品</th> <th>Twitter 討論</th> <th>GitHub Stars（Top）</th> <th>HackerNews 提及</th> <th>總分</th> </tr> </thead> <tbody> <tr> <td>ProductA</td> <td>142 則</td> <td>⭐ 8,420</td> <td>12 篇</td> <td><strong>258</strong></td> </tr> <tr> <td>ProductB</td> <td>87 則</td> <td>⭐ 3,100</td> <td>5 篇</td> <td><strong>134</strong></td> </tr> <tr> <td>ProductC</td> <td>201 則</td> <td>⭐ 12,800</td> <td>23 篇</td> <td><strong>420</strong></td> </tr> </tbody> </table> </div> <div class="call tip"> <p><strong>進階延伸</strong>：可以把歷史數據存入 SQLite，加上 Python + matplotlib 生成趨勢折線圖，或接上 Grafana 做即時儀表板。聲量分數的權重（目前 Twitter×1、GitHub÷100、HN×3）可依你的行業特性調整。</p> </div>  <h2>場景四：作為 Claude API Tool 的完整整合</h2> <p>
+這是本章最進階也最有想像空間的場景：把 OpenCLI 包裝成 Claude API 的 Tool，讓 Claude 自行決定何時呼叫哪個指令、組合多個資料來源，最後產出分析報告。這就是所謂的 <strong>Agentic Loop</strong>——AI 主動使用工具解決問題，而不只是被動回答。
+</p> <h3>完整 Agent 程式碼</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>agent.ts — OpenCLI × Claude API</span> <button class="cb-copy" data-code="import Anthropic from '@anthropic-ai/sdk';
+import { execSync } from 'child_process';
+
+const client = new Anthropic();
+
+// ── Tool 定義：讓 Claude 能呼叫 opencli ──────────────────
+const tools: Anthropic.Tool[] = [
+  {
+    name: 'opencli_run',
+    description: '執行 OpenCLI 指令，可操作瀏覽器、抓取平台資料（GitHub、HackerNews、Reddit 等）',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        command: {
+          type: 'string',
+          description: '完整的 opencli 指令，例如：opencli github trending --language typescript --limit 5 --format json',
+        },
+      },
+      required: ['command'],
+    },
+  },
+];
+
+// ── Tool 執行器 ───────────────────────────────────────
+function runOpenCLI(command: string): string {
+  // 安全性：只允許 opencli 開頭的指令
+  if (!command.trim().startsWith('opencli')) {
+    return JSON.stringify({ error: '僅允許執行 opencli 指令' });
+  }
+
+  try {
+    const output = execSync(command, {
+      timeout: 30000,
+      encoding: 'utf-8',
+    });
+    return output.toString().trim() || '（指令執行成功，但無輸出）';
+  } catch (err: unknown) {
+    const error = err as { message?: string; stderr?: Buffer };
+    const stderr = error.stderr ? error.stderr.toString() : '';
+    return JSON.stringify({ error: error.message, stderr });
+  }
+}
+
+// ── Agent 主迴圈 ──────────────────────────────────────
+type MessageParam = Anthropic.MessageParam;
+
+async function runAgent(task: string): Promise<string> {
+  console.log(`\n[Agent] 任務開始：${task}\n`);
+
+  const messages: MessageParam[] = [
+    { role: 'user', content: task }
+  ];
+
+  let round = 0;
+
+  while (round < 10) {   // 最多 10 輪，防止無限迴圈
+    round++;
+    console.log(`[Agent] 第 ${round} 輪推理...`);
+
+    const response = await client.messages.create({
+      model: 'claude-opus-4-5',
+      max_tokens: 4096,
+      tools,
+      messages,
+    });
+
+    console.log(`[Agent] stop_reason: ${response.stop_reason}`);
+
+    // 任務完成
+    if (response.stop_reason === 'end_turn') {
+      const finalText = response.content
+        .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+        .map(b => b.text)
+        .join('\n');
+      console.log('\n[Agent] 最終回覆：\n');
+      return finalText;
+    }
+
+    // 處理 tool_use
+    if (response.stop_reason === 'tool_use') {
+      // 先把 assistant 這輪的回應加進 messages
+      messages.push({ role: 'assistant', content: response.content });
+
+      // 收集所有 tool_result
+      const toolResults: Anthropic.ToolResultBlockParam[] = [];
+
+      for (const block of response.content) {
+        if (block.type !== 'tool_use') continue;
+
+        console.log(`[Tool] ${block.name}(${JSON.stringify(block.input)})`);
+
+        let result: string;
+        if (block.name === 'opencli_run') {
+          const input = block.input as { command: string };
+          result = runOpenCLI(input.command);
+        } else {
+          result = JSON.stringify({ error: `未知 tool: ${block.name}` });
+        }
+
+        console.log(`[Tool] 結果長度：${result.length} 字元`);
+
+        toolResults.push({
+          type: 'tool_result',
+          tool_use_id: block.id,
+          content: result,
+        });
+      }
+
+      // 將所有 tool_result 一次加入 messages
+      messages.push({ role: 'user', content: toolResults });
+      continue;
+    }
+
+    // 其他 stop_reason（max_tokens 等）
+    console.warn(`[Agent] 非預期的 stop_reason: ${response.stop_reason}，結束迴圈`);
+    break;
+  }
+
+  return '（Agent 達到最大輪數，任務未完成）';
+}
+
+// ── 執行示範任務 ──────────────────────────────────────
+runAgent(
+  '請搜尋最近一週 TypeScript 相關的 GitHub 熱門 repo，' +
+  '再查詢 HackerNews 上 TypeScript 的熱門討論，' +
+  '最後綜合兩個來源，列出 3 個值得深入研究的技術方向，每個方向說明理由。'
+).then(result => {
+  console.log(result);
+}).catch(console.error);" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#C678DD">import</span><span style="color:#E06C75"> Anthropic</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> '@anthropic-ai/sdk'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">execSync</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'child_process'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> client</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> Anthropic</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── Tool 定義：讓 Claude 能呼叫 opencli ──────────────────</span></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> tools</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Anthropic</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">Tool</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF"> [</span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#E06C75">    name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'opencli_run'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'執行 OpenCLI 指令，可操作瀏覽器、抓取平台資料（GitHub、HackerNews、Reddit 等）'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    input_schema</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'object'</span><span style="color:#C678DD"> as</span><span style="color:#C678DD"> const</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      properties</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        command</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">          type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">          description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'完整的 opencli 指令，例如：opencli github trending --language typescript --limit 5 --format json'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">        },</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'command'</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#ABB2BF">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── Tool 執行器 ───────────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> runOpenCLI</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">command</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">  // 安全性：只允許 opencli 開頭的指令</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E5C07B">command</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">().</span><span style="color:#61AFEF">startsWith</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'opencli'</span><span style="color:#ABB2BF">)) {</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'僅允許執行 opencli 指令'</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> output</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> execSync</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">command</span><span style="color:#ABB2BF">, {</span></span>
+<span class="line"><span style="color:#E06C75">      timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">30000</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      encoding</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'utf-8'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">    });</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> output</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">toString</span><span style="color:#ABB2BF">().</span><span style="color:#61AFEF">trim</span><span style="color:#ABB2BF">() </span><span style="color:#56B6C2">||</span><span style="color:#98C379"> '（指令執行成功，但無輸出）'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">err</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">unknown</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> error</span><span style="color:#56B6C2"> =</span><span style="color:#E06C75"> err</span><span style="color:#C678DD"> as</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">message</span><span style="color:#C678DD">?</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">; </span><span style="color:#E06C75">stderr</span><span style="color:#C678DD">?</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Buffer</span><span style="color:#ABB2BF"> };</span></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> stderr</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> error</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stderr</span><span style="color:#C678DD"> ?</span><span style="color:#E5C07B"> error</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">stderr</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">toString</span><span style="color:#ABB2BF">() </span><span style="color:#C678DD">:</span><span style="color:#98C379"> ''</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">error</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">message</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">stderr</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── Agent 主迴圈 ──────────────────────────────────────</span></span>
+<span class="line"><span style="color:#C678DD">type</span><span style="color:#E5C07B"> MessageParam</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Anthropic</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">MessageParam</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> runAgent</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">task</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">): </span><span style="color:#E5C07B">Promise</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">> {</span></span>
+<span class="line"><span style="color:#E5C07B">  console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">[Agent] 任務開始：</span><span style="color:#C678DD">${</span><span style="color:#E06C75">task</span><span style="color:#C678DD">}</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> messages</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">MessageParam</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF"> [</span></span>
+<span class="line"><span style="color:#ABB2BF">    { </span><span style="color:#E06C75">role</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'user'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">task</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">  ];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  let</span><span style="color:#E06C75"> round</span><span style="color:#56B6C2"> =</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  while</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">round</span><span style="color:#56B6C2"> &#x3C;</span><span style="color:#D19A66"> 10</span><span style="color:#ABB2BF">) {   </span><span style="color:#7F848E;font-style:italic">// 最多 10 輪，防止無限迴圈</span></span>
+<span class="line"><span style="color:#E06C75">    round</span><span style="color:#56B6C2">++</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[Agent] 第 </span><span style="color:#C678DD">${</span><span style="color:#E06C75">round</span><span style="color:#C678DD">}</span><span style="color:#98C379"> 輪推理...`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    const</span><span style="color:#E5C07B"> response</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#E5C07B"> client</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">messages</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">create</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">      model</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'claude-opus-4-5'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      max_tokens</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">4096</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      tools</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      messages</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[Agent] stop_reason: </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stop_reason</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 任務完成</span></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stop_reason</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'end_turn'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> finalText</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">content</span></span>
+<span class="line"><span style="color:#ABB2BF">        .</span><span style="color:#61AFEF">filter</span><span style="color:#ABB2BF">((</span><span style="color:#E06C75;font-style:italic">b</span><span style="color:#ABB2BF">): </span><span style="color:#E06C75;font-style:italic">b</span><span style="color:#C678DD"> is</span><span style="color:#E5C07B"> Anthropic</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">TextBlock</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> b</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">type</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'text'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">        .</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">b</span><span style="color:#C678DD"> =></span><span style="color:#E5C07B"> b</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">text</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#ABB2BF">        .</span><span style="color:#61AFEF">join</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">      console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">[Agent] 最終回覆：</span><span style="color:#56B6C2">\n</span><span style="color:#98C379">'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#E06C75"> finalText</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 處理 tool_use</span></span>
+<span class="line"><span style="color:#C678DD">    if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stop_reason</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'tool_use'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">      // 先把 assistant 這輪的回應加進 messages</span></span>
+<span class="line"><span style="color:#E5C07B">      messages</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">push</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">role</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'assistant'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">content</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">      // 收集所有 tool_result</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> toolResults</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Anthropic</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">ToolResultBlockParam</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF"> [];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">      for</span><span style="color:#ABB2BF"> (</span><span style="color:#C678DD">const</span><span style="color:#E5C07B"> block</span><span style="color:#C678DD"> of</span><span style="color:#E5C07B"> response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">        if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">type</span><span style="color:#56B6C2"> !==</span><span style="color:#98C379"> 'tool_use'</span><span style="color:#ABB2BF">) </span><span style="color:#C678DD">continue</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">        console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[Tool] </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">name</span><span style="color:#C678DD">}</span><span style="color:#98C379">(</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">input</span><span style="color:#ABB2BF">)</span><span style="color:#C678DD">}</span><span style="color:#98C379">)`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">        let</span><span style="color:#E06C75"> result</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">        if</span><span style="color:#ABB2BF"> (</span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">name</span><span style="color:#56B6C2"> ===</span><span style="color:#98C379"> 'opencli_run'</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">          const</span><span style="color:#E5C07B"> input</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">input</span><span style="color:#C678DD"> as</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">command</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> };</span></span>
+<span class="line"><span style="color:#E06C75">          result</span><span style="color:#56B6C2"> =</span><span style="color:#61AFEF"> runOpenCLI</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">input</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">command</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">        } </span><span style="color:#C678DD">else</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E06C75">          result</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">`未知 tool: </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">name</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">        console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[Tool] 結果長度：</span><span style="color:#C678DD">${</span><span style="color:#E5C07B">result</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">length</span><span style="color:#C678DD">}</span><span style="color:#98C379"> 字元`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">        toolResults</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">push</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">          type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'tool_result'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">          tool_use_id</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">block</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">id</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">          content</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">result</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">        });</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">      // 將所有 tool_result 一次加入 messages</span></span>
+<span class="line"><span style="color:#E5C07B">      messages</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">push</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">role</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'user'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">: </span><span style="color:#E06C75">toolResults</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#C678DD">      continue</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">    // 其他 stop_reason（max_tokens 等）</span></span>
+<span class="line"><span style="color:#E5C07B">    console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">warn</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`[Agent] 非預期的 stop_reason: </span><span style="color:#C678DD">${</span><span style="color:#E5C07B">response</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">stop_reason</span><span style="color:#C678DD">}</span><span style="color:#98C379">，結束迴圈`</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">    break</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#98C379"> '（Agent 達到最大輪數，任務未完成）'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">// ── 執行示範任務 ──────────────────────────────────────</span></span>
+<span class="line"><span style="color:#61AFEF">runAgent</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#98C379">  '請搜尋最近一週 TypeScript 相關的 GitHub 熱門 repo，'</span><span style="color:#56B6C2"> +</span></span>
+<span class="line"><span style="color:#98C379">  '再查詢 HackerNews 上 TypeScript 的熱門討論，'</span><span style="color:#56B6C2"> +</span></span>
+<span class="line"><span style="color:#98C379">  '最後綜合兩個來源，列出 3 個值得深入研究的技術方向，每個方向說明理由。'</span></span>
+<span class="line"><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">then</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">result</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E5C07B">  console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">result</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}).</span><span style="color:#61AFEF">catch</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">error</span><span style="color:#ABB2BF">);</span></span></code></pre> </div> </div>   <div class="call info"> <p><strong>Agentic Loop 運作原理</strong></p> <ol> <li>把任務描述傳給 Claude，並附上 <code>opencli_run</code> tool 定義</li> <li>Claude 回傳 <code>stop_reason: "tool_use"</code>，指定要執行的 opencli 指令</li> <li>程式執行指令，把輸出作為 <code>tool_result</code> 回傳給 Claude</li> <li>重複步驟 2–3，直到 Claude 回傳 <code>stop_reason: "end_turn"</code>（任務完成）</li> </ol> <p>Claude 會自行決定要呼叫幾次工具、用什麼參數，整個推理過程完全自主。</p> </div> <h3>擴充：多 Tool Agent</h3> <p>
+單一 <code>opencli_run</code> tool 已經很強大，但加入其他 tool（例如寫檔案、查資料庫）可以讓 Agent 完成更複雜的端對端任務：
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>multi-tool-agent.ts — opencli + 本地檔案操作</span> <button class="cb-copy" data-code="// multi-tool-agent.ts — 多工具 Agent：同時整合 opencli + 本地檔案操作
+import Anthropic from '@anthropic-ai/sdk';
+import { execSync } from 'child_process';
+import * as fs from 'fs';
+
+const client = new Anthropic();
+
+const tools: Anthropic.Tool[] = [
+  {
+    name: 'opencli_run',
+    description: '執行 OpenCLI 指令抓取網路資料',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        command: { type: 'string', description: 'opencli 完整指令' },
+      },
+      required: ['command'],
+    },
+  },
+  {
+    name: 'save_report',
+    description: '將分析結果存成 Markdown 報告檔案',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        filename: { type: 'string', description: '檔案名稱（不含路徑）' },
+        content:  { type: 'string', description: 'Markdown 內容' },
+      },
+      required: ['filename', 'content'],
+    },
+  },
+];
+
+function executeTool(name: string, input: Record<string, string>): string {
+  switch (name) {
+    case 'opencli_run': {
+      if (!input.command.startsWith('opencli')) return '拒絕：僅允許 opencli 指令';
+      try {
+        return execSync(input.command, { timeout: 30000, encoding: 'utf-8' });
+      } catch (e: unknown) {
+        return `ERROR: ${(e as Error).message}`;
+      }
+    }
+    case 'save_report': {
+      const safeName = input.filename.replace(/[^a-zA-Z0-9._-]/g, '_');
+      fs.writeFileSync(`./reports/${safeName}`, input.content);
+      return `報告已儲存：./reports/${safeName}`;
+    }
+    default:
+      return `未知 tool: ${name}`;
+  }
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// multi-tool-agent.ts — 多工具 Agent：同時整合 opencli + 本地檔案操作</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#E06C75"> Anthropic</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> '@anthropic-ai/sdk'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">execSync</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'child_process'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#D19A66"> *</span><span style="color:#C678DD"> as</span><span style="color:#E06C75"> fs</span><span style="color:#C678DD"> from</span><span style="color:#98C379"> 'fs'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> client</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> new</span><span style="color:#61AFEF"> Anthropic</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> tools</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Anthropic</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">Tool</span><span style="color:#ABB2BF">[] </span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF"> [</span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#E06C75">    name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'opencli_run'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'執行 OpenCLI 指令抓取網路資料'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    input_schema</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'object'</span><span style="color:#C678DD"> as</span><span style="color:#C678DD"> const</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      properties</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        command</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'opencli 完整指令'</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'command'</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#E06C75">    name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'save_report'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'將分析結果存成 Markdown 報告檔案'</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">    input_schema</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">      type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'object'</span><span style="color:#C678DD"> as</span><span style="color:#C678DD"> const</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      properties</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        filename</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'檔案名稱（不含路徑）'</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">        content</span><span style="color:#ABB2BF">:  { </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'string'</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'Markdown 內容'</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#E06C75">      required</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'filename'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'content'</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"><span style="color:#ABB2BF">  },</span></span>
+<span class="line"><span style="color:#ABB2BF">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">function</span><span style="color:#61AFEF"> executeTool</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">name</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">input</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">Record</span><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF">>): </span><span style="color:#E5C07B">string</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  switch</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">    case</span><span style="color:#98C379"> 'opencli_run'</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#C678DD">      if</span><span style="color:#ABB2BF"> (</span><span style="color:#56B6C2">!</span><span style="color:#E5C07B">input</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">command</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">startsWith</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'opencli'</span><span style="color:#ABB2BF">)) </span><span style="color:#C678DD">return</span><span style="color:#98C379"> '拒絕：僅允許 opencli 指令'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">      try</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">        return</span><span style="color:#61AFEF"> execSync</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">input</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">command</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">timeout</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">30000</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">encoding</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'utf-8'</span><span style="color:#ABB2BF"> });</span></span>
+<span class="line"><span style="color:#ABB2BF">      } </span><span style="color:#C678DD">catch</span><span style="color:#ABB2BF"> (</span><span style="color:#E06C75;font-style:italic">e</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">unknown</span><span style="color:#ABB2BF">) {</span></span>
+<span class="line"><span style="color:#C678DD">        return</span><span style="color:#98C379"> `ERROR: </span><span style="color:#C678DD">${</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">e</span><span style="color:#C678DD"> as</span><span style="color:#E5C07B"> Error</span><span style="color:#ABB2BF">).</span><span style="color:#E06C75">message</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#C678DD">    case</span><span style="color:#98C379"> 'save_report'</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#C678DD">      const</span><span style="color:#E5C07B"> safeName</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> input</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">filename</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">replace</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">/</span><span style="color:#D19A66">[</span><span style="color:#ABB2BF">^</span><span style="color:#D19A66">a-zA-Z0-9</span><span style="color:#E06C75">.</span><span style="color:#D19A66">_-]</span><span style="color:#E06C75">/</span><span style="color:#C678DD">g</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'_'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#E5C07B">      fs</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">writeFileSync</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">`./reports/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">safeName</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">, </span><span style="color:#E5C07B">input</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#98C379"> `報告已儲存：./reports/</span><span style="color:#C678DD">${</span><span style="color:#E06C75">safeName</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#C678DD">    default</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#C678DD">      return</span><span style="color:#98C379"> `未知 tool: </span><span style="color:#C678DD">${</span><span style="color:#E06C75">name</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <p>
+有了 <code>save_report</code> tool，Claude 可以在抓完資料後自行整理成報告並存檔，整個流程無需人工介入。你可以依需求加入更多 tool：查詢資料庫、發送 Email、呼叫內部 API 等。
+</p> <div class="call warn"> <p><strong>Tool 安全性注意</strong>：本範例在 <code>opencli_run</code> 中加入了「只允許 opencli 開頭」的指令白名單檢查。在生產環境中，建議進一步限制允許的 adapter 和指令，避免 prompt injection 攻擊導致執行非預期操作。</p> </div>  <h2>最佳實踐小結</h2> <p>以下彙整本章 4 個場景中反覆出現的設計原則：</p> <h3>1. 輸出格式與資料量</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>指令設計最佳實踐</span> <button class="cb-copy" data-code="# 一目了然的指令最佳實踐對比
+
+# ── 輸出格式 ─────────────────────────────────────────
+# 不推薦：預設文字輸出，難以程式解析
+opencli github trending
+
+# 推薦：加 --format json，方便 jq 處理
+opencli github trending --format json | jq '.[] | .name'
+
+# ── 資料量控制 ───────────────────────────────────────
+# 不推薦：不限制筆數，可能抓到幾千筆
+opencli hackernews top
+
+# 推薦：加 --limit 控制
+opencli hackernews top --limit 20 --format json
+
+# ── 錯誤處理 ─────────────────────────────────────────
+# 不推薦：失敗時整個腳本中斷
+opencli reddit feed r/programming --format json >> report.md
+
+# 推薦：失敗時輸出空陣列，讓腳本繼續
+opencli reddit feed r/programming --format json 2>/dev/null || echo &quot;[]&quot;
+
+# ── Session 命名 ─────────────────────────────────────
+# 不推薦：用預設或隨機名稱
+opencli session start
+
+# 推薦：有意義的名稱，方便 heartbeat 監控與除錯
+opencli session start digest
+opencli session start monitor-competitor" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 一目了然的指令最佳實踐對比</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 輸出格式 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：預設文字輸出，難以程式解析</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：加 --format json，方便 jq 處理</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '.[] | .name'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 資料量控制 ───────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：不限制筆數，可能抓到幾千筆</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：加 --limit 控制</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── 錯誤處理 ─────────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：失敗時整個腳本中斷</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> feed</span><span style="color:#98C379"> r/programming</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> >> </span><span style="color:#98C379">report.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：失敗時輸出空陣列，讓腳本繼續</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> feed</span><span style="color:#98C379"> r/programming</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ── Session 命名 ─────────────────────────────────────</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 不推薦：用預設或隨機名稱</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> start</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 推薦：有意義的名稱，方便 heartbeat 監控與除錯</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> start</span><span style="color:#98C379"> digest</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> start</span><span style="color:#98C379"> monitor-competitor</span></span></code></pre> </div> </div>   <h3>2. 錯誤處理策略</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>錯誤處理三種模式</span> <button class="cb-copy" data-code="#!/bin/bash
+# 錯誤處理範例：讓腳本遇到單一失敗時繼續執行
+
+# 方法一：|| 接備用值
+opencli github trending --language rust --limit 5 --format json \
+  || echo &quot;[]&quot;   # 失敗時回傳空陣列
+
+# 方法二：指定 timeout 避免卡死
+timeout 30 opencli hackernews top --limit 10 --format json \
+  || echo &quot;[]&quot;
+
+# 方法三：set -euo pipefail + 局部 try-catch
+set -euo pipefail
+
+fetch_data() {
+  local platform=&quot;$1&quot;
+  local cmd=&quot;$2&quot;
+  local fallback=&quot;$3&quot;
+
+  if result=$(eval &quot;$cmd&quot; 2>/dev/null); then
+    echo &quot;$result&quot;
+  else
+    echo &quot;WARN: $platform 擷取失敗，使用備用值&quot; >&amp;2
+    echo &quot;$fallback&quot;
+  fi
+}
+
+GH_DATA=$(fetch_data &quot;GitHub&quot; \
+  &quot;opencli github trending --limit 5 --format json&quot; \
+  &quot;[]&quot;)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 錯誤處理範例：讓腳本遇到單一失敗時繼續執行</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方法一：|| 接備用值</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> rust</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 5</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span><span style="color:#7F848E;font-style:italic">   # 失敗時回傳空陣列</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方法二：指定 timeout 避免卡死</span></span>
+<span class="line"><span style="color:#61AFEF">timeout</span><span style="color:#D19A66"> 30</span><span style="color:#98C379"> opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#ABB2BF">  || </span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "[]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 方法三：set -euo pipefail + 局部 try-catch</span></span>
+<span class="line"><span style="color:#56B6C2">set</span><span style="color:#D19A66"> -euo</span><span style="color:#98C379"> pipefail</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">fetch_data</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#C678DD">  local</span><span style="color:#E06C75"> platform</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"</span><span style="color:#E06C75;font-style:italic">$1</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">  local</span><span style="color:#E06C75"> cmd</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"</span><span style="color:#E06C75;font-style:italic">$2</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">  local</span><span style="color:#E06C75"> fallback</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"</span><span style="color:#E06C75;font-style:italic">$3</span><span style="color:#98C379">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#E06C75"> result</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#56B6C2">eval</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$cmd</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF">); </span><span style="color:#C678DD">then</span></span>
+<span class="line"><span style="color:#56B6C2">    echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$result</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">  else</span></span>
+<span class="line"><span style="color:#56B6C2">    echo</span><span style="color:#98C379"> "WARN: </span><span style="color:#E06C75">$platform</span><span style="color:#98C379"> 擷取失敗，使用備用值"</span><span style="color:#ABB2BF"> >&#x26;2</span></span>
+<span class="line"><span style="color:#56B6C2">    echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$fallback</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#C678DD">  fi</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">GH_DATA</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">fetch_data</span><span style="color:#98C379"> "GitHub"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#98C379">  "opencli github trending --limit 5 --format json"</span><span style="color:#56B6C2"> \</span></span>
+<span class="line"><span style="color:#98C379">  "[]"</span><span style="color:#ABB2BF">)</span></span></code></pre> </div> </div>   <h3>3. Session 心跳檢查</h3> <p>長時間執行的監控腳本（如競品監控、Release 監控），應加入 session 心跳機制，確保 OpenCLI daemon 保持存活：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>session-heartbeat.sh</span> <button class="cb-copy" data-code="#!/bin/bash
+# session-heartbeat.sh — 長時間執行時確認 opencli daemon 存活
+
+SESSION_NAME=&quot;monitor&quot;
+
+check_session() {
+  opencli session list --format json 2>/dev/null | \
+    jq -e --arg name &quot;$SESSION_NAME&quot; '.[] | select(.name == $name)' > /dev/null
+}
+
+restart_session() {
+  echo &quot;$(date): Session $SESSION_NAME 無回應，重啟中...&quot;
+  opencli session stop &quot;$SESSION_NAME&quot; 2>/dev/null || true
+  sleep 2
+  opencli session start &quot;$SESSION_NAME&quot;
+  echo &quot;$(date): Session 重啟完成&quot;
+}
+
+# 主監控迴圈
+while true; do
+  if ! check_session; then
+    restart_session
+  fi
+  sleep 60   # 每分鐘心跳一次
+done" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># session-heartbeat.sh — 長時間執行時確認 opencli daemon 存活</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">SESSION_NAME</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"monitor"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">check_session</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> | </span><span style="color:#56B6C2">\</span></span>
+<span class="line"><span style="color:#61AFEF">    jq</span><span style="color:#D19A66"> -e</span><span style="color:#D19A66"> --arg</span><span style="color:#98C379"> name</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$SESSION_NAME</span><span style="color:#98C379">"</span><span style="color:#98C379"> '.[] | select(.name == $name)'</span><span style="color:#ABB2BF"> > </span><span style="color:#98C379">/dev/null</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">restart_session</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "$(</span><span style="color:#61AFEF">date</span><span style="color:#98C379">): Session </span><span style="color:#E06C75">$SESSION_NAME</span><span style="color:#98C379"> 無回應，重啟中..."</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> stop</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$SESSION_NAME</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> 2></span><span style="color:#98C379">/dev/null</span><span style="color:#ABB2BF"> || </span><span style="color:#56B6C2">true</span></span>
+<span class="line"><span style="color:#61AFEF">  sleep</span><span style="color:#D19A66"> 2</span></span>
+<span class="line"><span style="color:#61AFEF">  opencli</span><span style="color:#98C379"> session</span><span style="color:#98C379"> start</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$SESSION_NAME</span><span style="color:#98C379">"</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "$(</span><span style="color:#61AFEF">date</span><span style="color:#98C379">): Session 重啟完成"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 主監控迴圈</span></span>
+<span class="line"><span style="color:#C678DD">while</span><span style="color:#56B6C2"> true</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">do</span></span>
+<span class="line"><span style="color:#C678DD">  if</span><span style="color:#ABB2BF"> ! </span><span style="color:#61AFEF">check_session</span><span style="color:#ABB2BF">; </span><span style="color:#C678DD">then</span></span>
+<span class="line"><span style="color:#61AFEF">    restart_session</span></span>
+<span class="line"><span style="color:#C678DD">  fi</span></span>
+<span class="line"><span style="color:#61AFEF">  sleep</span><span style="color:#D19A66"> 60</span><span style="color:#7F848E;font-style:italic">   # 每分鐘心跳一次</span></span>
+<span class="line"><span style="color:#C678DD">done</span></span></code></pre> </div> </div>   <h3>4. 快速核對清單</h3> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>情境</th> <th>建議做法</th> <th>原因</th> </tr> </thead> <tbody> <tr> <td>腳本輸出供程式解析</td> <td>加 <code>--format json</code></td> <td>文字輸出格式可能因版本變動</td> </tr> <tr> <td>防止資料量暴增</td> <td>加 <code>--limit N</code></td> <td>避免 API rate limit 或記憶體耗盡</td> </tr> <tr> <td>單一步驟失敗不中斷腳本</td> <td>加 <code>|| echo "[]"</code></td> <td>讓後續步驟繼續執行</td> </tr> <tr> <td>避免 opencli 指令卡死</td> <td>用 <code>timeout 30 opencli ...</code></td> <td>網路問題可能導致無限等待</td> </tr> <tr> <td>Session 命名</td> <td>使用有意義的名稱</td> <td>方便 heartbeat 監控與 log 識別</td> </tr> <tr> <td>AI Agent Tool 安全</td> <td>加指令白名單檢查</td> <td>防止 prompt injection 執行危險指令</td> </tr> <tr> <td>並行抓取多平台</td> <td>用 <code>&amp;</code> + <code>wait</code>（Bash）</td> <td>顯著縮短整體執行時間</td> </tr> </tbody> </table> </div> <h2>小結</h2> <p>
+本章用 4 個真實場景展示了 OpenCLI 自動化的不同維度：
+</p> <ol> <li><strong>場景一（新聞彙整）</strong>：最基礎的 cron + bash 組合，適合所有人入手</li> <li><strong>場景二（Release 監控）</strong>：加入狀態管理與通知整合，適合維護多個依賴的團隊</li> <li><strong>場景三（競品監控）</strong>：並行抓取 + 聲量計算，適合產品團隊的情報工作</li> <li><strong>場景四（AI Agent）</strong>：最具擴展性的模式，讓 AI 自主決策、組合工具完成複雜任務</li> </ol> <p>
+從簡單腳本到 AI Agentic Loop，OpenCLI 都扮演同一個角色：<strong>把網路世界的資料變成程式可以操作的結構化輸入</strong>。下一章，我們將介紹 OpenCLI 的 Built-in Adapters 生態系，看看官方預先整合了哪些平台，以及社群提供了哪些擴充選項。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>Skills 安裝與管理</span> </a> <a href="/opencli/ch15-builtin" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>Built-in Adapters 生態系</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

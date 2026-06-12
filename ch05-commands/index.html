@@ -1,0 +1,530 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>完整指令參考 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="OpenCLI 完整指令參考：open、state、find、click、fill、type、keys、eval、screenshot、network 等完整語法與範例。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">Chapter 5</span> <h1>完整指令參考</h1> <p class="cdesc">
+本章系統整理 OpenCLI 所有可用指令，涵蓋 Session 管理、頁面狀態、互動操作、等待機制、資料擷取、網路監聽與 Tab 管理。每條指令均附語法說明與實用範例，可作為日常開發的快速查閱手冊。
+</p> <div class="call info"> <strong>指令結構總覽</strong><br>
+所有 OpenCLI 瀏覽器操作均遵循統一格式：
+<code>opencli browser &lt;session&gt; &lt;command&gt; [target] [options]</code>。
+    其中 <code>session</code> 是自訂的 session 識別名稱，讓你同時管理多個瀏覽器視窗。
+</div>  <h2>5.1 Session 管理</h2> <p>
+Session 是 OpenCLI 追蹤瀏覽器視窗的核心概念。每個 session 對應一個 Chrome 分頁或視窗，你可以透過 <code>open</code>、<code>bind</code>、<code>unbind</code>、<code>close</code> 四個指令完整控制其生命週期。
+</p> <h3>open — 開啟 URL 並建立 Session</h3> <p> <code>open</code> 會啟動新分頁、導覽至指定 URL，並建立一個 <strong>owned session</strong>（由 OpenCLI 管理其生命週期）。指令成功後回傳 <code>targetId</code>。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="opencli browser <session> open <url> [--window foreground|background]
+
+# 範例：在前景開啟 GitHub
+opencli browser gh open https://github.com --window foreground
+
+# 範例：在背景靜默開啟登入頁
+opencli browser login open https://example.com/login --window background" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">sessio</span><span style="color:#ABB2BF">n> </span><span style="color:#98C379">open</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">ur</span><span style="color:#ABB2BF">l> [--window </span><span style="color:#98C379">foreground</span><span style="color:#ABB2BF">|</span><span style="color:#61AFEF">background]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 範例：在前景開啟 GitHub</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> gh</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://github.com</span><span style="color:#D19A66"> --window</span><span style="color:#98C379"> foreground</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 範例：在背景靜默開啟登入頁</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> login</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://example.com/login</span><span style="color:#D19A66"> --window</span><span style="color:#98C379"> background</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <table> <thead> <tr><th>選項</th><th>說明</th><th>預設值</th></tr> </thead> <tbody> <tr><td><code>--window foreground</code></td><td>開啟後立即切換到該分頁</td><td><code>foreground</code></td></tr> <tr><td><code>--window background</code></td><td>在背景開啟，不切換焦點</td><td>—</td></tr> </tbody> </table> <h3>bind / unbind — 附加現有分頁</h3> <p> <code>bind</code> 將目前 Chrome 中<strong>活躍分頁</strong>附加到指定 session，建立 <strong>unowned session</strong>（OpenCLI 不管理其關閉）。<code>unbind</code> 則解除附加關係，session 記錄移除但分頁繼續存在。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 附加當前分頁到 session &quot;dashboard&quot;
+opencli browser dashboard bind
+
+# 解除附加
+opencli browser dashboard unbind" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 附加當前分頁到 session "dashboard"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> dashboard</span><span style="color:#98C379"> bind</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 解除附加</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> dashboard</span><span style="color:#98C379"> unbind</span></span></code></pre> </div> </div>   <h3>close — 釋放 Session</h3> <p>
+釋放 owned session 並關閉對應視窗。對 unowned session 執行 <code>close</code> 只會移除 session 記錄，不會關閉分頁。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="opencli browser login close" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> login</span><span style="color:#98C379"> close</span></span></code></pre> </div> </div>    <h2>5.2 狀態檢查</h2> <p>
+狀態指令讓你「看見」瀏覽器當前的頁面結構，是所有自動化任務的眼睛。OpenCLI 使用 ref 編號（如 <code>[3]</code>）標記可互動元素，後續操作可直接引用這些編號。
+</p> <h3>state — 頁面文字樹快照</h3> <p>
+擷取整頁的文字結構樹，每個可互動元素會標記 <code>[N]</code> ref。支援兩種資料來源：DOM 原始 HTML（<code>dom</code>）或 Accessibility Tree（<code>ax</code>，預設）。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="opencli browser <session> state [--source dom|ax] [--compare-sources]
+
+# 使用 Accessibility Tree（預設，語意最準確）
+opencli browser main state
+
+# 使用 DOM 原始結構
+opencli browser main state --source dom
+
+# 同時顯示兩個來源並比較差異
+opencli browser main state --compare-sources" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">sessio</span><span style="color:#ABB2BF">n> </span><span style="color:#98C379">state</span><span style="color:#ABB2BF"> [--source </span><span style="color:#98C379">dom</span><span style="color:#ABB2BF">|</span><span style="color:#61AFEF">ax]</span><span style="color:#ABB2BF"> [--compare-sources]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 Accessibility Tree（預設，語意最準確）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 使用 DOM 原始結構</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> state</span><span style="color:#D19A66"> --source</span><span style="color:#98C379"> dom</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 同時顯示兩個來源並比較差異</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> state</span><span style="color:#D19A66"> --compare-sources</span></span></code></pre> </div> </div>   <div class="call tip"> <strong>何時使用 --source dom？</strong><br>
+當頁面有自訂元件、Shadow DOM 或 ARIA 屬性不完整時，<code>--source dom</code> 可看到更底層的 HTML 結構，有助於找到 <code>ax</code> 模式下看不見的元素。
+</div> <h3>find — 查詢特定元素</h3> <p>
+使用 CSS Selector 或 ARIA 角色 + 名稱精確定位元素，回傳 ref 編號與元素資訊。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 以 CSS Selector 查詢
+opencli browser main find --css &quot;button[type=submit]&quot;
+opencli browser main find --css &quot;#login-form input[name=email]&quot;
+
+# 以 ARIA 角色 + 名稱查詢
+opencli browser main find --role button --name &quot;登入&quot;
+opencli browser main find --role textbox --name &quot;電子郵件&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 以 CSS Selector 查詢</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --css</span><span style="color:#98C379"> "button[type=submit]"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --css</span><span style="color:#98C379"> "#login-form input[name=email]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 ARIA 角色 + 名稱查詢</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --role</span><span style="color:#98C379"> button</span><span style="color:#D19A66"> --name</span><span style="color:#98C379"> "登入"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --role</span><span style="color:#98C379"> textbox</span><span style="color:#D19A66"> --name</span><span style="color:#98C379"> "電子郵件"</span></span></code></pre> </div> </div>   <h3>screenshot — 截圖</h3> <p>
+擷取當前頁面截圖。加上 <code>--annotate</code> 會在截圖上標示所有 ref 編號，便於視覺化確認元素位置。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 截圖並儲存至指定路徑
+opencli browser main screenshot ./screenshots/page.png
+
+# 標註 ref 編號
+opencli browser main screenshot ./screenshots/annotated.png --annotate
+
+# 不指定路徑：輸出到 stdout（可配合 imgcat 等工具）
+opencli browser main screenshot" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 截圖並儲存至指定路徑</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> ./screenshots/page.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 標註 ref 編號</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> screenshot</span><span style="color:#98C379"> ./screenshots/annotated.png</span><span style="color:#D19A66"> --annotate</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 不指定路徑：輸出到 stdout（可配合 imgcat 等工具）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> screenshot</span></span></code></pre> </div> </div>    <h2>5.3 讀取資訊</h2> <p> <code>get</code> 系列指令用於讀取頁面或特定元素的資訊，不執行任何互動操作。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 讀取頁面標題
+opencli browser main get title
+
+# 讀取當前 URL
+opencli browser main get url
+
+# 讀取整頁文字內容
+opencli browser main get text
+
+# 讀取特定元素的值（搭配 ref）
+opencli browser main get value [3]
+
+# 讀取元素的所有 HTML 屬性
+opencli browser main get attributes [5]
+
+# 讀取元素的 innerHTML
+opencli browser main get html [7]" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 讀取頁面標題</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> title</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取當前 URL</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> url</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取整頁文字內容</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> text</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取特定元素的值（搭配 ref）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> value</span><span style="color:#ABB2BF"> [3]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取元素的所有 HTML 屬性</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> attributes</span><span style="color:#ABB2BF"> [5]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取元素的 innerHTML</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> get</span><span style="color:#98C379"> html</span><span style="color:#ABB2BF"> [7]</span></span></code></pre> </div> </div>   <table> <thead> <tr><th>子指令</th><th>說明</th><th>適用對象</th></tr> </thead> <tbody> <tr><td><code>title</code></td><td>頁面 &lt;title&gt; 標籤內容</td><td>頁面</td></tr> <tr><td><code>url</code></td><td>當前完整 URL</td><td>頁面</td></tr> <tr><td><code>text</code></td><td>可見文字內容</td><td>頁面 / 元素</td></tr> <tr><td><code>value</code></td><td>input / select 的值</td><td>表單元素</td></tr> <tr><td><code>attributes</code></td><td>所有 HTML 屬性鍵值</td><td>元素</td></tr> <tr><td><code>html</code></td><td>innerHTML 原始 HTML</td><td>元素</td></tr> </tbody> </table>  <h2>5.4 互動操作</h2> <p>
+互動指令模擬真實使用者行為，觸發 JavaScript 事件。目標元素可使用 ref 編號（<code>[N]</code>）、CSS Selector 或 ARIA 屬性描述。
+</p> <h3>click — 點擊元素</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="opencli browser <session> click <target> [--nth N]
+
+# 以 ref 點擊
+opencli browser main click [3]
+
+# 以 CSS Selector 點擊（若有多個符合，預設點第一個）
+opencli browser main click &quot;button.submit&quot;
+
+# 點擊第二個符合的元素
+opencli browser main click &quot;li.item&quot; --nth 2" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">sessio</span><span style="color:#ABB2BF">n> </span><span style="color:#98C379">click</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">targe</span><span style="color:#ABB2BF">t> [--nth </span><span style="color:#98C379">N]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 ref 點擊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> click</span><span style="color:#ABB2BF"> [3]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 CSS Selector 點擊（若有多個符合，預設點第一個）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "button.submit"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 點擊第二個符合的元素</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "li.item"</span><span style="color:#D19A66"> --nth</span><span style="color:#D19A66"> 2</span></span></code></pre> </div> </div>   <h3>type vs fill — 文字輸入（重要差異）</h3> <p>
+OpenCLI 提供兩種輸入文字的方式，行為有根本差異，選錯會導致自動化失敗。
+</p> <div class="call warn"> <strong>type 與 fill 的選擇至關重要</strong><br>
+搜尋框、地址列等需要觸發 autocomplete 的欄位必須用 <code>type</code>；密碼欄位、固定格式輸入（日期、ID）則用 <code>fill</code>，效率更高且更穩定。
+</div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# type：逐字模擬鍵盤輸入，觸發 input/keydown/keyup 事件
+opencli browser main type [4] &quot;台北市&quot;
+
+# fill：直接替換 value，不觸發按鍵事件
+opencli browser main fill [6] &quot;porter@example.com&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># type：逐字模擬鍵盤輸入，觸發 input/keydown/keyup 事件</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> type</span><span style="color:#ABB2BF"> [4] </span><span style="color:#98C379">"台北市"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># fill：直接替換 value，不觸發按鍵事件</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> fill</span><span style="color:#ABB2BF"> [6] </span><span style="color:#98C379">"porter@example.com"</span></span></code></pre> </div> </div>   <table> <thead> <tr><th>比較項目</th><th>type</th><th>fill</th></tr> </thead> <tbody> <tr><td>輸入方式</td><td>逐字元模擬鍵盤</td><td>直接設定 value</td></tr> <tr><td>觸發事件</td><td>keydown、keypress、keyup、input</td><td>input、change</td></tr> <tr><td>Autocomplete</td><td>✅ 觸發</td><td>❌ 不觸發</td></tr> <tr><td>輸入速度</td><td>較慢（逐字）</td><td>即時完成</td></tr> <tr><td>適用場景</td><td>搜尋框、自動完成、地址輸入</td><td>密碼、Email、固定格式欄位</td></tr> <tr><td>清除原有內容</td><td>保留（附加在後）</td><td>自動清除後替換</td></tr> </tbody> </table> <h3>select — 選擇下拉選項</h3> <p>
+專為原生 HTML <code>&lt;select&gt;</code> 元素設計，透過選項文字或 value 選擇。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 以選項顯示文字選擇
+opencli browser main select [8] &quot;台灣&quot;
+
+# 以 value 屬性選擇
+opencli browser main select &quot;#country&quot; &quot;TW&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 以選項顯示文字選擇</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> select</span><span style="color:#ABB2BF"> [8] </span><span style="color:#98C379">"台灣"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 value 屬性選擇</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> select</span><span style="color:#98C379"> "#country"</span><span style="color:#98C379"> "TW"</span></span></code></pre> </div> </div>   <h3>keys — 發送鍵盤事件</h3> <p>
+模擬鍵盤快捷鍵或特殊按鍵，支援組合鍵語法。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 按下 Enter
+opencli browser main keys Enter
+
+# 按下 Escape
+opencli browser main keys Escape
+
+# Ctrl+A（全選）
+opencli browser main keys &quot;Control+a&quot;
+
+# Ctrl+C（複製）
+opencli browser main keys &quot;Control+c&quot;
+
+# Tab 鍵移動焦點
+opencli browser main keys Tab" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 按下 Enter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> Enter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 按下 Escape</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> Escape</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Ctrl+A（全選）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> "Control+a"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Ctrl+C（複製）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> "Control+c"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Tab 鍵移動焦點</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> keys</span><span style="color:#98C379"> Tab</span></span></code></pre> </div> </div>   <h3>其他互動指令速查</h3> <table> <thead> <tr><th>指令</th><th>語法</th><th>說明</th></tr> </thead> <tbody> <tr><td><code>hover</code></td><td><code>hover &lt;target&gt;</code></td><td>滑鼠移入元素，觸發 hover 狀態</td></tr> <tr><td><code>focus</code></td><td><code>focus &lt;target&gt;</code></td><td>設定鍵盤焦點至元素</td></tr> <tr><td><code>dblclick</code></td><td><code>dblclick &lt;target&gt;</code></td><td>雙擊元素</td></tr> <tr><td><code>check</code></td><td><code>check &lt;target&gt;</code></td><td>勾選 checkbox 或 radio</td></tr> <tr><td><code>uncheck</code></td><td><code>uncheck &lt;target&gt;</code></td><td>取消勾選 checkbox</td></tr> <tr><td><code>upload</code></td><td><code>upload &lt;target&gt; &lt;filepath&gt;</code></td><td>上傳本機檔案至 file input</td></tr> <tr><td><code>drag</code></td><td><code>drag &lt;source&gt; &lt;target&gt;</code></td><td>拖曳元素到另一元素</td></tr> <tr><td><code>scroll</code></td><td><code>scroll &lt;target&gt; &lt;direction&gt; &lt;amount&gt;</code></td><td>捲動頁面或元素</td></tr> <tr><td><code>back</code></td><td><code>back</code></td><td>瀏覽器上一頁</td></tr> </tbody> </table> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# hover 觸發下拉選單
+opencli browser main hover &quot;[data-menu=products]&quot;
+
+# 上傳圖片
+opencli browser main upload [12] ./avatar.png
+
+# 拖曳排序
+opencli browser main drag [item-1] [item-3]
+
+# 向下捲動 500px
+opencli browser main scroll body down 500" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># hover 觸發下拉選單</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> hover</span><span style="color:#98C379"> "[data-menu=products]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 上傳圖片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> upload</span><span style="color:#ABB2BF"> [12] ./avatar.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 拖曳排序</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> drag</span><span style="color:#ABB2BF"> [item-1] [item-3]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 向下捲動 500px</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> scroll</span><span style="color:#98C379"> body</span><span style="color:#98C379"> down</span><span style="color:#D19A66"> 500</span></span></code></pre> </div> </div>    <h2>5.5 等待機制</h2> <p>
+網頁操作常需要等待非同步事件完成。OpenCLI 提供四種等待策略，避免使用固定 <code>sleep</code> 造成的不穩定。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 等待 CSS selector 出現在 DOM（預設 timeout 5000ms）
+opencli browser main wait selector &quot;.success-message&quot;
+opencli browser main wait selector &quot;#result-table&quot; --timeout 10000
+
+# 等待頁面出現特定文字
+opencli browser main wait text &quot;登入成功&quot;
+opencli browser main wait text &quot;訂單已送出&quot;
+
+# 等待檔案下載完成
+opencli browser main wait download
+opencli browser main wait download &quot;report-*.pdf&quot;
+
+# 固定等待秒數（盡量避免，優先使用上述三種）
+opencli browser main wait time 2" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 等待 CSS selector 出現在 DOM（預設 timeout 5000ms）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".success-message"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "#result-table"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待頁面出現特定文字</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "登入成功"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "訂單已送出"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待檔案下載完成</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> download</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> download</span><span style="color:#98C379"> "report-*.pdf"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 固定等待秒數（盡量避免，優先使用上述三種）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> wait</span><span style="color:#98C379"> time</span><span style="color:#D19A66"> 2</span></span></code></pre> </div> </div>   <table> <thead> <tr><th>等待類型</th><th>適用場景</th><th>建議優先度</th></tr> </thead> <tbody> <tr><td><code>wait selector</code></td><td>等待 AJAX 載入的元素出現</td><td>⭐⭐⭐ 優先使用</td></tr> <tr><td><code>wait text</code></td><td>等待特定提示文字顯示</td><td>⭐⭐⭐ 優先使用</td></tr> <tr><td><code>wait download</code></td><td>等待下載觸發完成</td><td>⭐⭐ 按需使用</td></tr> <tr><td><code>wait time</code></td><td>無條件等待（最後手段）</td><td>⭐ 盡量避免</td></tr> </tbody> </table>  <h2>5.6 資料擷取</h2> <h3>extract — 轉為 Markdown</h3> <p>
+將頁面或指定區域的 HTML 內容轉換為結構化 Markdown，方便後續 LLM 處理或存檔。支援大頁面的分段擷取。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 擷取整頁內容
+opencli browser main extract
+
+# 擷取特定區域
+opencli browser main extract --selector &quot;article.main-content&quot;
+opencli browser main extract --selector &quot;#product-table&quot;
+
+# 分段擷取（每段 2000 字元）
+opencli browser main extract --chunk-size 2000
+
+# 從第 3 段開始擷取
+opencli browser main extract --chunk-size 2000 --start 3" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 擷取整頁內容</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> extract</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 擷取特定區域</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "article.main-content"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "#product-table"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 分段擷取（每段 2000 字元）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --chunk-size</span><span style="color:#D19A66"> 2000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 從第 3 段開始擷取</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> extract</span><span style="color:#D19A66"> --chunk-size</span><span style="color:#D19A66"> 2000</span><span style="color:#D19A66"> --start</span><span style="color:#D19A66"> 3</span></span></code></pre> </div> </div>   <h3>eval — 執行 JavaScript</h3> <p>
+在頁面 context 中執行任意 JavaScript，回傳執行結果。設計為<strong>唯讀操作</strong>，適合讀取複雜資料結構，不建議用於觸發副作用。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 讀取 localStorage
+opencli browser main eval &quot;localStorage.getItem('token')&quot;
+
+# 讀取 DOM 元素數量
+opencli browser main eval &quot;document.querySelectorAll('tr').length&quot;
+
+# 在特定 iframe 中執行
+opencli browser main eval &quot;document.title&quot; --frame 1
+
+# 讀取全域變數
+opencli browser main eval &quot;window.__APP_CONFIG__&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 讀取 localStorage</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "localStorage.getItem('token')"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取 DOM 元素數量</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.querySelectorAll('tr').length"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在特定 iframe 中執行</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "document.title"</span><span style="color:#D19A66"> --frame</span><span style="color:#D19A66"> 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 讀取全域變數</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> eval</span><span style="color:#98C379"> "window.__APP_CONFIG__"</span></span></code></pre> </div> </div>   <div class="call warn"> <strong>eval 使用注意事項</strong><br> <code>eval</code> 雖然可以執行任何 JS，但應僅用於讀取資料。若需要觸發點擊或修改 DOM，請使用 <code>click</code>、<code>fill</code> 等語意明確的指令，以確保事件正確觸發且操作可追蹤。
+</div>  <h2>5.7 Network 監聽</h2> <p> <code>network</code> 指令擷取瀏覽器最近的網路請求記錄，可用於驗證 API 呼叫、擷取 response body 或分析請求參數。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 列出最近的網路請求
+opencli browser main network
+
+# 顯示所有請求（包含靜態資源）
+opencli browser main network --all
+
+# 篩選只顯示特定欄位
+opencli browser main network --filter &quot;url,status,method&quot;
+
+# 取得特定請求的詳細內容（response body 等）
+opencli browser main network --detail responseBody
+
+# 顯示原始 JSON 格式
+opencli browser main network --raw
+
+# 只保留最近 5000ms 內的請求
+opencli browser main network --ttl 5000" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出最近的網路請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 顯示所有請求（包含靜態資源）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span><span style="color:#D19A66"> --all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 篩選只顯示特定欄位</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span><span style="color:#D19A66"> --filter</span><span style="color:#98C379"> "url,status,method"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 取得特定請求的詳細內容（response body 等）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span><span style="color:#D19A66"> --detail</span><span style="color:#98C379"> responseBody</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 顯示原始 JSON 格式</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span><span style="color:#D19A66"> --raw</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 只保留最近 5000ms 內的請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> network</span><span style="color:#D19A66"> --ttl</span><span style="color:#D19A66"> 5000</span></span></code></pre> </div> </div>   <table> <thead> <tr><th>選項</th><th>說明</th></tr> </thead> <tbody> <tr><td><code>--detail &lt;key&gt;</code></td><td>展開特定欄位詳細資料（如 <code>responseBody</code>、<code>requestHeaders</code>）</td></tr> <tr><td><code>--filter &lt;fields&gt;</code></td><td>逗號分隔，只顯示指定欄位</td></tr> <tr><td><code>--all</code></td><td>包含圖片、CSS、JS 等靜態資源請求</td></tr> <tr><td><code>--raw</code></td><td>輸出未格式化的原始 JSON</td></tr> <tr><td><code>--ttl &lt;ms&gt;</code></td><td>只保留指定毫秒內的新請求</td></tr> </tbody> </table>  <h2>5.8 Tab 管理</h2> <p>
+當需要同時操作多個分頁時，可使用 <code>tab</code> 系列指令管理分頁生命週期。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 列出所有開啟的分頁
+opencli browser main tab list
+
+# 開啟新分頁（不指定 URL 則開啟空白頁）
+opencli browser main tab new
+opencli browser main tab new https://example.com
+
+# 切換到指定分頁（使用 targetId）
+opencli browser main tab select ABC123targetId
+
+# 關閉指定分頁
+opencli browser main tab close ABC123targetId" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出所有開啟的分頁</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> tab</span><span style="color:#98C379"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 開啟新分頁（不指定 URL 則開啟空白頁）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> tab</span><span style="color:#98C379"> new</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> tab</span><span style="color:#98C379"> new</span><span style="color:#98C379"> https://example.com</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 切換到指定分頁（使用 targetId）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> tab</span><span style="color:#98C379"> select</span><span style="color:#98C379"> ABC123targetId</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 關閉指定分頁</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> tab</span><span style="color:#98C379"> close</span><span style="color:#98C379"> ABC123targetId</span></span></code></pre> </div> </div>    <h2>5.9 全域參數速查表</h2> <p>
+以下參數適用於大多數 OpenCLI 指令，可組合使用以精確控制行為。
+</p> <table> <thead> <tr><th>參數</th><th>說明</th><th>範例</th></tr> </thead> <tbody> <tr><td><code>--nth N</code></td><td>當多個元素符合時，選取第 N 個（從 1 起算）</td><td><code>--nth 2</code></td></tr> <tr><td><code>--frame N</code></td><td>在第 N 個 iframe 內操作</td><td><code>--frame 1</code></td></tr> <tr><td><code>--tab &lt;targetId&gt;</code></td><td>指定操作目標分頁</td><td><code>--tab ABC123</code></td></tr> <tr><td><code>--timeout &lt;ms&gt;</code></td><td>覆蓋預設逾時時間（毫秒）</td><td><code>--timeout 15000</code></td></tr> <tr><td><code>--role &lt;role&gt;</code></td><td>以 ARIA role 定位元素</td><td><code>--role button</code></td></tr> <tr><td><code>--name &lt;name&gt;</code></td><td>以 ARIA accessible name 定位</td><td><code>--name "送出"</code></td></tr> <tr><td><code>--label &lt;text&gt;</code></td><td>以 &lt;label&gt; 文字定位關聯 input</td><td><code>--label "姓名"</code></td></tr> <tr><td><code>--testid &lt;id&gt;</code></td><td>以 data-testid 屬性定位</td><td><code>--testid "submit-btn"</code></td></tr> <tr><td><code>-f / --format</code></td><td>輸出格式：table、json、yaml、md、csv</td><td><code>-f json</code></td></tr> </tbody> </table> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 組合使用：在第 2 個 iframe 內點擊第 3 個符合的按鈕，15 秒逾時
+opencli browser main click &quot;button.action&quot; --frame 1 --nth 3 --timeout 15000
+
+# 以 ARIA 定位並以 JSON 輸出
+opencli browser main find --role textbox --name &quot;搜尋&quot; -f json
+
+# 以 data-testid 精確定位
+opencli browser main click --testid &quot;checkout-button&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 組合使用：在第 2 個 iframe 內點擊第 3 個符合的按鈕，15 秒逾時</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "button.action"</span><span style="color:#D19A66"> --frame</span><span style="color:#D19A66"> 1</span><span style="color:#D19A66"> --nth</span><span style="color:#D19A66"> 3</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 15000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 ARIA 定位並以 JSON 輸出</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> find</span><span style="color:#D19A66"> --role</span><span style="color:#98C379"> textbox</span><span style="color:#D19A66"> --name</span><span style="color:#98C379"> "搜尋"</span><span style="color:#D19A66"> -f</span><span style="color:#98C379"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 以 data-testid 精確定位</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> main</span><span style="color:#98C379"> click</span><span style="color:#D19A66"> --testid</span><span style="color:#98C379"> "checkout-button"</span></span></code></pre> </div> </div>    <h2>5.10 Match Level — Ref 匹配信心度</h2> <p>
+OpenCLI 使用 ref 編號（<code>[N]</code>）跨指令追蹤元素。由於頁面可能在操作間更新，系統以 <strong>Match Level</strong> 回報 ref 的匹配可靠度。
+</p> <table> <thead> <tr><th>Match Level</th><th>說明</th><th>建議行動</th></tr> </thead> <tbody> <tr><td><code>exact</code></td><td>Ref 完全對應，元素未變動</td><td>直接操作，最可靠</td></tr> <tr><td><code>stable</code></td><td>元素存在但部分屬性有輕微變化</td><td>可繼續操作，注意結果</td></tr> <tr><td><code>reidentified</code></td><td>原 ref 失效，系統透過啟發式重新找到元素</td><td>建議重新執行 <code>state</code> 取得新 ref</td></tr> </tbody> </table> <div class="call tip"> <strong>何時會出現 reidentified？</strong><br>
+SPA 路由切換、React/Vue 重新渲染、AJAX 局部更新後，原本的 ref 可能失效。系統會嘗試重新定位，但建議在重大頁面變化後重新執行 <code>state</code> 取得最新 ref，確保操作準確。
+</div>  <h2>5.11 錯誤碼對照表</h2> <p>
+當指令執行失敗時，OpenCLI 回傳結構化錯誤碼，方便在 script 中進行條件判斷與錯誤處理。
+</p> <table> <thead> <tr><th>錯誤碼</th><th>說明</th><th>常見原因與解法</th></tr> </thead> <tbody> <tr> <td><code>not_found</code></td> <td>找不到指定 session</td> <td>先執行 <code>open</code> 或 <code>bind</code> 建立 session</td> </tr> <tr> <td><code>stale_ref</code></td> <td>Ref 編號已失效（元素不再存在）</td> <td>重新執行 <code>state</code> 取得最新 ref</td> </tr> <tr> <td><code>invalid_selector</code></td> <td>CSS Selector 語法錯誤</td> <td>檢查 selector 語法，特殊字元需跳脫</td> </tr> <tr> <td><code>selector_not_found</code></td> <td>Selector 語法正確但找不到符合元素</td> <td>確認頁面已載入完成，或使用 <code>wait selector</code></td> </tr> <tr> <td><code>selector_ambiguous</code></td> <td>Selector 符合多個元素</td> <td>加上 <code>--nth N</code> 指定，或使用更精確的 selector</td> </tr> <tr> <td><code>option_not_found</code></td> <td><code>select</code> 找不到指定選項</td> <td>確認選項文字或 value 完全符合（區分大小寫）</td> </tr> </tbody> </table>  <h2>5.12 完整工作流範例：自動化登入流程</h2> <p>
+以下範例整合本章所有核心指令，示範一個完整的登入自動化流程，包含錯誤處理與狀態驗證。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="#!/bin/bash
+# 完整登入自動化流程範例
+
+SESSION=&quot;login-flow&quot;
+BASE_URL=&quot;https://app.example.com&quot;
+
+echo &quot;=== 步驟 1：開啟登入頁面 ===&quot;
+opencli browser ${SESSION} open &quot;${BASE_URL}/login&quot; --window foreground
+
+echo &quot;=== 步驟 2：等待登入表單載入 ===&quot;
+opencli browser ${SESSION} wait selector &quot;#login-form&quot; --timeout 10000
+
+echo &quot;=== 步驟 3：截圖確認頁面狀態 ===&quot;
+opencli browser ${SESSION} screenshot ./debug/before-login.png --annotate
+
+echo &quot;=== 步驟 4：檢視頁面結構，取得 ref 編號 ===&quot;
+opencli browser ${SESSION} state
+
+echo &quot;=== 步驟 5：填入電子郵件（fill，不需 autocomplete）===&quot;
+opencli browser ${SESSION} fill --label &quot;電子郵件&quot; &quot;porter@example.com&quot;
+
+echo &quot;=== 步驟 6：填入密碼（fill，不需 autocomplete）===&quot;
+opencli browser ${SESSION} fill --label &quot;密碼&quot; &quot;MySecret123!&quot;
+
+echo &quot;=== 步驟 7：確認記住我核取方塊 ===&quot;
+opencli browser ${SESSION} check --label &quot;記住我&quot;
+
+echo &quot;=== 步驟 8：點擊登入按鈕 ===&quot;
+opencli browser ${SESSION} click --role button --name &quot;登入&quot;
+
+echo &quot;=== 步驟 9：等待登入成功訊息或儀表板載入 ===&quot;
+opencli browser ${SESSION} wait text &quot;歡迎回來&quot; --timeout 8000
+
+echo &quot;=== 步驟 10：驗證當前 URL 已跳轉 ===&quot;
+CURRENT_URL=$(opencli browser ${SESSION} get url)
+echo &quot;當前 URL：${CURRENT_URL}&quot;
+
+echo &quot;=== 步驟 11：擷取儀表板主要內容 ===&quot;
+opencli browser ${SESSION} extract --selector &quot;main.dashboard&quot;
+
+echo &quot;=== 步驟 12：確認 API token 已寫入 localStorage ===&quot;
+TOKEN=$(opencli browser ${SESSION} eval &quot;localStorage.getItem('auth_token')&quot;)
+echo &quot;Token 長度：${#TOKEN}&quot;
+
+echo &quot;=== 步驟 13：截圖存檔 ===&quot;
+opencli browser ${SESSION} screenshot ./debug/after-login.png
+
+echo &quot;=== 登入流程完成，釋放 session ===&quot;
+opencli browser ${SESSION} close" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 完整登入自動化流程範例</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">SESSION</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"login-flow"</span></span>
+<span class="line"><span style="color:#E06C75">BASE_URL</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"https://app.example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 1：開啟登入頁面 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">open</span><span style="color:#98C379"> "${</span><span style="color:#E06C75">BASE_URL</span><span style="color:#98C379">}/login"</span><span style="color:#D19A66"> --window</span><span style="color:#98C379"> foreground</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 2：等待登入表單載入 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> "#login-form"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 10000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 3：截圖確認頁面狀態 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">screenshot</span><span style="color:#98C379"> ./debug/before-login.png</span><span style="color:#D19A66"> --annotate</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 4：檢視頁面結構，取得 ref 編號 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 5：填入電子郵件（fill，不需 autocomplete）==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">fill</span><span style="color:#D19A66"> --label</span><span style="color:#98C379"> "電子郵件"</span><span style="color:#98C379"> "porter@example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 6：填入密碼（fill，不需 autocomplete）==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">fill</span><span style="color:#D19A66"> --label</span><span style="color:#98C379"> "密碼"</span><span style="color:#98C379"> "MySecret123!"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 7：確認記住我核取方塊 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">check</span><span style="color:#D19A66"> --label</span><span style="color:#98C379"> "記住我"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 8：點擊登入按鈕 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">click</span><span style="color:#D19A66"> --role</span><span style="color:#98C379"> button</span><span style="color:#D19A66"> --name</span><span style="color:#98C379"> "登入"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 9：等待登入成功訊息或儀表板載入 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">wait</span><span style="color:#98C379"> text</span><span style="color:#98C379"> "歡迎回來"</span><span style="color:#D19A66"> --timeout</span><span style="color:#D19A66"> 8000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 10：驗證當前 URL 已跳轉 ==="</span></span>
+<span class="line"><span style="color:#E06C75">CURRENT_URL</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">get</span><span style="color:#98C379"> url</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "當前 URL：${</span><span style="color:#E06C75">CURRENT_URL</span><span style="color:#98C379">}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 11：擷取儀表板主要內容 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">extract</span><span style="color:#D19A66"> --selector</span><span style="color:#98C379"> "main.dashboard"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 12：確認 API token 已寫入 localStorage ==="</span></span>
+<span class="line"><span style="color:#E06C75">TOKEN</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">eval</span><span style="color:#98C379"> "localStorage.getItem('auth_token')"</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "Token 長度：${</span><span style="color:#ABB2BF">#</span><span style="color:#E06C75">TOKEN</span><span style="color:#98C379">}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 步驟 13：截圖存檔 ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">screenshot</span><span style="color:#98C379"> ./debug/after-login.png</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "=== 登入流程完成，釋放 session ==="</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">close</span></span></code></pre> </div> </div>   <div class="call info"> <strong>搜尋框使用 type 的範例</strong><br>
+若登入後需要使用搜尋功能（有 autocomplete），應改用 <code>type</code> 而非 <code>fill</code>：
+</div> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe></span> <button class="cb-copy" data-code="# 搜尋框需要 autocomplete：使用 type
+opencli browser ${SESSION} type --role searchbox --name &quot;搜尋&quot; &quot;台北&quot;
+
+# 等待 autocomplete 選項出現
+opencli browser ${SESSION} wait selector &quot;.autocomplete-dropdown&quot;
+
+# 選擇第一個建議項目
+opencli browser ${SESSION} click &quot;.autocomplete-item&quot; --nth 1" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋框需要 autocomplete：使用 type</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">type</span><span style="color:#D19A66"> --role</span><span style="color:#98C379"> searchbox</span><span style="color:#D19A66"> --name</span><span style="color:#98C379"> "搜尋"</span><span style="color:#98C379"> "台北"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 等待 autocomplete 選項出現</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">wait</span><span style="color:#98C379"> selector</span><span style="color:#98C379"> ".autocomplete-dropdown"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 選擇第一個建議項目</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#ABB2BF"> ${</span><span style="color:#E06C75">SESSION</span><span style="color:#ABB2BF">} </span><span style="color:#98C379">click</span><span style="color:#98C379"> ".autocomplete-item"</span><span style="color:#D19A66"> --nth</span><span style="color:#D19A66"> 1</span></span></code></pre> </div> </div>   <h3>工作流最佳實踐</h3> <ul> <li>每次操作前使用 <code>wait selector</code> 或 <code>wait text</code> 確保頁面就緒，而非使用固定 <code>wait time</code></li> <li>密碼、固定格式欄位一律使用 <code>fill</code>；搜尋、地址等 autocomplete 欄位使用 <code>type</code></li> <li>遇到 <code>stale_ref</code> 錯誤時，重新執行 <code>state</code> 取得最新 ref 後再繼續</li> <li>在關鍵步驟前後加上 <code>screenshot --annotate</code>，方便除錯時確認實際頁面狀態</li> <li>使用 <code>network</code> 指令驗證 API 呼叫是否成功，而非僅依賴 UI 文字判斷</li> <li>長時間流程中，使用 <code>-f json</code> 格式輸出，方便 shell script 解析結果</li> </ul>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span> </a> <a href="/opencli/ch06-locators" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>元素定位策略</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

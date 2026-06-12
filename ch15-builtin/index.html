@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Built-in Adapters 生態系 | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="OpenCLI 內建 80+ 平台適配器完整生態系介紹，涵蓋分類、認證機制、版本管理與社群貢獻指南。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 15 章 · Part 5：Adapters</span> <h1>Built-in Adapters 生態系</h1> <p class="cdesc">OpenCLI 內建超過 80 個平台適配器，讓每一道 CLI 指令都能直接操作各大平台，從社群媒體到開發者工具一應俱全。</p> <h2>Adapter 生態系概覽</h2> <p>
+Adapter（適配器）是 OpenCLI 的核心概念。每一個 adapter 封裝了特定平台的操作邏輯——認證方式、頁面結構、API 端點——讓你只需要記憶一套統一的 CLI 介面，就能駕馭數十個不同的平台。
+</p> <p>
+OpenCLI 開箱即用的 80+ 內建 adapter 橫跨七大分類，覆蓋了日常工作中最常接觸的平台。無論是抓取 Twitter 趨勢、監控 GitHub Issue、分析 YouTube 頻道，還是搜尋知乎問答，都只需要一行指令。
+</p> <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0;"> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">📱</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">社群媒體</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">Twitter、Facebook、Instagram、LinkedIn、Mastodon</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎬</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">影音平台</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">YouTube、Bilibili、Twitch、TikTok、Vimeo</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛠️</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">開發者工具</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">GitHub、GitLab、npm、PyPI、Docker Hub</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">知識平台</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">知乎、Medium、Reddit、Stack Overflow</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛒</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">電商</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">Amazon、Shopify、eBay（公開資訊）</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">生產力工具</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">Notion、Trello、Slack、Jira</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2); text-align: center;"> <div style="font-size: 2rem; margin-bottom: 0.5rem;">📰</div> <h4 style="margin: 0 0 0.25rem 0; color: var(--accent);">新聞資訊</h4> <p style="margin: 0; font-size: 0.85rem; color: var(--text2);">RSS 聚合、Hacker News、Product Hunt</p> </div> </div> <h2>查看可用 Adapters</h2> <p>在開始使用任何 adapter 之前，可以透過以下指令探索目前可用的 adapter 清單。</p> <h3>列出與篩選</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>列出所有 adapter</span> <button class="cb-copy" data-code="# 列出所有內建適配器
+opencli adapters list
+
+# 依分類篩選
+opencli adapters list --category social
+opencli adapters list --category video
+opencli adapters list --category devtools
+opencli adapters list --category ecommerce
+opencli adapters list --category knowledge
+opencli adapters list --category productivity
+opencli adapters list --category news
+
+# 輸出 JSON 格式（方便程式解析）
+opencli adapters list --format json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 列出所有內建適配器</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 依分類篩選</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> social</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> video</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> devtools</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> ecommerce</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> knowledge</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> productivity</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> news</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出 JSON 格式（方便程式解析）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <h3>查看詳細資訊</h3> <p><code>adapters info</code> 會顯示 adapter 的完整說明，包含所有子指令、參數說明和認證需求：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>查看 adapter 詳情</span> <button class="cb-copy" data-code="# 查看單一 adapter 詳細資訊
+opencli adapters info twitter
+opencli adapters info github
+opencli adapters info youtube
+
+# 輸出包含所有可用指令
+opencli adapters info twitter --commands
+
+# 查看認證策略說明
+opencli adapters info linkedin --auth" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 查看單一 adapter 詳細資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> info</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> info</span><span style="color:#98C379"> github</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> info</span><span style="color:#98C379"> youtube</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出包含所有可用指令</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> info</span><span style="color:#98C379"> twitter</span><span style="color:#D19A66"> --commands</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看認證策略說明</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> info</span><span style="color:#98C379"> linkedin</span><span style="color:#D19A66"> --auth</span></span></code></pre> </div> </div>   <h3>搜尋 Adapter</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>搜尋 adapter</span> <button class="cb-copy" data-code="# 關鍵字搜尋 adapter
+opencli adapters search video
+opencli adapters search &quot;social media&quot;
+opencli adapters search taiwan
+
+# 搜尋並顯示詳細資訊
+opencli adapters search git --verbose" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 關鍵字搜尋 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> search</span><span style="color:#98C379"> video</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "social media"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> search</span><span style="color:#98C379"> taiwan</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 搜尋並顯示詳細資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> search</span><span style="color:#98C379"> git</span><span style="color:#D19A66"> --verbose</span></span></code></pre> </div> </div>   <div class="call tip"> <span class="ci">💡</span> <div> <strong>快速發現指令</strong> <p>執行 <code>opencli adapters info &lt;name&gt; --commands</code> 可以看到該平台所有支援的子指令清單，是探索新 adapter 最快的方式。</p> </div> </div> <h2>適配器分類詳解</h2> <h3>社群媒體</h3> <p>社群媒體類 adapter 涵蓋全球主流平台。大多數讀取操作不需要登入；互動功能（按讚、轉發、留言）需要透過 <code>cookie</code> 策略共用瀏覽器登入狀態。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>社群媒體 adapter 指令示範</span> <button class="cb-copy" data-code="# Twitter/X：搜尋推文、取得趨勢
+opencli twitter search &quot;OpenCLI&quot; --limit 20
+opencli twitter trends --location tw
+
+# Facebook：公開粉絲頁貼文
+opencli facebook page posts &quot;anthropic&quot; --limit 10
+
+# Instagram：公開帳號貼文
+opencli instagram user posts &quot;anthropicai&quot; --limit 12
+
+# LinkedIn：職缺搜尋、人才搜尋
+opencli linkedin jobs search &quot;AI Engineer&quot; --location Taiwan
+opencli linkedin people search &quot;Porter Yen&quot;
+
+# Mastodon：公開時間軸
+opencli mastodon timeline public --limit 30
+opencli mastodon search &quot;OpenCLI&quot; --instance mastodon.social" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Twitter/X：搜尋推文、取得趨勢</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "OpenCLI"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> trends</span><span style="color:#D19A66"> --location</span><span style="color:#98C379"> tw</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Facebook：公開粉絲頁貼文</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> facebook</span><span style="color:#98C379"> page</span><span style="color:#98C379"> posts</span><span style="color:#98C379"> "anthropic"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Instagram：公開帳號貼文</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> instagram</span><span style="color:#98C379"> user</span><span style="color:#98C379"> posts</span><span style="color:#98C379"> "anthropicai"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 12</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># LinkedIn：職缺搜尋、人才搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> linkedin</span><span style="color:#98C379"> jobs</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI Engineer"</span><span style="color:#D19A66"> --location</span><span style="color:#98C379"> Taiwan</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> linkedin</span><span style="color:#98C379"> people</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Porter Yen"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Mastodon：公開時間軸</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> mastodon</span><span style="color:#98C379"> timeline</span><span style="color:#98C379"> public</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> mastodon</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "OpenCLI"</span><span style="color:#D19A66"> --instance</span><span style="color:#98C379"> mastodon.social</span></span></code></pre> </div> </div>   <h3>影音平台</h3> <p>影音類 adapter 支援影片搜尋、頻道分析、評論擷取等功能。YouTube 和 Bilibili 是功能最完整的兩個 adapter，支援完整的互動操作。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>影音平台 adapter 指令示範</span> <button class="cb-copy" data-code="# YouTube：搜尋影片、頻道資訊
+opencli youtube search &quot;TypeScript tutorial&quot; --limit 10
+opencli youtube channel info &quot;@Fireship&quot;
+
+# Bilibili：搜尋、排行榜
+opencli bilibili search &quot;Python 教學&quot; --limit 20
+opencli bilibili ranking --category technology
+
+# Twitch：直播列表、頻道資訊
+opencli twitch streams --game &quot;Software and Game Development&quot; --limit 20
+opencli twitch channel info &quot;theprimeagen&quot;
+
+# TikTok：搜尋公開影片
+opencli tiktok search &quot;coding tutorial&quot; --limit 15
+
+# Vimeo：搜尋高品質影片
+opencli vimeo search &quot;motion design&quot; --limit 10 --sort likes" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># YouTube：搜尋影片、頻道資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "TypeScript tutorial"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> youtube</span><span style="color:#98C379"> channel</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "@Fireship"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Bilibili：搜尋、排行榜</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Python 教學"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> bilibili</span><span style="color:#98C379"> ranking</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> technology</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Twitch：直播列表、頻道資訊</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitch</span><span style="color:#98C379"> streams</span><span style="color:#D19A66"> --game</span><span style="color:#98C379"> "Software and Game Development"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitch</span><span style="color:#98C379"> channel</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "theprimeagen"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># TikTok：搜尋公開影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> tiktok</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "coding tutorial"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 15</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Vimeo：搜尋高品質影片</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> vimeo</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "motion design"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> likes</span></span></code></pre> </div> </div>   <h3>開發者工具</h3> <p>開發者工具類 adapter 是工程師日常自動化的利器。GitHub adapter 尤其強大，支援 Repo 探索、Issue 管理、PR 追蹤等完整工作流。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>開發者工具 adapter 指令示範</span> <button class="cb-copy" data-code="# GitHub：熱門 Repo、Issue 管理
+opencli github trending --language typescript
+opencli github repo issues microsoft/vscode --state open --limit 20
+
+# GitLab：群組專案、MR 管理
+opencli gitlab group projects &quot;gitlab-org&quot; --limit 20
+opencli gitlab repo mrs &quot;gitlab-org/gitlab&quot; --state opened
+
+# npm：套件搜尋、版本查詢
+opencli npm search &quot;browser automation&quot; --limit 10
+opencli npm info playwright --versions
+
+# PyPI：Python 套件探索
+opencli pypi search &quot;web scraping&quot; --limit 10
+opencli pypi info selenium
+
+# Docker Hub：映像檔搜尋
+opencli dockerhub search &quot;node&quot; --stars 1000 --limit 20
+opencli dockerhub image info &quot;node&quot; --tag 20-alpine" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># GitHub：熱門 Repo、Issue 管理</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> trending</span><span style="color:#D19A66"> --language</span><span style="color:#98C379"> typescript</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> repo</span><span style="color:#98C379"> issues</span><span style="color:#98C379"> microsoft/vscode</span><span style="color:#D19A66"> --state</span><span style="color:#98C379"> open</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># GitLab：群組專案、MR 管理</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> gitlab</span><span style="color:#98C379"> group</span><span style="color:#98C379"> projects</span><span style="color:#98C379"> "gitlab-org"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> gitlab</span><span style="color:#98C379"> repo</span><span style="color:#98C379"> mrs</span><span style="color:#98C379"> "gitlab-org/gitlab"</span><span style="color:#D19A66"> --state</span><span style="color:#98C379"> opened</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># npm：套件搜尋、版本查詢</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> npm</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "browser automation"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> npm</span><span style="color:#98C379"> info</span><span style="color:#98C379"> playwright</span><span style="color:#D19A66"> --versions</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># PyPI：Python 套件探索</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> pypi</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "web scraping"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> pypi</span><span style="color:#98C379"> info</span><span style="color:#98C379"> selenium</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Docker Hub：映像檔搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> dockerhub</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "node"</span><span style="color:#D19A66"> --stars</span><span style="color:#D19A66"> 1000</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> dockerhub</span><span style="color:#98C379"> image</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "node"</span><span style="color:#D19A66"> --tag</span><span style="color:#98C379"> 20-alpine</span></span></code></pre> </div> </div>   <h3>知識平台</h3> <p>知識平台類 adapter 讓你能快速聚合多個來源的知識內容，非常適合用於資料收集和研究工作流。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>知識平台 adapter 指令示範</span> <button class="cb-copy" data-code="# 知乎：問題搜尋、熱榜
+opencli zhihu search &quot;Claude Code 使用技巧&quot; --limit 20
+opencli zhihu hot-list --category technology
+
+# Medium：文章搜尋
+opencli medium search &quot;AI Agent development&quot; --limit 10
+opencli medium tag &quot;typescript&quot; --limit 20
+
+# Reddit：Subreddit 瀏覽
+opencli reddit feed r/MachineLearning --sort hot --limit 30
+opencli reddit search &quot;Claude API&quot; --limit 20
+
+# Stack Overflow：問題搜尋
+opencli stackoverflow search &quot;how to use playwright&quot; --limit 10
+opencli stackoverflow questions --tag typescript --sort votes
+
+# Hacker News：頭條、評論
+opencli hackernews top --limit 30
+opencli hackernews search &quot;AI automation&quot; --limit 20" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 知乎：問題搜尋、熱榜</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> zhihu</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Claude Code 使用技巧"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> zhihu</span><span style="color:#98C379"> hot-list</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> technology</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Medium：文章搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> medium</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI Agent development"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> medium</span><span style="color:#98C379"> tag</span><span style="color:#98C379"> "typescript"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Reddit：Subreddit 瀏覽</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> feed</span><span style="color:#98C379"> r/MachineLearning</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> hot</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> reddit</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "Claude API"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Stack Overflow：問題搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> stackoverflow</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "how to use playwright"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> stackoverflow</span><span style="color:#98C379"> questions</span><span style="color:#D19A66"> --tag</span><span style="color:#98C379"> typescript</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> votes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Hacker News：頭條、評論</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI automation"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span></code></pre> </div> </div>   <h3>電商</h3> <p>電商類 adapter 目前只提供公開商品資訊的讀取功能，包含商品搜尋、價格查詢、評論讀取，不支援結帳或帳號操作。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>電商 adapter 指令示範</span> <button class="cb-copy" data-code="# Amazon：公開商品資訊（只讀）
+opencli amazon search &quot;mechanical keyboard&quot; --limit 10
+opencli amazon product info &quot;B09FXHGTHM&quot;
+
+# Shopify（公開商店）：商品瀏覽
+opencli shopify store products &quot;your-store.myshopify.com&quot; --limit 20
+
+# eBay：競標商品搜尋
+opencli ebay search &quot;vintage camera&quot; --condition used --limit 15
+opencli ebay item info &quot;123456789&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Amazon：公開商品資訊（只讀）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> amazon</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "mechanical keyboard"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> amazon</span><span style="color:#98C379"> product</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "B09FXHGTHM"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Shopify（公開商店）：商品瀏覽</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> shopify</span><span style="color:#98C379"> store</span><span style="color:#98C379"> products</span><span style="color:#98C379"> "your-store.myshopify.com"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># eBay：競標商品搜尋</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> ebay</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "vintage camera"</span><span style="color:#D19A66"> --condition</span><span style="color:#98C379"> used</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 15</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> ebay</span><span style="color:#98C379"> item</span><span style="color:#98C379"> info</span><span style="color:#98C379"> "123456789"</span></span></code></pre> </div> </div>   <div class="call warn"> <span class="ci">⚠️</span> <div> <strong>電商資料使用注意事項</strong> <p>電商 adapter 僅供個人學習與研究使用，請遵守各平台的服務條款。禁止用於大規模爬取、價格操控或商業競情蒐集。</p> </div> </div> <h3>生產力工具</h3> <p>生產力工具類 adapter 通常需要 API Key 或 Token，需要事先完成設定。這類 adapter 的優勢在於可以將工作管理工具整合進自動化腳本。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>生產力工具 adapter 指令示範</span> <button class="cb-copy" data-code="# Notion（需 API Key）：頁面讀取
+opencli notion pages list --workspace my-workspace
+opencli notion page get <page-id>
+
+# Trello（需 API Key）：看板管理
+opencli trello boards list
+opencli trello board cards <board-id> --list &quot;In Progress&quot;
+
+# Slack（需 API Token）：頻道訊息
+opencli slack channels list
+opencli slack channel messages general --limit 20
+
+# Jira（需 API Key）：Issue 追蹤
+opencli jira issues list --project MYPROJECT --status &quot;In Progress&quot;
+opencli jira issue get MYPROJECT-123" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Notion（需 API Key）：頁面讀取</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> notion</span><span style="color:#98C379"> pages</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --workspace</span><span style="color:#98C379"> my-workspace</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> notion</span><span style="color:#98C379"> page</span><span style="color:#98C379"> get</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">page-i</span><span style="color:#ABB2BF">d></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Trello（需 API Key）：看板管理</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> trello</span><span style="color:#98C379"> boards</span><span style="color:#98C379"> list</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> trello</span><span style="color:#98C379"> board</span><span style="color:#98C379"> cards</span><span style="color:#ABB2BF"> &#x3C;</span><span style="color:#98C379">board-i</span><span style="color:#ABB2BF">d> </span><span style="color:#D19A66">--list</span><span style="color:#98C379"> "In Progress"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Slack（需 API Token）：頻道訊息</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> slack</span><span style="color:#98C379"> channels</span><span style="color:#98C379"> list</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> slack</span><span style="color:#98C379"> channel</span><span style="color:#98C379"> messages</span><span style="color:#98C379"> general</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Jira（需 API Key）：Issue 追蹤</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> jira</span><span style="color:#98C379"> issues</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --project</span><span style="color:#98C379"> MYPROJECT</span><span style="color:#D19A66"> --status</span><span style="color:#98C379"> "In Progress"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> jira</span><span style="color:#98C379"> issue</span><span style="color:#98C379"> get</span><span style="color:#98C379"> MYPROJECT-123</span></span></code></pre> </div> </div>   <h3>新聞資訊</h3> <p>新聞資訊類 adapter 支援 RSS 聚合和各大科技媒體。RSS adapter 特別靈活，可以訂閱任意標準 RSS/Atom feed。</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>新聞資訊 adapter 指令示範</span> <button class="cb-copy" data-code="# RSS 聚合器：任意 RSS 來源
+opencli rss fetch &quot;https://feeds.feedburner.com/oreilly/radar&quot;
+opencli rss fetch &quot;https://techcrunch.com/feed/&quot; --limit 10
+
+# Hacker News：多種版面
+opencli hackernews top --limit 30
+opencli hackernews ask --limit 20
+opencli hackernews show --limit 20
+
+# Product Hunt：今日精選產品
+opencli producthunt today --limit 20
+opencli producthunt search &quot;AI tools&quot; --limit 15" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># RSS 聚合器：任意 RSS 來源</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> rss</span><span style="color:#98C379"> fetch</span><span style="color:#98C379"> "https://feeds.feedburner.com/oreilly/radar"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> rss</span><span style="color:#98C379"> fetch</span><span style="color:#98C379"> "https://techcrunch.com/feed/"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Hacker News：多種版面</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> top</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 30</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> ask</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> hackernews</span><span style="color:#98C379"> show</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Product Hunt：今日精選產品</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> producthunt</span><span style="color:#98C379"> today</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> producthunt</span><span style="color:#98C379"> search</span><span style="color:#98C379"> "AI tools"</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 15</span></span></code></pre> </div> </div>   <h2>認證機制總覽</h2> <p>
+OpenCLI 設計了七種標準化的認證策略，對應不同平台的接入方式。
+    了解這些策略有助於你判斷操作前是否需要先完成登入，以及遇到認證問題時如何排查。
+</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>策略</th> <th>說明</th> <th>代表平台</th> <th>前置需求</th> </tr> </thead> <tbody> <tr> <td><code>public</code></td> <td>無需任何憑證，直接讀取公開內容</td> <td>Hacker News、RSS、PyPI、Docker Hub</td> <td>無</td> </tr> <tr> <td><code>cookie</code></td> <td>共用瀏覽器現有登入 Cookie</td> <td>Twitter/X、YouTube、LinkedIn、知乎</td> <td>瀏覽器已登入目標平台</td> </tr> <tr> <td><code>api-key</code></td> <td>透過 API Token / Secret Key 認證</td> <td>Notion、Slack、Trello、Jira</td> <td>平台申請 API Key 並設定 <code>opencli config</code></td> </tr> <tr> <td><code>oauth</code></td> <td>標準 OAuth 2.0 授權流程</td> <td>GitHub（寫入操作）、GitLab</td> <td>執行 <code>opencli auth login &lt;platform&gt;</code></td> </tr> <tr> <td><code>local</code></td> <td>無頭瀏覽器直接操作，無帳號概念</td> <td>內部系統、Intranet、本地服務</td> <td>確保目標 URL 可達</td> </tr> <tr> <td><code>intercept</code></td> <td>攔截瀏覽器 XHR/Fetch 取得 API 回應</td> <td>Bilibili（部分）、TikTok</td> <td>瀏覽器已登入目標平台</td> </tr> <tr> <td><code>ui</code></td> <td>模擬 UI 互動完成登入或操作</td> <td>Instagram、Facebook（互動功能）</td> <td>瀏覽器已登入目標平台</td> </tr> </tbody> </table> </div> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>多策略 adapter</strong> <p>部分 adapter 會依操作類型切換策略。例如 GitHub 的讀取操作使用 <code>public</code>，而建立 Issue 或 Star Repo 等寫入操作則切換到 <code>oauth</code>，OpenCLI 會自動處理這個切換邏輯。</p> </div> </div> <h2>Adapter 版本管理</h2> <p>
+平台會不斷更新介面和 API，OpenCLI 提供完整的 adapter 版本管理機制，讓你能隨時更新、也能在出現問題時快速回滾。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Adapter 版本管理指令</span> <button class="cb-copy" data-code="# 查看所有 adapter 版本
+opencli adapters version
+
+# 查看特定 adapter 版本
+opencli adapters version twitter
+opencli adapters version --category social
+
+# 更新全部 adapter
+opencli adapters update
+
+# 更新特定 adapter
+opencli adapters update twitter
+opencli adapters update github youtube
+
+# 回滾到前一個版本
+opencli adapters rollback twitter
+
+# 回滾到指定版本
+opencli adapters rollback twitter --to 2.1.0
+
+# 查看可用版本歷史
+opencli adapters version twitter --history" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 查看所有 adapter 版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> version</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看特定 adapter 版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> version</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> version</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> social</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 更新全部 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> update</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 更新特定 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> update</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> update</span><span style="color:#98C379"> github</span><span style="color:#98C379"> youtube</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 回滾到前一個版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> rollback</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 回滾到指定版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> rollback</span><span style="color:#98C379"> twitter</span><span style="color:#D19A66"> --to</span><span style="color:#D19A66"> 2.1.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看可用版本歷史</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> version</span><span style="color:#98C379"> twitter</span><span style="color:#D19A66"> --history</span></span></code></pre> </div> </div>   <h3>版本相依關係</h3> <p>每個 adapter 都有對應的 OpenCLI 主程式版本需求。執行 <code>opencli adapters update</code> 時，系統會自動檢查相容性，避免安裝不相容的版本。</p> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>狀況</th> <th>說明</th> <th>建議動作</th> </tr> </thead> <tbody> <tr> <td>adapter 版本過舊</td> <td>平台改版導致部分功能失效</td> <td><code>opencli adapters update &lt;name&gt;</code></td> </tr> <tr> <td>更新後功能異常</td> <td>新版 adapter 可能有 breaking change</td> <td><code>opencli adapters rollback &lt;name&gt;</code></td> </tr> <tr> <td>OpenCLI 主程式太舊</td> <td>新版 adapter 需要更新的核心功能</td> <td>先更新 OpenCLI 主程式</td> </tr> <tr> <td>版本被鎖定</td> <td>專案需要固定版本確保穩定</td> <td>使用 <code>opencli adapters version --pin</code></td> </tr> </tbody> </table> </div> <div class="call tip"> <span class="ci">💡</span> <div> <strong>CI 環境建議</strong> <p>在 CI/CD 環境中，建議使用 <code>opencli adapters version --pin</code> 將 adapter 版本鎖定，並將鎖定檔案提交至版本控制，確保每次執行的行為一致。</p> </div> </div> <h2>社群 Adapter 生態</h2> <p>
+除了官方內建的 80+ adapter，OpenCLI 社群也貢獻了大量第三方 adapter，覆蓋更多小眾平台和垂直場景。
+    這些社群 adapter 以 npm 套件形式發布，命名規範為 <code>opencli-adapter-&lt;name&gt;</code>。
+</p> <h3>安裝社群 Adapter</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>社群 adapter 安裝與管理</span> <button class="cb-copy" data-code="# 從 npm 安裝社群 adapter
+opencli adapters install opencli-adapter-lobsters
+opencli adapters install opencli-adapter-devto
+opencli adapters install opencli-adapter-producthunt
+
+# 安裝並指定版本
+opencli adapters install opencli-adapter-lobsters@1.2.0
+
+# 從本地目錄載入（開發中的 adapter）
+opencli plugin load ./my-custom-adapter/adapter.yaml
+
+# 列出已安裝的社群 adapter
+opencli adapters list --source community
+
+# 解除安裝社群 adapter
+opencli adapters uninstall opencli-adapter-lobsters" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 從 npm 安裝社群 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> install</span><span style="color:#98C379"> opencli-adapter-lobsters</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> install</span><span style="color:#98C379"> opencli-adapter-devto</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> install</span><span style="color:#98C379"> opencli-adapter-producthunt</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 安裝並指定版本</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> install</span><span style="color:#98C379"> opencli-adapter-lobsters@1.2.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 從本地目錄載入（開發中的 adapter）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> plugin</span><span style="color:#98C379"> load</span><span style="color:#98C379"> ./my-custom-adapter/adapter.yaml</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 列出已安裝的社群 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> list</span><span style="color:#D19A66"> --source</span><span style="color:#98C379"> community</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 解除安裝社群 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> uninstall</span><span style="color:#98C379"> opencli-adapter-lobsters</span></span></code></pre> </div> </div>   <h3>尋找社群 Adapter</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>搜尋社群 adapter</span> <button class="cb-copy" data-code="# 在 npm registry 搜尋社群 adapter
+npm search opencli-adapter
+
+# 在 GitHub 搜尋（使用 GitHub adapter 本身！）
+opencli github search repos &quot;opencli-adapter&quot; --topic opencli
+
+# 查看熱門社群 adapter
+opencli adapters marketplace --sort downloads --limit 20" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 在 npm registry 搜尋社群 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> search</span><span style="color:#98C379"> opencli-adapter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在 GitHub 搜尋（使用 GitHub adapter 本身！）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> github</span><span style="color:#98C379"> search</span><span style="color:#98C379"> repos</span><span style="color:#98C379"> "opencli-adapter"</span><span style="color:#D19A66"> --topic</span><span style="color:#98C379"> opencli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看熱門社群 adapter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> marketplace</span><span style="color:#D19A66"> --sort</span><span style="color:#98C379"> downloads</span><span style="color:#D19A66"> --limit</span><span style="color:#D19A66"> 20</span></span></code></pre> </div> </div>   <h3>貢獻 Adapter</h3> <p>想為 OpenCLI 社群貢獻一個新的 adapter？基本流程如下：</p> <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.5rem 0;"> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">Step 1：開發</h4> <p style="margin: 0; font-size: 0.9rem;">參考第 17 章，用 YAML 或 TypeScript 撰寫 adapter，本地測試確認功能正常。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">Step 2：打包</h4> <p style="margin: 0; font-size: 0.9rem;">建立 npm 套件，加入 <code>"opencli"</code> 和 <code>"opencli-adapter"</code> keywords，方便被搜尋發現。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">Step 3：發布</h4> <p style="margin: 0; font-size: 0.9rem;">執行 <code>npm publish</code> 發布到 npm registry，並在 GitHub 加入 <code>opencli</code> topic。</p> </div> <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--bg2);"> <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">Step 4：提交收錄</h4> <p style="margin: 0; font-size: 0.9rem;">向 OpenCLI 官方 repo 提交 PR，申請加入 marketplace 精選清單，增加曝光度。</p> </div> </div> <h2>適配器健康狀態</h2> <p>
+平台本身可能發生故障、改版或封鎖，OpenCLI 提供健康狀態監控機制，讓你能快速掌握每個 adapter 目前是否正常運作。
+</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Adapter 健康檢查指令</span> <button class="cb-copy" data-code="# 批次健康檢查（所有 adapter）
+opencli adapters health
+
+# 單一 adapter 狀態
+opencli adapters health twitter
+opencli adapters health github
+
+# 指定分類健康檢查
+opencli adapters health --category social
+
+# 輸出 JSON 格式
+opencli adapters health --format json" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 批次健康檢查（所有 adapter）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 單一 adapter 狀態</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span><span style="color:#98C379"> twitter</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span><span style="color:#98C379"> github</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 指定分類健康檢查</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span><span style="color:#D19A66"> --category</span><span style="color:#98C379"> social</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出 JSON 格式</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span></span></code></pre> </div> </div>   <h3>健康狀態碼說明</h3> <div style="overflow-x: auto; margin: 1rem 0;"> <table> <thead> <tr> <th>狀態碼</th> <th>含義</th> <th>常見原因</th> <th>建議動作</th> </tr> </thead> <tbody> <tr> <td><code>ok</code></td> <td>正常運作</td> <td>—</td> <td>無需處理</td> </tr> <tr> <td><code>degraded</code></td> <td>效能降低或部分功能異常</td> <td>平台局部改版、速率限制、網路延遲</td> <td>更新 adapter 或稍後重試</td> </tr> <tr> <td><code>offline</code></td> <td>完全無法連線</td> <td>平台維護、DNS 問題、防火牆封鎖</td> <td>確認網路；等待平台恢復</td> </tr> <tr> <td><code>auth-required</code></td> <td>需要認證才能繼續</td> <td>Cookie 過期、API Key 無效、Token 失效</td> <td>重新登入或更新 API Key</td> </tr> </tbody> </table> </div> <h3>自動化健康檢查腳本</h3> <p>將健康檢查加入定期排程，在 adapter 出問題時及時收到通知：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>health-check.sh — 定期健康監控腳本</span> <button class="cb-copy" data-code="#!/bin/bash
+# 每日健康檢查腳本：health-check.sh
+
+REPORT=$(opencli adapters health --format json)
+DEGRADED=$(echo &quot;$REPORT&quot; | jq '[.[] | select(.status == &quot;degraded&quot;)] | length')
+OFFLINE=$(echo &quot;$REPORT&quot; | jq '[.[] | select(.status == &quot;offline&quot;)] | length')
+
+if [ &quot;$OFFLINE&quot; -gt 0 ]; then
+  echo &quot;警告：$OFFLINE 個 adapter 離線&quot;
+  echo &quot;$REPORT&quot; | jq '.[] | select(.status == &quot;offline&quot;) | .name'
+fi
+
+if [ &quot;$DEGRADED&quot; -gt 0 ]; then
+  echo &quot;注意：$DEGRADED 個 adapter 效能降低&quot;
+fi" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 每日健康檢查腳本：health-check.sh</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">REPORT</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> adapters</span><span style="color:#98C379"> health</span><span style="color:#D19A66"> --format</span><span style="color:#98C379"> json</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">DEGRADED</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$REPORT</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.status == "degraded")] | length'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"><span style="color:#E06C75">OFFLINE</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">$(</span><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$REPORT</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '[.[] | select(.status == "offline")] | length'</span><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">if</span><span style="color:#ABB2BF"> [ </span><span style="color:#98C379">"</span><span style="color:#E06C75">$OFFLINE</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> -gt</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF"> ]; </span><span style="color:#C678DD">then</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "警告：</span><span style="color:#E06C75">$OFFLINE</span><span style="color:#98C379"> 個 adapter 離線"</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "</span><span style="color:#E06C75">$REPORT</span><span style="color:#98C379">"</span><span style="color:#ABB2BF"> | </span><span style="color:#61AFEF">jq</span><span style="color:#98C379"> '.[] | select(.status == "offline") | .name'</span></span>
+<span class="line"><span style="color:#C678DD">fi</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">if</span><span style="color:#ABB2BF"> [ </span><span style="color:#98C379">"</span><span style="color:#E06C75">$DEGRADED</span><span style="color:#98C379">"</span><span style="color:#56B6C2"> -gt</span><span style="color:#D19A66"> 0</span><span style="color:#ABB2BF"> ]; </span><span style="color:#C678DD">then</span></span>
+<span class="line"><span style="color:#56B6C2">  echo</span><span style="color:#98C379"> "注意：</span><span style="color:#E06C75">$DEGRADED</span><span style="color:#98C379"> 個 adapter 效能降低"</span></span>
+<span class="line"><span style="color:#C678DD">fi</span></span></code></pre> </div> </div>   <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>搭配 OpenCLI Cron 使用</strong> <p>你也可以使用 <code>opencli cron add "0 9 * * *" "opencli adapters health --format json"</code> 將健康檢查排進每日定時任務，不需要額外維護 shell 腳本。</p> </div> </div> <h2>本章小結</h2> <p>
+OpenCLI 的 adapter 生態系是整個工具最有價值的部分之一。80+ 內建 adapter 加上持續成長的社群貢獻，讓你幾乎可以用同一套 CLI 介面操作所有主要平台。
+</p> <p>
+掌握以下三件事，就能充分運用 adapter 生態：
+</p> <ul> <li>用 <code>opencli adapters list</code> 和 <code>adapters info</code> 探索可用能力</li> <li>了解七種認證策略，判斷操作前需要什麼前置條件</li> <li>定期執行 <code>opencli adapters health</code>，掌握 adapter 健康狀態</li> </ul> <p>
+下一章將進入各大平台的實際指令實作，帶你深入 Twitter、YouTube、GitHub 等核心 adapter 的完整操作範例。
+</p>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>自動化任務實戰</span> </a> <a href="/opencli/ch16-adapter-usage" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>常用平台指令實作</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 

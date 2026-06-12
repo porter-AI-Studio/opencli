@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="zh-TW" data-astro-cid-mw7aashj> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OpenCLI vs Playwright MCP | </title><link rel="stylesheet" href="/opencli/_astro/DocsLayout.BldRaKia.css">
+<style>.cb-wrap[data-astro-cid-jgrc2lfe]{margin-bottom:1.25rem}.cb-bar[data-astro-cid-jgrc2lfe]{display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border-radius:6px 6px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.05);padding:.18rem .5rem .18rem .75rem;min-height:1.8rem}.cb-label[data-astro-cid-jgrc2lfe]{color:#a6adc8;font-family:Fira Code,Cascadia Code,Consolas,monospace;font-size:.73rem;letter-spacing:.04em}.cb-inner[data-astro-cid-jgrc2lfe] pre{border-radius:0 0 8px 8px!important;margin-bottom:0!important}.cb-copy[data-astro-cid-jgrc2lfe]{background:#ffffff14;color:#888;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.15rem .55rem;font-size:.7rem;cursor:pointer;transition:all .15s;flex-shrink:0}.cb-copy[data-astro-cid-jgrc2lfe]:hover{background:#ffffff2e;color:#fff}.cb-copy[data-astro-cid-jgrc2lfe].copied{color:#4ec9b0;border-color:#4ec9b0}
+</style></head>OpenCLI 完整指南 <meta name="description" content="深度比較 OpenCLI 與 Playwright MCP 的架構差異、操作模型、AI 整合方式與 E2E 測試工作流程，幫助你在兩者之間做出最佳選型。"> <link rel="icon" href="/opencli/favicon.svg" type="image/svg+xml"> <script>
+    (function () {
+      const s = localStorage.getItem('oc-theme');
+      const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+    })();
+  </script>  </html> <body data-astro-cid-mw7aashj> <div id="pb" data-astro-cid-mw7aashj></div> <header data-astro-cid-mw7aashj> <div class="hi" data-astro-cid-mw7aashj> <div class="hl" data-astro-cid-mw7aashj> <button id="mbtn" class="ibtn" aria-label="選單" data-astro-cid-mw7aashj> <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-mw7aashj></path> </svg> </button> <a href="/opencli/" class="site-name" data-astro-cid-mw7aashj> <span class="logo" data-astro-cid-mw7aashj>OC</span>&nbsp;&nbsp;OpenCLI 完整指南
+</a> </div> <div class="hr" data-astro-cid-mw7aashj> <button id="tt" class="ibtn" aria-label="切換主題" data-astro-cid-mw7aashj> <svg id="isun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728 0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" data-astro-cid-mw7aashj></path> </svg> <svg id="imoon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z" data-astro-cid-mw7aashj></path> </svg> </button> </div> </div> </header> <div id="layout" data-astro-cid-mw7aashj> <nav id="sb" data-astro-cid-mw7aashj> <div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="1" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 1：入門</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="1" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch01-intro" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>1.</span> <span data-astro-cid-mw7aashj>什麼是 OpenCLI？</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch02-install" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>2.</span> <span data-astro-cid-mw7aashj>安裝與環境設定</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch03-quickstart" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>3.</span> <span data-astro-cid-mw7aashj>快速上手：第一個自動化</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="2" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 2：瀏覽器自動化</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="2" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch04-browser-connect" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>4.</span> <span data-astro-cid-mw7aashj>連接瀏覽器與 Session 管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch05-commands" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>5.</span> <span data-astro-cid-mw7aashj>完整指令參考</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch06-locators" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>6.</span> <span data-astro-cid-mw7aashj>元素定位策略</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch07-advanced" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>7.</span> <span data-astro-cid-mw7aashj>進階操作（eval、wait、network）</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="3" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 3：E2E 測試</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="3" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch08-e2e-setup" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>8.</span> <span data-astro-cid-mw7aashj>Vitest + OpenCLI 測試架構</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch09-first-test" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>9.</span> <span data-astro-cid-mw7aashj>撰寫第一個 E2E 測試</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch10-pitfalls" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>10.</span> <span data-astro-cid-mw7aashj>三大陷阱與 Debug 技巧</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch11-ci" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>11.</span> <span data-astro-cid-mw7aashj>CI/CD 整合</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="4" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 4：AI Agent 整合</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="4" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch12-claude-code" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>12.</span> <span data-astro-cid-mw7aashj>在 Claude Code 中使用 OpenCLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch13-skills" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>13.</span> <span data-astro-cid-mw7aashj>Skills 安裝與管理</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch14-automation" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>14.</span> <span data-astro-cid-mw7aashj>自動化任務實戰</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="5" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 5：Adapters</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="5" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch15-builtin" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>15.</span> <span data-astro-cid-mw7aashj>Built-in Adapters 生態系</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch16-adapter-usage" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>16.</span> <span data-astro-cid-mw7aashj>常用平台指令實作</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch17-custom-adapter" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>17.</span> <span data-astro-cid-mw7aashj>自製 Custom Adapter</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt open" data-pid="6" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 6：比較與實戰</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl" data-pl="6" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/ch18-vs-playwright" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>18.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>19.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch20-vs-playwright-mcp" class="active" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>20.</span> <span data-astro-cid-mw7aashj>OpenCLI vs Playwright MCP</span>  </a> </li><li data-astro-cid-mw7aashj> <a href="/opencli/ch19-faq" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span>  </a> </li> </ul> </div><div class="np" data-astro-cid-mw7aashj> <button class="pt" data-pid="7" data-astro-cid-mw7aashj> <span data-astro-cid-mw7aashj>Part 7：附錄</span> <svg class="arr" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" data-astro-cid-mw7aashj> <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" data-astro-cid-mw7aashj></path> </svg> </button> <ul class="nl closed" data-pl="7" data-astro-cid-mw7aashj> <li data-astro-cid-mw7aashj> <a href="/opencli/about" data-astro-cid-mw7aashj> <span class="cn" data-astro-cid-mw7aashj>21.</span> <span data-astro-cid-mw7aashj>關於作者</span>  </a> </li> </ul> </div> </nav> <div id="ov" data-astro-cid-mw7aashj></div> <main data-astro-cid-mw7aashj> <div class="cb" data-astro-cid-mw7aashj>  <span class="clabel">第 20 章 · Part 6：比較與實戰</span> <h1>OpenCLI vs Playwright MCP</h1> <p class="cdesc">同樣是讓 AI 控制瀏覽器，但 CLI Daemon 架構與 MCP Server 架構背後的設計理念截然不同。本章深入剖析兩者的差異與各自的最佳應用場景。</p> <h2>20.1 兩個工具的定位</h2> <p><strong>OpenCLI</strong> 是一個 CLI 工具，透過 Daemon 常駐程序 + Browser Extension，讓開發者（或 AI）在終端機以語義指令操作瀏覽器。它提供 30+ 個平台 Adapter，讓 <code>opencli twitter post</code> 這樣的高層語義指令直接可用。</p> <p><strong>Playwright MCP</strong> 是 Microsoft 開源的 MCP Server，讓支援 MCP 協定的 AI 客戶端（Claude Code、VS Code Copilot、Cursor 等）直接呼叫瀏覽器自動化工具，不需要 CLI 子程序。它基於 Accessibility Tree（無障礙樹）快照，不依賴視覺模型。</p> <div class="call info"> <span class="ci">ℹ️</span> <div> <strong>Playwright MCP vs Playwright CLI</strong> <p>注意：Playwright 生態有兩個工具都叫「Playwright CLI」。本章比較的是 <code>@playwright/mcp</code>（MCP Server，AI 工具整合）。上一章（Ch 19）比較的是 <code>@playwright/cli</code>（互動式 Snapshot CLI）。兩者完全不同。</p> </div> </div> <h2>20.2 架構差異：Daemon + Extension vs MCP Server</h2> <p>兩者的底層架構決定了它們的使用方式：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>架構對比</span> <button class="cb-copy" data-code="OpenCLI 架構：
+  開發者 / AI
+       ↓ CLI 指令
+  opencli process
+       ↓ WebSocket
+  Daemon（7070 port）
+       ↓ Chrome Extension Protocol
+  Browser Extension ↔ 已開啟的 Chrome 分頁
+
+Playwright MCP 架構：
+  AI Client（Claude Code / Cursor / VS Code Copilot）
+       ↓ MCP 工具呼叫（JSON-RPC 2.0）
+  @playwright/mcp Server Process
+       ↓ Playwright API
+  Playwright 控制的瀏覽器（獨立或 headed/headless）" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span>OpenCLI 架構：</span></span>
+<span class="line"><span>  開發者 / AI</span></span>
+<span class="line"><span>       ↓ CLI 指令</span></span>
+<span class="line"><span>  opencli process</span></span>
+<span class="line"><span>       ↓ WebSocket</span></span>
+<span class="line"><span>  Daemon（7070 port）</span></span>
+<span class="line"><span>       ↓ Chrome Extension Protocol</span></span>
+<span class="line"><span>  Browser Extension ↔ 已開啟的 Chrome 分頁</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Playwright MCP 架構：</span></span>
+<span class="line"><span>  AI Client（Claude Code / Cursor / VS Code Copilot）</span></span>
+<span class="line"><span>       ↓ MCP 工具呼叫（JSON-RPC 2.0）</span></span>
+<span class="line"><span>  @playwright/mcp Server Process</span></span>
+<span class="line"><span>       ↓ Playwright API</span></span>
+<span class="line"><span>  Playwright 控制的瀏覽器（獨立或 headed/headless）</span></span></code></pre> </div> </div>  <script type="module">document.querySelectorAll(".cb-copy").forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.code;t&&navigator.clipboard.writeText(t).then(()=>{e.textContent="已複製!",e.classList.add("copied"),setTimeout(()=>{e.textContent="複製",e.classList.remove("copied")},2e3)})})});</script> <p>關鍵差異：OpenCLI 附著在你已開啟的 Chrome 視窗上，而 Playwright MCP 自己啟動一個獨立的瀏覽器實例。</p> <h2>20.3 安裝與設定</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI 安裝</span> <button class="cb-copy" data-code="npm install -g opencli
+opencli --version" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#61AFEF">npm</span><span style="color:#98C379"> install</span><span style="color:#D19A66"> -g</span><span style="color:#98C379"> opencli</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#D19A66"> --version</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP 安裝</span> <button class="cb-copy" data-code="# 在 Claude Code 中加入（推薦）
+claude mcp add playwright npx @playwright/mcp@latest
+
+# 或在 VS Code CLI
+code --add-mcp '{&quot;name&quot;:&quot;playwright&quot;,&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;@playwright/mcp@latest&quot;]}'
+
+# 或手動加入 MCP 設定檔（Claude Desktop、Cursor 等）
+# {
+#   &quot;mcpServers&quot;: {
+#     &quot;playwright&quot;: {
+#       &quot;command&quot;: &quot;npx&quot;,
+#       &quot;args&quot;: [&quot;@playwright/mcp@latest&quot;]
+#     }
+#   }
+# }" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># 在 Claude Code 中加入（推薦）</span></span>
+<span class="line"><span style="color:#61AFEF">claude</span><span style="color:#98C379"> mcp</span><span style="color:#98C379"> add</span><span style="color:#98C379"> playwright</span><span style="color:#98C379"> npx</span><span style="color:#98C379"> @playwright/mcp@latest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 或在 VS Code CLI</span></span>
+<span class="line"><span style="color:#61AFEF">code</span><span style="color:#D19A66"> --add-mcp</span><span style="color:#98C379"> '{"name":"playwright","command":"npx","args":["@playwright/mcp@latest"]}'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 或手動加入 MCP 設定檔（Claude Desktop、Cursor 等）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   "mcpServers": {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#     "playwright": {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#       "command": "npx",</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#       "args": ["@playwright/mcp@latest"]</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#     }</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">#   }</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># }</span></span></code></pre> </div> </div>   <p>OpenCLI 安裝後需要另外在 Chrome 安裝 Browser Bridge Extension；Playwright MCP 只需在 AI 客戶端加入一行設定，無需安裝瀏覽器外掛。</p> <h2>20.4 核心機制：N-ref vs Accessibility Tree Snapshot</h2> <p>兩個工具的「元素定位」方式有本質差異：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI：N-ref 語義標記</span> <button class="cb-copy" data-code="# OpenCLI 運作模型
+# 1. 啟動 daemon（連接瀏覽器）
+opencli daemon start
+
+# 2. 取得頁面狀態（N-ref）
+opencli browser work state
+# 輸出：
+# [1] input#search &quot;搜尋...&quot;
+# [2] button &quot;登入&quot;
+# [3] a &quot;首頁&quot;
+
+# 3. 基於 N-ref 操作
+opencli browser work type &quot;[1]&quot; &quot;OpenCLI&quot;
+opencli browser work click &quot;[2]&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI 運作模型</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 1. 啟動 daemon（連接瀏覽器）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> daemon</span><span style="color:#98C379"> start</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 2. 取得頁面狀態（N-ref）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 輸出：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [1] input#search "搜尋..."</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [2] button "登入"</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># [3] a "首頁"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 3. 基於 N-ref 操作</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "OpenCLI"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[2]"</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP：Accessibility Tree 快照（LLM 自動處理）</span> <button class="cb-copy" data-code="# Playwright MCP 運作模型
+# （由 AI LLM 自動呼叫，無需人工命令）
+
+# LLM 看到的 Accessibility Tree 快照：
+# - heading &quot;todos&quot; [level=1]
+# - textbox &quot;What needs to be done?&quot; [ref=e5]
+# - listitem:
+#   - checkbox &quot;Toggle Todo&quot; [ref=e10]
+#   - text &quot;Buy groceries&quot;
+
+# LLM 自動呼叫對應工具：
+# browser_fill(ref=&quot;e5&quot;, value=&quot;學習 OpenCLI&quot;)
+# browser_click(ref=&quot;e10&quot;)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span># Playwright MCP 運作模型</span></span>
+<span class="line"><span># （由 AI LLM 自動呼叫，無需人工命令）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># LLM 看到的 Accessibility Tree 快照：</span></span>
+<span class="line"><span># - heading "todos" [level=1]</span></span>
+<span class="line"><span># - textbox "What needs to be done?" [ref=e5]</span></span>
+<span class="line"><span># - listitem:</span></span>
+<span class="line"><span>#   - checkbox "Toggle Todo" [ref=e10]</span></span>
+<span class="line"><span>#   - text "Buy groceries"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># LLM 自動呼叫對應工具：</span></span>
+<span class="line"><span># browser_fill(ref="e5", value="學習 OpenCLI")</span></span>
+<span class="line"><span># browser_click(ref="e10")</span></span></code></pre> </div> </div>   <p>OpenCLI 的 N-ref 是由 <strong>人或 AI 主動讀取快照</strong> 後再執行操作；Playwright MCP 的快照由 <strong>LLM 自動解讀</strong>，它看到 <code>ref=e5</code> 就知道要呼叫 <code>browser_fill(ref="e5")</code>，整個過程對使用者透明。</p> <div class="call tip"> <span class="ci">💡</span> <div> <strong>Playwright MCP 的兩種模式</strong> <ul> <li><strong>Snapshot 模式（預設）</strong>：讀取 Accessibility Tree，純文字結構，速度快、不需要視覺模型</li> <li><strong>Vision 模式</strong>：分析截圖，適合 Canvas、複雜 CSS 背景等無障礙樹無法表達的元素，需要多模態 LLM</li> </ul> </div> </div> <h2>20.5 表單操作比較</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI：state → 命令</span> <button class="cb-copy" data-code="# OpenCLI 方式
+opencli browser open https://example.com/login
+opencli browser work state
+# → [1] input email  [2] input password  [3] button Login
+
+opencli browser work type &quot;[1]&quot; &quot;user@example.com&quot;
+opencli browser work type &quot;[2]&quot; &quot;password123&quot;
+opencli browser work click &quot;[3]&quot;" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI 方式</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://example.com/login</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> state</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># → [1] input email  [2] input password  [3] button Login</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[1]"</span><span style="color:#98C379"> "user@example.com"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> type</span><span style="color:#98C379"> "[2]"</span><span style="color:#98C379"> "password123"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> click</span><span style="color:#98C379"> "[3]"</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP：自然語言 → AI 自動完成</span> <button class="cb-copy" data-code="# Playwright MCP 方式（由 LLM 自動完成）
+# 提示：「登入 https://example.com/login，帳號 user@example.com 密碼 password123」
+
+# LLM 自動呼叫：
+# browser_navigate(url=&quot;https://example.com/login&quot;)
+# → 取得快照：[ref=e1] input email, [ref=e2] input password, [ref=e3] button Login
+# browser_fill(ref=&quot;e1&quot;, value=&quot;user@example.com&quot;)
+# browser_fill(ref=&quot;e2&quot;, value=&quot;password123&quot;)
+# browser_click(ref=&quot;e3&quot;)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span># Playwright MCP 方式（由 LLM 自動完成）</span></span>
+<span class="line"><span># 提示：「登入 https://example.com/login，帳號 user@example.com 密碼 password123」</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># LLM 自動呼叫：</span></span>
+<span class="line"><span># browser_navigate(url="https://example.com/login")</span></span>
+<span class="line"><span># → 取得快照：[ref=e1] input email, [ref=e2] input password, [ref=e3] button Login</span></span>
+<span class="line"><span># browser_fill(ref="e1", value="user@example.com")</span></span>
+<span class="line"><span># browser_fill(ref="e2", value="password123")</span></span>
+<span class="line"><span># browser_click(ref="e3")</span></span></code></pre> </div> </div>   <p>對於一般表單，兩者都能完成任務。主要差異在於：OpenCLI 每個步驟都需要明確指令，Playwright MCP 讓 LLM 自主決定呼叫哪些工具、按什麼順序執行。</p> <h2>20.6 網路攔截與 Mock</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI：network intercept</span> <button class="cb-copy" data-code="# OpenCLI：導航前設定攔截
+opencli browser work network intercept --pattern &quot;*/api/users*&quot;
+opencli browser work navigate https://app.example.com
+
+# 查看攔截的請求
+opencli browser work network log" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI：導航前設定攔截</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#98C379"> intercept</span><span style="color:#D19A66"> --pattern</span><span style="color:#98C379"> "*/api/users*"</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> navigate</span><span style="color:#98C379"> https://app.example.com</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 查看攔截的請求</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> network</span><span style="color:#98C379"> log</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP：browser_route_fulfill（由 LLM 呼叫）</span> <button class="cb-copy" data-code="# Playwright MCP：提示 LLM 設定 route mock
+# 「導航到 https://app.example.com，
+#   把所有 /api/users 的請求 mock 回傳空陣列」
+
+# LLM 自動呼叫：
+# browser_route_fulfill(
+#   url=&quot;**/api/users**&quot;,
+#   value={ status: 200, body: &quot;[]&quot; }
+# )
+# browser_navigate(url=&quot;https://app.example.com&quot;)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span># Playwright MCP：提示 LLM 設定 route mock</span></span>
+<span class="line"><span># 「導航到 https://app.example.com，</span></span>
+<span class="line"><span>#   把所有 /api/users 的請求 mock 回傳空陣列」</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># LLM 自動呼叫：</span></span>
+<span class="line"><span># browser_route_fulfill(</span></span>
+<span class="line"><span>#   url="**/api/users**",</span></span>
+<span class="line"><span>#   value={ status: 200, body: "[]" }</span></span>
+<span class="line"><span># )</span></span>
+<span class="line"><span># browser_navigate(url="https://app.example.com")</span></span></code></pre> </div> </div>   <p>兩者都支援網路攔截，但操作方式不同：OpenCLI 需要在程式碼或腳本中明確設定攔截規則，Playwright MCP 可以用自然語言描述需求讓 LLM 自動設定。</p> <h2>20.7 Session 與瀏覽器狀態管理</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI：命名 Session</span> <button class="cb-copy" data-code="# OpenCLI：命名 Session 隔離
+opencli browser work open https://twitter.com    # work session
+opencli browser news open https://hn.algolia.com # news session
+
+# 各 session 各自獨立，互不干擾
+opencli browser list" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># OpenCLI：命名 Session 隔離</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> work</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://twitter.com</span><span style="color:#7F848E;font-style:italic">    # work session</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> news</span><span style="color:#98C379"> open</span><span style="color:#98C379"> https://hn.algolia.com</span><span style="color:#7F848E;font-style:italic"> # news session</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 各 session 各自獨立，互不干擾</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> browser</span><span style="color:#98C379"> list</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP：Profile 模式</span> <button class="cb-copy" data-code="# Playwright MCP：三種 Profile 模式
+
+# 預設（Persistent）：跨對話保留登入狀態
+npx @playwright/mcp@latest
+
+# 隔離模式（Isolated）：每次全新，適合測試
+npx @playwright/mcp@latest --isolated
+
+# 載入已存狀態（從之前儲存的 JSON）
+npx @playwright/mcp@latest --storage-state auth.json
+
+# 儲存目前狀態
+# 提示：「儲存目前瀏覽器狀態到 auth.json」
+# → LLM 呼叫 browser_save_storage_state(filename=&quot;auth.json&quot;)" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic"># Playwright MCP：三種 Profile 模式</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 預設（Persistent）：跨對話保留登入狀態</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> @playwright/mcp@latest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 隔離模式（Isolated）：每次全新，適合測試</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> @playwright/mcp@latest</span><span style="color:#D19A66"> --isolated</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 載入已存狀態（從之前儲存的 JSON）</span></span>
+<span class="line"><span style="color:#61AFEF">npx</span><span style="color:#98C379"> @playwright/mcp@latest</span><span style="color:#D19A66"> --storage-state</span><span style="color:#98C379"> auth.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 儲存目前狀態</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 提示：「儲存目前瀏覽器狀態到 auth.json」</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># → LLM 呼叫 browser_save_storage_state(filename="auth.json")</span></span></code></pre> </div> </div>   <p>OpenCLI 的命名 Session 讓你同時操控多個不同任務的分頁，邏輯清晰。Playwright MCP 的 Persistent 模式則讓 AI 跨對話記住登入狀態，更像「有記憶的助理」。</p> <h2>20.8 AI Agent 整合方式比較</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI：AI 透過 Bash 呼叫 CLI</span> <button class="cb-copy" data-code="# OpenCLI：AI 呼叫 CLI 子程序
+# Claude Code 中透過 Bash 工具執行 opencli 指令
+
+async function scrapeGitHubTrending() {
+  const result = await bash(&quot;opencli github trending --language typescript --json&quot;);
+  return JSON.parse(result);
+}" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E06C75">OpenCLI</span><span style="color:#ABB2BF">：</span><span style="color:#E5C07B">AI</span><span style="color:#E06C75"> 呼叫</span><span style="color:#E5C07B"> CLI</span><span style="color:#E06C75"> 子程序</span></span>
+<span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E06C75">Claude</span><span style="color:#E06C75"> Code</span><span style="color:#E06C75"> 中透過</span><span style="color:#E06C75"> Bash</span><span style="color:#E06C75"> 工具執行</span><span style="color:#E06C75"> opencli</span><span style="color:#E06C75"> 指令</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">async</span><span style="color:#C678DD"> function</span><span style="color:#61AFEF"> scrapeGitHubTrending</span><span style="color:#ABB2BF">() {</span></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> result</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#61AFEF"> bash</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">"opencli github trending --language typescript --json"</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  return</span><span style="color:#E5C07B"> JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">parse</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">result</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP：AI 直接呼叫 MCP 工具</span> <button class="cb-copy" data-code="# Playwright MCP：AI 直接呼叫 MCP 工具
+# 不需要 Bash 子程序，工具直接嵌入 AI 上下文
+
+# Claude Code 對話（啟用 playwright MCP 後）：
+# 「打開 https://github.com/trending，
+#   篩選 TypeScript，截圖並回傳前 10 名 repo 名稱」
+#
+# → LLM 自動完成：
+#   browser_navigate → browser_screenshot →
+#   browser_snapshot → 解析文字 → 回傳結果" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span># Playwright MCP：AI 直接呼叫 MCP 工具</span></span>
+<span class="line"><span># 不需要 Bash 子程序，工具直接嵌入 AI 上下文</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># Claude Code 對話（啟用 playwright MCP 後）：</span></span>
+<span class="line"><span># 「打開 https://github.com/trending，</span></span>
+<span class="line"><span>#   篩選 TypeScript，截圖並回傳前 10 名 repo 名稱」</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># → LLM 自動完成：</span></span>
+<span class="line"><span>#   browser_navigate → browser_screenshot →</span></span>
+<span class="line"><span>#   browser_snapshot → 解析文字 → 回傳結果</span></span></code></pre> </div> </div>   <p>這是兩者最根本的設計差異：</p> <ul> <li><strong>OpenCLI</strong>：AI 是「指揮者」，透過 Bash 子程序發出 CLI 命令，每個步驟都顯式出現在 AI 的工具呼叫記錄中</li> <li><strong>Playwright MCP</strong>：AI 是「執行者」，工具直接嵌入 LLM 的推理上下文，AI 可以在一次思考中規劃並執行多步驟操作</li> </ul> <div class="call warn"> <span class="ci">⚠️</span> <div> <strong>Tool Proliferation 問題</strong> <p>Playwright MCP 暴露了 20+ 個細粒度工具（<code>browser_click</code>、<code>browser_fill</code>、<code>browser_navigate</code>、<code>browser_screenshot</code> 等），可能讓 LLM 在工具選擇上產生決策困難（tool proliferation 問題）。OpenCLI 的語義指令數量少、語義明確，對 LLM 更友好。</p> </div> </div> <h2>20.9 E2E 測試工作流程</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>OpenCLI + Vitest：程式碼驅動</span> <button class="cb-copy" data-code="# OpenCLI + Vitest：程式碼驅動的測試
+import { test, expect } from 'vitest';
+import { opencli } from './helpers/opencli';
+
+test('登入流程', async () => {
+  await opencli('browser open https://example.com/login');
+  await opencli('browser work state');
+  await opencli('browser work type &quot;[1]&quot; &quot;test@example.com&quot;');
+  await opencli('browser work type &quot;[2]&quot; &quot;password123&quot;');
+  await opencli('browser work click &quot;[3]&quot;');
+
+  const result = await opencli('browser work state');
+  expect(result).toContain('歡迎回來');
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E06C75">OpenCLI</span><span style="color:#56B6C2"> +</span><span style="color:#E06C75"> Vitest</span><span style="color:#ABB2BF">：</span><span style="color:#E06C75">程式碼驅動的測試</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">test</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">expect</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> 'vitest'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">opencli</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> './helpers/opencli'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">test</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入流程'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser open https://example.com/login'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser work state'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser work type "[1]" "test@example.com"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser work type "[2]" "password123"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser work click "[3]"'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">  const</span><span style="color:#E5C07B"> result</span><span style="color:#56B6C2"> =</span><span style="color:#C678DD"> await</span><span style="color:#61AFEF"> opencli</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'browser work state'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#61AFEF">  expect</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">result</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">toContain</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'歡迎回來'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>Playwright MCP + AI：自然語言驅動、AI 自動生成測試</span> <button class="cb-copy" data-code="# Playwright MCP + AI Agent：自然語言驅動的測試
+# 在 VS Code GitHub Copilot Chat 或 Claude Code 中：
+
+# 「為 https://example.com/login 寫一個 Playwright 測試，
+#   用 test@example.com / password123 登入，
+#   驗證成功後能看到 '歡迎回來'」
+
+# AI 通過 Playwright MCP 探索頁面後，自動生成：
+import { test, expect } from '@playwright/test';
+
+test('登入流程', async ({ page }) => {
+  await page.goto('https://example.com/login');
+  await page.locator('input[name=&quot;email&quot;]').fill('test@example.com');
+  await page.locator('input[name=&quot;password&quot;]').fill('password123');
+  await page.getByRole('button', { name: '登入' }).click();
+  await expect(page.getByText('歡迎回來')).toBeVisible();
+});" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="typescript"><code><span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E06C75">Playwright</span><span style="color:#E5C07B"> MCP</span><span style="color:#56B6C2"> +</span><span style="color:#E5C07B"> AI</span><span style="color:#E06C75"> Agent</span><span style="color:#ABB2BF">：</span><span style="color:#E06C75">自然語言驅動的測試</span></span>
+<span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E06C75">在</span><span style="color:#E5C07B"> VS</span><span style="color:#E06C75"> Code</span><span style="color:#E06C75"> GitHub</span><span style="color:#E06C75"> Copilot</span><span style="color:#E06C75"> Chat</span><span style="color:#E06C75"> 或</span><span style="color:#E06C75"> Claude</span><span style="color:#E06C75"> Code</span><span style="color:#E06C75"> 中</span><span style="color:#ABB2BF">：</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF"># 「</span><span style="color:#E06C75">為</span><span style="color:#E06C75"> https</span><span style="color:#ABB2BF">:</span><span style="color:#7F848E;font-style:italic">//example.com/login 寫一個 Playwright 測試，</span></span>
+<span class="line"><span style="color:#ABB2BF">#   </span><span style="color:#E06C75">用</span><span style="color:#E06C75"> test</span><span style="color:#ABB2BF">@</span><span style="color:#E5C07B">example</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">com</span><span style="color:#56B6C2"> /</span><span style="color:#E06C75"> password123</span><span style="color:#E06C75"> 登入</span><span style="color:#ABB2BF">，</span></span>
+<span class="line"><span style="color:#ABB2BF">#   </span><span style="color:#E06C75">驗證成功後能看到</span><span style="color:#98C379"> '歡迎回來'</span><span style="color:#ABB2BF">」</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF"># </span><span style="color:#E5C07B">AI</span><span style="color:#E06C75"> 通過</span><span style="color:#E06C75"> Playwright</span><span style="color:#E5C07B"> MCP</span><span style="color:#E06C75"> 探索頁面後</span><span style="color:#ABB2BF">，</span><span style="color:#E06C75">自動生成</span><span style="color:#ABB2BF">：</span></span>
+<span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">test</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">expect</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> '@playwright/test'</span><span style="color:#ABB2BF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#61AFEF">test</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'登入流程'</span><span style="color:#ABB2BF">, </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> ({ </span><span style="color:#E06C75;font-style:italic">page</span><span style="color:#ABB2BF"> }) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">goto</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'https://example.com/login'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">locator</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[name="email"]'</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'test@example.com'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">locator</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'input[name="password"]'</span><span style="color:#ABB2BF">).</span><span style="color:#61AFEF">fill</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'password123'</span><span style="color:#ABB2BF">);</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#E5C07B"> page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">getByRole</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'button'</span><span style="color:#ABB2BF">, { </span><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'登入'</span><span style="color:#ABB2BF"> }).</span><span style="color:#61AFEF">click</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#C678DD">  await</span><span style="color:#61AFEF"> expect</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">page</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">getByText</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">'歡迎回來'</span><span style="color:#ABB2BF">)).</span><span style="color:#61AFEF">toBeVisible</span><span style="color:#ABB2BF">();</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre> </div> </div>   <p>Playwright MCP 在 E2E 測試方面有明顯優勢：</p> <ul> <li>AI 自動生成符合 Playwright Test 規範的 TypeScript 測試腳本</li> <li>搭配 <strong>Trace Viewer</strong>（時間旅行除錯），失敗時可回溯每一步 DOM 狀態</li> <li>搭配 <strong>Playwright Test MCP</strong>（獨立的測試版 MCP），啟動 Planner / Generator / Healer 等 AI Agents</li> <li>已內建於 GitHub Copilot Coding Agent，可自動驗證 PR 修改</li> </ul> <p>OpenCLI 的 E2E 測試適合需要精確控制每個步驟、或已有 Vitest 測試架構的專案（詳見第 8–10 章）。</p> <h2>20.10 功能對比表與選型決策</h2> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>功能對比表</span> <button class="cb-copy" data-code="╔════════════════════════╦══════════════════════════════╦══════════════════════════════╗
+║ 功能維度               ║ OpenCLI                      ║ Playwright MCP               ║
+╠════════════════════════╬══════════════════════════════╬══════════════════════════════╣
+║ 運行方式               ║ CLI 指令 + Daemon + Extension ║ MCP Server + AI Client       ║
+║ 整合進 AI 的方式       ║ Bash 子程序呼叫               ║ MCP 工具直接呼叫（無子程序） ║
+║ 操作粒度               ║ 語義 Intent 指令              ║ Accessibility ref 工具呼叫   ║
+║ 元素定位               ║ N-ref（語意標記）              ║ ref=eN（Accessibility Tree） ║
+║ 是否需要視覺模型        ║ 否                           ║ Snapshot 模式不需要；         ║
+║                        ║                              ║ Vision 模式需要多模態 LLM    ║
+║ 跨瀏覽器支援           ║ 透過 CDP 端點                 ║ 原生支援 Chrome/Firefox/WebKit║
+║ Session 管理           ║ 命名 Session，多 tab 隔離     ║ Persistent / Isolated / Ext  ║
+║ 平台 Adapter           ║ 30+ 內建 Adapter              ║ 無（純瀏覽器操作）           ║
+║ E2E 測試整合           ║ Vitest 整合                   ║ Playwright Test + Trace Viewer║
+║ 測試程式碼生成         ║ 無（需手寫）                  ║ AI 自動生成 TypeScript 測試   ║
+║ 網路 Mock              ║ network intercept             ║ browser_route_fulfill        ║
+║ 狀態儲存               ║ Profile 留存於 Chrome         ║ storage-state JSON 檔案       ║
+║ 部署環境               ║ 需安裝 Chrome Extension       ║ Headless 模式可在 CI/Docker   ║
+║ 學習曲線               ║ 低（語義指令直觀）             ║ 中（需理解 MCP 工具生態）    ║
+║ 工具數量（AI 呼叫）    ║ ~10 個語義指令                ║ 20+ 細粒度工具（可能讓 LLM 困惑）║
+╚════════════════════════╩══════════════════════════════╩══════════════════════════════╝" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span>╔════════════════════════╦══════════════════════════════╦══════════════════════════════╗</span></span>
+<span class="line"><span>║ 功能維度               ║ OpenCLI                      ║ Playwright MCP               ║</span></span>
+<span class="line"><span>╠════════════════════════╬══════════════════════════════╬══════════════════════════════╣</span></span>
+<span class="line"><span>║ 運行方式               ║ CLI 指令 + Daemon + Extension ║ MCP Server + AI Client       ║</span></span>
+<span class="line"><span>║ 整合進 AI 的方式       ║ Bash 子程序呼叫               ║ MCP 工具直接呼叫（無子程序） ║</span></span>
+<span class="line"><span>║ 操作粒度               ║ 語義 Intent 指令              ║ Accessibility ref 工具呼叫   ║</span></span>
+<span class="line"><span>║ 元素定位               ║ N-ref（語意標記）              ║ ref=eN（Accessibility Tree） ║</span></span>
+<span class="line"><span>║ 是否需要視覺模型        ║ 否                           ║ Snapshot 模式不需要；         ║</span></span>
+<span class="line"><span>║                        ║                              ║ Vision 模式需要多模態 LLM    ║</span></span>
+<span class="line"><span>║ 跨瀏覽器支援           ║ 透過 CDP 端點                 ║ 原生支援 Chrome/Firefox/WebKit║</span></span>
+<span class="line"><span>║ Session 管理           ║ 命名 Session，多 tab 隔離     ║ Persistent / Isolated / Ext  ║</span></span>
+<span class="line"><span>║ 平台 Adapter           ║ 30+ 內建 Adapter              ║ 無（純瀏覽器操作）           ║</span></span>
+<span class="line"><span>║ E2E 測試整合           ║ Vitest 整合                   ║ Playwright Test + Trace Viewer║</span></span>
+<span class="line"><span>║ 測試程式碼生成         ║ 無（需手寫）                  ║ AI 自動生成 TypeScript 測試   ║</span></span>
+<span class="line"><span>║ 網路 Mock              ║ network intercept             ║ browser_route_fulfill        ║</span></span>
+<span class="line"><span>║ 狀態儲存               ║ Profile 留存於 Chrome         ║ storage-state JSON 檔案       ║</span></span>
+<span class="line"><span>║ 部署環境               ║ 需安裝 Chrome Extension       ║ Headless 模式可在 CI/Docker   ║</span></span>
+<span class="line"><span>║ 學習曲線               ║ 低（語義指令直觀）             ║ 中（需理解 MCP 工具生態）    ║</span></span>
+<span class="line"><span>║ 工具數量（AI 呼叫）    ║ ~10 個語義指令                ║ 20+ 細粒度工具（可能讓 LLM 困惑）║</span></span>
+<span class="line"><span>╚════════════════════════╩══════════════════════════════╩══════════════════════════════╝</span></span></code></pre> </div> </div>   <h3>選型決策樹</h3> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>選型決策樹</span> <button class="cb-copy" data-code="你想要做什麼？
+│
+├── 操作特定平台（Twitter、GitHub、YouTube 等）？
+│   └── 選 OpenCLI（有內建 Adapter）
+│
+├── 讓 AI Agent 完全自主地瀏覽、驗證網頁任務？
+│   └── 選 Playwright MCP（AI 原生工具，無需手寫指令）
+│
+├── 撰寫 E2E 測試並自動維護？
+│   └── 選 Playwright MCP（Trace Viewer + AI 自動生成測試）
+│
+├── 在 CI/CD 環境中無頭執行？
+│   ├── 任意網站：選 Playwright MCP（--headless 即可）
+│   └── 平台 API 操作：選 OpenCLI（CDP 模式）
+│
+├── 需要多 tab / 多任務並行隔離？
+│   └── 選 OpenCLI（命名 Session 明確）
+│
+└── 混合使用：平台 Adapter + AI 驗證
+    └── OpenCLI 做操作 + Playwright MCP 做 UI 驗證" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="text"><code><span class="line"><span>你想要做什麼？</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── 操作特定平台（Twitter、GitHub、YouTube 等）？</span></span>
+<span class="line"><span>│   └── 選 OpenCLI（有內建 Adapter）</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── 讓 AI Agent 完全自主地瀏覽、驗證網頁任務？</span></span>
+<span class="line"><span>│   └── 選 Playwright MCP（AI 原生工具，無需手寫指令）</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── 撰寫 E2E 測試並自動維護？</span></span>
+<span class="line"><span>│   └── 選 Playwright MCP（Trace Viewer + AI 自動生成測試）</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── 在 CI/CD 環境中無頭執行？</span></span>
+<span class="line"><span>│   ├── 任意網站：選 Playwright MCP（--headless 即可）</span></span>
+<span class="line"><span>│   └── 平台 API 操作：選 OpenCLI（CDP 模式）</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── 需要多 tab / 多任務並行隔離？</span></span>
+<span class="line"><span>│   └── 選 OpenCLI（命名 Session 明確）</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>└── 混合使用：平台 Adapter + AI 驗證</span></span>
+<span class="line"><span>    └── OpenCLI 做操作 + Playwright MCP 做 UI 驗證</span></span></code></pre> </div> </div>   <h3>搭配使用範例</h3> <p>OpenCLI 與 Playwright MCP 並不互斥，可以在同一工作流中各司其職：</p> <div class="cb-wrap" data-astro-cid-jgrc2lfe> <div class="cb-bar" data-astro-cid-jgrc2lfe> <span class="cb-label" data-astro-cid-jgrc2lfe>混合工作流：OpenCLI 操作 + Playwright MCP 驗證</span> <button class="cb-copy" data-code="#!/bin/bash
+# 混合工作流：
+# 1. OpenCLI 操作 Twitter（有 Adapter，語義清晰）
+# 2. Playwright MCP 驗證發布結果（AI 確認 UI 狀態）
+
+# Step 1：用 OpenCLI 發文（Adapter 處理所有 Twitter 細節）
+opencli twitter post &quot;今天用 OpenCLI 自動化了工作流程！ #DevTools&quot;
+echo &quot;推文已送出&quot;
+
+# Step 2：在 Claude Code 中詢問 Playwright MCP 做 UI 驗證
+# （claude mcp add playwright 後，在 Claude Code 對話框輸入）
+# 「打開 twitter.com，確認最新推文包含 '今天用 OpenCLI'，截圖存為 tweet-verify.png」" data-astro-cid-jgrc2lfe>複製</button> </div> <div class="cb-inner" data-astro-cid-jgrc2lfe> <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto;" tabindex="0" data-astro-cid-jgrc2lfe data-language="bash"><code><span class="line"><span style="color:#7F848E;font-style:italic">#!/bin/bash</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 混合工作流：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 1. OpenCLI 操作 Twitter（有 Adapter，語義清晰）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 2. Playwright MCP 驗證發布結果（AI 確認 UI 狀態）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 1：用 OpenCLI 發文（Adapter 處理所有 Twitter 細節）</span></span>
+<span class="line"><span style="color:#61AFEF">opencli</span><span style="color:#98C379"> twitter</span><span style="color:#98C379"> post</span><span style="color:#98C379"> "今天用 OpenCLI 自動化了工作流程！ #DevTools"</span></span>
+<span class="line"><span style="color:#56B6C2">echo</span><span style="color:#98C379"> "推文已送出"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Step 2：在 Claude Code 中詢問 Playwright MCP 做 UI 驗證</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># （claude mcp add playwright 後，在 Claude Code 對話框輸入）</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 「打開 twitter.com，確認最新推文包含 '今天用 OpenCLI'，截圖存為 tweet-verify.png」</span></span></code></pre> </div> </div>   <h2>本章小結</h2> <ul> <li><strong>Playwright MCP</strong> 是 AI Agent 的原生工具：LLM 直接呼叫、無需子程序，最適合讓 AI 自主完成複雜的多步驟瀏覽器任務，以及搭配 Playwright Test 生成與維護 E2E 測試</li> <li><strong>OpenCLI</strong> 是人機協作的工具：語義指令清晰、平台 Adapter 豐富，適合有確定目標的自動化流程（尤其是特定平台），也更容易被人類閱讀和除錯</li> <li>兩者都基於 Accessibility Tree 概念（非截圖），都不需要視覺模型，但整合方式不同：OpenCLI 透過 CLI 命令，Playwright MCP 透過 MCP 工具呼叫</li> <li>在 AI Agent 工作流中，最佳策略往往是 <strong>混合使用</strong>：OpenCLI 的 Adapter 處理平台操作，Playwright MCP 負責 UI 驗證與自動化測試</li> </ul>  </div> <nav class="cnav" data-astro-cid-mw7aashj> <a href="/opencli/ch19-vs-playwright-cli" class="prev" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>← 上一章</span> <span class="nt" data-astro-cid-mw7aashj>OpenCLI vs Playwright CLI</span> </a> <a href="/opencli/ch19-faq" class="next" data-astro-cid-mw7aashj> <span class="nd" data-astro-cid-mw7aashj>下一章 →</span> <span class="nt" data-astro-cid-mw7aashj>常見問題 &amp; FAQ</span> </a> </nav> </main> </div> <script>
+    // Theme
+    const html = document.documentElement;
+    const tt = document.getElementById('tt');
+    const isun = document.getElementById('isun');
+    const imoon = document.getElementById('imoon');
+    function syncIcons() {
+      const dk = html.classList.contains('dark');
+      isun.style.display = dk ? 'block' : 'none';
+      imoon.style.display = dk ? 'none' : 'block';
+    }
+    syncIcons();
+    tt?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('oc-theme', html.classList.contains('dark') ? 'dark' : 'light');
+      syncIcons();
+    });
+
+    // Progress
+    const pb = document.getElementById('pb');
+    window.addEventListener('scroll', () => {
+      const t = document.documentElement.scrollHeight - window.innerHeight;
+      pb.style.width = t > 0 ? `${(window.scrollY / t) * 100}%` : '0%';
+    }, { passive: true });
+
+    // Sidebar part toggles
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pid;
+        const list = document.querySelector(`[data-pl="${id}"]`);
+        btn.classList.toggle('open');
+        list?.classList.toggle('closed');
+      });
+    });
+
+    // Mobile menu
+    const sb = document.getElementById('sb');
+    const ov = document.getElementById('ov');
+    const mb = document.getElementById('mbtn');
+    const open = () => { sb.classList.add('open'); ov.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { sb.classList.remove('open'); ov.classList.remove('open'); document.body.style.overflow=''; };
+    mb?.addEventListener('click', open);
+    ov?.addEventListener('click', close);
+  </script> </body> 
